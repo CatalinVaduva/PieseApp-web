@@ -1,57 +1,188 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+
+type SelectedPhoto = {
+  id: string
+  file: File
+  preview: string
+}
+
+const MAX_FILES = 8
 
 export default function MobilePage() {
-  const [files, setFiles] = useState<File[]>([])
-  const [status, setStatus] = useState('Alege 1-4 poze.')
+  const [photos, setPhotos] = useState<SelectedPhoto[]>([])
   const [saving, setSaving] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [status, setStatus] = useState('Poți adăuga poze pe rând sau mai multe din galerie.')
+  const [createdCdp, setCreatedCdp] = useState<string | null>(null)
 
-  function handleFiles(list: FileList | null) {
-    const next = Array.from(list || []).slice(0, 4)
-    setFiles(next)
+  const cameraInputRef = useRef<HTMLInputElement | null>(null)
+  const galleryInputRef = useRef<HTMLInputElement | null>(null)
 
-    if (!next.length) {
-      setStatus('Nu ai selectat nicio poză.')
+  const canSubmit = useMemo(() => photos.length > 0 && !saving, [photos, saving])
+
+  function makePhotoId(file: File) {
+    return `${file.name}-${file.size}-${file.lastModified}`
+  }
+
+  function resetInput(ref: React.RefObject<HTMLInputElement | null>) {
+    if (ref.current) ref.current.value = ''
+  }
+
+  function addFiles(fileList: FileList | null) {
+    if (!fileList || fileList.length === 0) {
+      setStatus('Nu s-a selectat nicio poză.')
       return
     }
 
-    setStatus(`Selectate: ${next.length} ${next.length === 1 ? 'poză' : 'poze'}.`)
+    setPhotos((prev) => {
+      const next = [...prev]
+
+      for (const file of Array.from(fileList)) {
+        if (!file.type.startsWith('image/')) continue
+        if (next.length >= MAX_FILES) break
+
+        const id = makePhotoId(file)
+        const exists = next.some((p) => p.id === id)
+        if (exists) continue
+
+        next.push({
+          id,
+          file,
+          preview: URL.createObjectURL(file),
+        })
+      }
+
+      setStatus(`Poze pregătite: ${next.length} / ${MAX_FILES}`)
+      setCreatedCdp(null)
+      return next
+    })
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  function removePhoto(id: string) {
+    setPhotos((prev) => {
+      const item = prev.find((p) => p.id === id)
+      if (item?.preview?.startsWith('blob:')) {
+        URL.revokeObjectURL(item.preview)
+      }
 
-    if (!files.length) {
-      setStatus('Alege mai întâi 1-4 poze.')
+      const next = prev.filter((p) => p.id !== id)
+      setStatus(next.length ? `Poze pregătite: ${next.length} / ${MAX_FILES}` : 'Poți adăuga poze pe rând sau mai multe din galerie.')
+      return next
+    })
+  }
+
+  async function getNextCdp() {
+    const { data, error } = await supabase.rpc('get_next_cdp')
+    if (error) throw error
+    return String(data)
+  }
+
+  async function createDraftWithRetry(maxRetries = 3) {
+    let lastError: any = null
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        const cdpNou = await getNextCdp()
+
+        const { data, error } = await supabase
+          .from('piese')
+          .insert([
+            {
+              cdp: cdpNou,
+              cod_piesa: null,
+              denumire: 'Piesă nouă',
+              masina: null,
+              compatibilitate: null,
+              categorie: null,
+              pret: 0,
+              cantitate: 1,
+              descriere: null,
+              draft: true,
+              poze: [],
+              raft: null,
+              vin: null,
+              cod_culoare: null,
+            },
+          ])
+          .select('id, cdp')
+          .single()
+
+        if (error) throw error
+        return data
+      } catch (err: any) {
+        lastError = err
+        const msg = String(err?.message || '').toLowerCase()
+        if (!msg.includes('duplicate key value')) {
+          throw err
+        }
+      }
+    }
+
+    throw lastError || new Error('Nu s-a putut crea draftul.')
+  }
+
+  async function uploadPhotosDirect(cdp: string, files: File[]) {
+    const publicUrls: string[] = []
+
+    for (const file of files) {
+      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase()
+      const random = Math.random().toString(36).slice(2, 8)
+      const fileName = `${cdp}-${Date.now()}-${random}.${ext}`
+      const storagePath = `${cdp}/${fileName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('piese-poze')
+        .upload(storagePath, file, {
+          cacheControl: '3600',
+          upsert: false,
+        })
+
+      if (uploadError) throw uploadError
+
+      const { data } = supabase.storage.from('piese-poze').getPublicUrl(storagePath)
+      publicUrls.push(data.publicUrl)
+    }
+
+    return publicUrls
+  }
+
+  async function handleSubmit() {
+    if (!photos.length) {
+      setStatus('Adaugă mai întâi pozele.')
       return
     }
 
     setSaving(true)
-    setStatus('Se trimite...')
+    setCreatedCdp(null)
 
     try {
-      const formData = new FormData()
-      files.forEach((file) => formData.append('photos', file))
+      setStatus('Se creează draftul...')
+      const inserted = await createDraftWithRetry()
 
-      const res = await fetch('/api/mobile-upload', {
-        method: 'POST',
-        body: formData,
+      setStatus('Se urcă pozele direct în Storage...')
+      const urls = await uploadPhotosDirect(
+        inserted.cdp,
+        photos.map((p) => p.file)
+      )
+
+      const { error: updateError } = await supabase
+        .from('piese')
+        .update({ poze: urls })
+        .eq('id', inserted.id)
+
+      if (updateError) throw updateError
+
+      photos.forEach((p) => {
+        if (p.preview.startsWith('blob:')) URL.revokeObjectURL(p.preview)
       })
 
-      const data = await res.json().catch(() => ({}))
-
-      if (!res.ok) {
-        throw new Error(data?.error || 'Eroare la upload')
-      }
-
-      setFiles([])
-      setStatus(`Draft creat cu succes: ${data.cdp}`)
-
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
-      }
+      setPhotos([])
+      resetInput(cameraInputRef)
+      resetInput(galleryInputRef)
+      setCreatedCdp(inserted.cdp)
+      setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze`)
     } catch (err: any) {
       setStatus('Eroare: ' + (err?.message || 'necunoscută'))
     } finally {
@@ -65,7 +196,7 @@ export default function MobilePage() {
         minHeight: '100vh',
         background: '#eef2f6',
         fontFamily: 'Arial, sans-serif',
-        padding: '16px',
+        padding: '12px',
       }}
     >
       <div
@@ -88,20 +219,36 @@ export default function MobilePage() {
             PieseApp Mobile
           </div>
           <div style={{ marginTop: '8px', fontSize: '14px', lineHeight: 1.5, color: '#667085' }}>
-            Varianta simplă și stabilă: alegi 1-4 poze și apeși <b>Adaugă piesă</b>.
-            Draftul se creează pe server.
+            Pozele se urcă direct în Storage, fără limita Vercel. Le poți adăuga pe rând din cameră
+            sau mai multe din galerie.
+          </div>
+          <div
+            style={{
+              marginTop: '12px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 12px',
+              borderRadius: '999px',
+              background: '#f8fafc',
+              border: '1px solid #d8dee5',
+              fontSize: '13px',
+              fontWeight: 700,
+              color: '#344054',
+            }}
+          >
+            Poze pregătite: {photos.length} / {MAX_FILES}
           </div>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
+        <div
           style={{
             background: '#fff',
             border: '1px solid #d8dee5',
             borderRadius: '16px',
-            padding: '16px',
+            padding: '14px',
             display: 'grid',
-            gap: '12px',
+            gap: '10px',
           }}
         >
           <label
@@ -117,18 +264,54 @@ export default function MobilePage() {
               fontWeight: 800,
               textAlign: 'center',
               lineHeight: '58px',
+              cursor: saving || photos.length >= MAX_FILES ? 'not-allowed' : 'pointer',
+              opacity: saving || photos.length >= MAX_FILES ? 0.7 : 1,
             }}
           >
-            Alege poze
+            Fă poză
             <input
-              ref={fileInputRef}
+              ref={cameraInputRef}
               type="file"
-              name="photos"
+              accept="image/*"
+              capture="environment"
+              disabled={saving || photos.length >= MAX_FILES}
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                addFiles(e.target.files)
+                resetInput(cameraInputRef)
+              }}
+            />
+          </label>
+
+          <label
+            style={{
+              display: 'block',
+              width: '100%',
+              minHeight: '54px',
+              border: '1px solid #c9d3dd',
+              background: '#fff',
+              color: '#101828',
+              borderRadius: '14px',
+              fontSize: '17px',
+              fontWeight: 800,
+              textAlign: 'center',
+              lineHeight: '54px',
+              cursor: saving || photos.length >= MAX_FILES ? 'not-allowed' : 'pointer',
+              opacity: saving || photos.length >= MAX_FILES ? 0.7 : 1,
+            }}
+          >
+            Alege din galerie
+            <input
+              ref={galleryInputRef}
+              type="file"
               accept="image/*"
               multiple
-              onChange={(e) => handleFiles(e.target.files)}
-              disabled={saving}
+              disabled={saving || photos.length >= MAX_FILES}
               style={{ display: 'none' }}
+              onChange={(e) => {
+                addFiles(e.target.files)
+                resetInput(galleryInputRef)
+              }}
             />
           </label>
 
@@ -136,9 +319,9 @@ export default function MobilePage() {
             style={{
               padding: '12px',
               borderRadius: '12px',
-              background: '#f8fafc',
-              border: '1px solid #d8dee5',
-              color: '#344054',
+              background: createdCdp ? '#ecfdf3' : '#f8fafc',
+              border: '1px solid ' + (createdCdp ? '#abefc6' : '#d8dee5'),
+              color: createdCdp ? '#027a48' : '#344054',
               fontSize: '14px',
               fontWeight: 700,
               lineHeight: 1.45,
@@ -154,32 +337,82 @@ export default function MobilePage() {
               gap: '10px',
             }}
           >
-            {[0, 1, 2, 3].map((index) => {
-              const file = files[index]
+            {Array.from({ length: MAX_FILES }).map((_, index) => {
+              const item = photos[index]
+
               return (
                 <div
                   key={index}
                   style={{
-                    minHeight: '110px',
+                    minHeight: '188px',
                     border: '1px solid #d8dee5',
                     borderRadius: '12px',
+                    overflow: 'hidden',
                     background: '#f8fafc',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '10px',
-                    textAlign: 'center',
+                    display: 'grid',
+                    gridTemplateRows: '110px auto auto',
                   }}
                 >
                   <div
                     style={{
-                      fontSize: '13px',
+                      background: '#f8fafc',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {item ? (
+                      <img
+                        src={item.preview}
+                        alt={`Poza ${index + 1}`}
+                        style={{
+                          width: '100%',
+                          height: '110px',
+                          objectFit: 'cover',
+                          display: 'block',
+                        }}
+                      />
+                    ) : (
+                      <div style={{ color: '#667085', fontSize: '14px', fontWeight: 700 }}>
+                        Poza {index + 1}
+                      </div>
+                    )}
+                  </div>
+
+                  <div
+                    style={{
+                      padding: '10px',
+                      fontSize: '12px',
+                      color: item ? '#101828' : '#667085',
                       fontWeight: 700,
-                      color: file ? '#101828' : '#667085',
+                      lineHeight: 1.35,
                       wordBreak: 'break-word',
                     }}
                   >
-                    {file ? file.name : `Poza ${index + 1}`}
+                    {item ? item.file.name : 'Gol'}
+                  </div>
+
+                  <div style={{ padding: '0 10px 10px 10px' }}>
+                    {item ? (
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(item.id)}
+                        disabled={saving}
+                        style={{
+                          width: '100%',
+                          minHeight: '38px',
+                          border: '1px solid #f1b5bb',
+                          background: '#fff5f5',
+                          color: '#b42318',
+                          borderRadius: '10px',
+                          fontSize: '13px',
+                          fontWeight: 800,
+                          cursor: saving ? 'not-allowed' : 'pointer',
+                        }}
+                      >
+                        Șterge poza
+                      </button>
+                    ) : null}
                   </div>
                 </div>
               )
@@ -187,23 +420,24 @@ export default function MobilePage() {
           </div>
 
           <button
-            type="submit"
-            disabled={saving || files.length === 0}
+            type="button"
+            onClick={handleSubmit}
+            disabled={!canSubmit}
             style={{
               width: '100%',
               minHeight: '58px',
               border: '1px solid #2e6ee6',
-              background: saving || files.length === 0 ? '#9ec5f8' : '#2f80ed',
+              background: canSubmit ? '#2f80ed' : '#9ec5f8',
               color: '#fff',
               borderRadius: '14px',
               fontSize: '18px',
               fontWeight: 800,
-              cursor: saving || files.length === 0 ? 'not-allowed' : 'pointer',
+              cursor: canSubmit ? 'pointer' : 'not-allowed',
             }}
           >
             {saving ? 'Se adaugă piesa...' : 'Adaugă piesă'}
           </button>
-        </form>
+        </div>
       </div>
     </main>
   )

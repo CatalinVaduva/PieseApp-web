@@ -65,7 +65,6 @@ const CATEGORII = [
 ]
 
 const PAGE_SIZE = 30
-const ROW_PREVIEW_DELAY = 220
 
 export default function Page() {
   const [piese, setPiese] = useState<Piesa[]>([])
@@ -81,13 +80,8 @@ export default function Page() {
   const [autosaveStatus, setAutosaveStatus] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [hoverPreview, setHoverPreview] = useState(false)
-  const [hoveredPiesa, setHoveredPiesa] = useState<Piesa | null>(null)
-  const [hoverCardVisible, setHoverCardVisible] = useState(false)
-  const [hoverCardPos, setHoverCardPos] = useState({ x: 0, y: 0 })
-  const [viewport, setViewport] = useState({ width: 1600, height: 900 })
 
   const autosaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const lastSavedJson = useRef<string>('')
 
   async function loadPiese(keepCurrentSelection = true) {
@@ -126,16 +120,6 @@ export default function Page() {
 
   useEffect(() => {
     loadPiese(false)
-  }, [])
-
-  useEffect(() => {
-    const updateViewport = () =>
-      setViewport({ width: window.innerWidth, height: window.innerHeight })
-
-    updateViewport()
-    window.addEventListener('resize', updateViewport)
-
-    return () => window.removeEventListener('resize', updateViewport)
   }, [])
 
   function buildPayload(piesa: Piesa) {
@@ -229,7 +213,9 @@ export default function Page() {
     const ok = await savePiesaSilent({ ...selected, draft: false }, true)
     if (ok) {
       setSelected((prev) => (prev ? { ...prev, draft: false } : prev))
-      loadPiese()
+      setPiese((prev) =>
+        prev.map((p) => (p.id === selected.id ? { ...selected, draft: false } : p))
+      )
     }
   }
 
@@ -240,19 +226,23 @@ export default function Page() {
     setSelected(updated)
     setAutosaveStatus('Modificări nesalvate')
 
-    if (autosaveTimer.current) {
-      clearTimeout(autosaveTimer.current)
+    setPiese((prev) =>
+      prev.map((p) => (p.id === updated.id ? { ...p, [field]: value } : p))
+    )
+  }
+
+  async function saveSelectedOnBlur() {
+    if (!selected) return
+
+    const payload = buildPayload(selected)
+    const currentJson = JSON.stringify(payload)
+
+    if (currentJson === lastSavedJson.current) return
+
+    const ok = await savePiesaSilent(selected, false)
+    if (ok) {
+      setPiese((prev) => prev.map((p) => (p.id === selected.id ? selected : p)))
     }
-
-    autosaveTimer.current = setTimeout(async () => {
-      const payload = buildPayload(updated)
-      const currentJson = JSON.stringify(payload)
-
-      if (currentJson === lastSavedJson.current) return
-
-      await savePiesaSilent(updated, false)
-      loadPiese()
-    }, 700)
   }
 
   useEffect(() => {
@@ -461,27 +451,6 @@ export default function Page() {
     return piese.reduce((sum, p) => sum + (p.pret || 0) * (p.cantitate || 0), 0)
   }, [piese])
 
-  function handleRowMouseEnter(piesa: Piesa, e: React.MouseEvent<HTMLDivElement>) {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current)
-
-    setHoveredPiesa(piesa)
-    setHoverCardPos({ x: e.clientX + 18, y: e.clientY + 12 })
-
-    hoverTimer.current = setTimeout(() => {
-      setHoverCardVisible(true)
-    }, ROW_PREVIEW_DELAY)
-  }
-
-  function handleRowMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    setHoverCardPos({ x: e.clientX + 18, y: e.clientY + 12 })
-  }
-
-  function handleRowMouseLeave() {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current)
-    setHoverCardVisible(false)
-    setHoveredPiesa(null)
-  }
-
   return (
     <main
       style={{
@@ -543,7 +512,7 @@ export default function Page() {
         style={{
           minHeight: 0,
           display: 'grid',
-          gridTemplateColumns: '54% 46%',
+          gridTemplateColumns: '58% 42%',
           gap: '12px',
           padding: '12px',
         }}
@@ -578,7 +547,7 @@ export default function Page() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '86px 120px 1fr 130px 120px 72px 110px 70px',
+              gridTemplateColumns: '86px 110px 1.35fr 105px 105px 90px 110px 75px',
               gap: '6px',
               padding: '8px 8px',
               borderBottom: '1px solid #d8dee5',
@@ -611,12 +580,9 @@ export default function Page() {
                     setSelected(p)
                     setSelectedPoza(p.poze?.[0] || null)
                   }}
-                  onMouseEnter={(e) => handleRowMouseEnter(p, e)}
-                  onMouseMove={handleRowMouseMove}
-                  onMouseLeave={handleRowMouseLeave}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '86px 120px 1fr 130px 120px 72px 110px 70px',
+                    gridTemplateColumns: '86px 110px 1.35fr 105px 105px 90px 110px 75px',
                     gap: '6px',
                     padding: '7px 8px',
                     borderBottom: '1px solid #edf1f5',
@@ -713,15 +679,17 @@ export default function Page() {
                 height: 'calc(100vh - 92px)',
                 minHeight: 0,
                 display: 'grid',
+                overflowY: 'auto',
+                paddingRight: '4px',
                 gridTemplateRows: 'auto auto auto auto 1fr',
-                gap: '8px',
+                gap: '10px',
               }}
             >
               <div style={cardStyle}>
                 <div
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: '300px minmax(0, 1fr)',
+                    gridTemplateColumns: '150px 1fr auto',
                     gap: '12px',
                     alignItems: 'start',
                   }}
@@ -730,8 +698,8 @@ export default function Page() {
                     onMouseEnter={() => setHoverPreview(true)}
                     onMouseLeave={() => setHoverPreview(false)}
                     style={{
-                      width: '300px',
-                      height: '224px',
+                      width: '150px',
+                      height: '112px',
                       borderRadius: '10px',
                       overflow: 'hidden',
                       border: '1px solid #d8dee5',
@@ -747,7 +715,7 @@ export default function Page() {
                       <img
                         src={selectedPoza}
                         alt="preview"
-                        style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#f8fafc' }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     ) : (
                       <div style={{ fontSize: '11px', color: '#667085' }}>Fără poză</div>
@@ -755,24 +723,8 @@ export default function Page() {
                   </div>
 
                   <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-                      <div style={{ fontSize: '24px', fontWeight: 700 }}>{selected.cdp}</div>
-                      <div
-                        style={{
-                          background: selected.draft ? '#fff8cc' : '#ecfdf3',
-                          color: selected.draft ? '#8a6d00' : '#027a48',
-                          border: '1px solid ' + (selected.draft ? '#f4df93' : '#abefc6'),
-                          borderRadius: '999px',
-                          padding: '6px 12px',
-                          fontSize: '12px',
-                          fontWeight: 700,
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {selected.draft ? 'Draft' : 'Completă'}
-                      </div>
-                    </div>
-                    <div style={{ fontSize: '15px', fontWeight: 700, marginTop: '6px' }}>
+                    <div style={{ fontSize: '21px', fontWeight: 700 }}>{selected.cdp}</div>
+                    <div style={{ fontSize: '15px', fontWeight: 700, marginTop: '4px' }}>
                       {selected.cod_piesa || '-'}
                     </div>
                     <div style={{ fontSize: '14px', marginTop: '6px', fontWeight: 700 }}>
@@ -786,16 +738,30 @@ export default function Page() {
                     </div>
                   </div>
 
+                  <div
+                    style={{
+                      background: selected.draft ? '#fff8cc' : '#ecfdf3',
+                      color: selected.draft ? '#8a6d00' : '#027a48',
+                      border: '1px solid ' + (selected.draft ? '#f4df93' : '#abefc6'),
+                      borderRadius: '999px',
+                      padding: '6px 12px',
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {selected.draft ? 'Draft' : 'Completă'}
+                  </div>
                 </div>
 
                 {hoverPreview && selectedPoza && (
                   <div
                     style={{
                       position: 'fixed',
-                      top: '80px',
-                      right: '20px',
-                      width: '600px',
-                      height: '600px',
+                      top: '90px',
+                      right: '40px',
+                      width: '420px',
+                      height: '420px',
                       background: '#fff',
                       border: '1px solid #d8dee5',
                       borderRadius: '12px',
@@ -844,47 +810,65 @@ export default function Page() {
                     columnGap: '16px',
                   }}
                 >
-                  <Camp label="CDP" value={selected.cdp} onChange={() => {}} disabled />
+                  <Camp label="CDP" value={selected.cdp} onChange={() => {}} disabled 
+                    onBlur={saveSelectedOnBlur}
+                  />
                   <Camp
                     label="Cod piesă"
                     value={selected.cod_piesa || ''}
                     onChange={(value) => updateSelectedField('cod_piesa', value)}
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="Denumire"
                     value={selected.denumire}
                     onChange={(value) => updateSelectedField('denumire', value)}
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="Categorie"
                     value={selected.categorie || ''}
                     onChange={(value) => updateSelectedField('categorie', value)}
                     asSelect
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="Mașină"
                     value={selected.masina || ''}
                     onChange={(value) => updateSelectedField('masina', value)}
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="Compatibilitate"
                     value={selected.compatibilitate || ''}
                     onChange={(value) => updateSelectedField('compatibilitate', value)}
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="VIN"
                     value={selected.vin || ''}
                     onChange={(value) => updateSelectedField('vin', value)}
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="Cod culoare"
                     value={selected.cod_culoare || ''}
                     onChange={(value) => updateSelectedField('cod_culoare', value)}
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="Raft"
                     value={selected.raft || ''}
                     onChange={(value) => updateSelectedField('raft', value)}
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="Cantitate"
@@ -893,6 +877,8 @@ export default function Page() {
                     onChange={(value) =>
                       updateSelectedField('cantitate', value === '' ? 1 : Number(value))
                     }
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                   <Camp
                     label="Preț"
@@ -901,6 +887,8 @@ export default function Page() {
                     onChange={(value) =>
                       updateSelectedField('pret', value === '' ? 0 : Number(value))
                     }
+                  
+                    onBlur={saveSelectedOnBlur}
                   />
                 </div>
               </div>
@@ -988,80 +976,13 @@ export default function Page() {
                   placeholder="Observații"
                   value={selected.descriere || ''}
                   onChange={(e) => updateSelectedField('descriere', e.target.value)}
+                  onBlur={saveSelectedOnBlur}
                 />
               </div>
             </div>
           )}
         </div>
       </div>
-
-      {hoverCardVisible && hoveredPiesa && (
-        <div
-          style={{
-            position: 'fixed',
-            left: Math.min(hoverCardPos.x, viewport.width - 310),
-            top: Math.min(hoverCardPos.y, viewport.height - 170),
-            width: '290px',
-            background: '#fff',
-            border: '1px solid #d8dee5',
-            borderRadius: '12px',
-            boxShadow: '0 14px 28px rgba(0,0,0,0.16)',
-            padding: '10px',
-            zIndex: 9998,
-            pointerEvents: 'none',
-          }}
-        >
-          <div style={{ display: 'grid', gridTemplateColumns: '92px 1fr', gap: '10px' }}>
-            <div
-              style={{
-                width: '92px',
-                height: '76px',
-                borderRadius: '8px',
-                overflow: 'hidden',
-                border: '1px solid #d8dee5',
-                background: '#f8fafc',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {hoveredPiesa.poze?.[0] ? (
-                <img
-                  src={hoveredPiesa.poze[0]}
-                  alt="preview mic"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              ) : (
-                <div style={{ fontSize: '11px', color: '#667085' }}>Fără poză</div>
-              )}
-            </div>
-
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: '14px', fontWeight: 700 }}>{hoveredPiesa.cdp}</div>
-              <div style={{ fontSize: '12px', fontWeight: 700, marginTop: '2px' }}>
-                {hoveredPiesa.cod_piesa || '-'}
-              </div>
-              <div
-                style={{
-                  fontSize: '12px',
-                  marginTop: '4px',
-                  fontWeight: 700,
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {hoveredPiesa.denumire || '-'}
-              </div>
-              <div style={{ fontSize: '11px', color: '#667085', marginTop: '6px', lineHeight: 1.4 }}>
-                Mașină: {hoveredPiesa.masina || '-'}
-                <br />
-                Raft: {hoveredPiesa.raft || '-'} | Preț: {(hoveredPiesa.pret || 0).toFixed(0)} RON
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </main>
   )
 }
@@ -1124,6 +1045,7 @@ type CampProps = {
   label: string
   value: string
   onChange: (value: string) => void
+  onBlur?: () => void
   type?: string
   disabled?: boolean
   asSelect?: boolean
@@ -1133,6 +1055,7 @@ function Camp({
   label,
   value,
   onChange,
+  onBlur,
   type = 'text',
   disabled = false,
   asSelect = false,
@@ -1144,6 +1067,7 @@ function Camp({
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onBlur={onBlur}
           disabled={disabled}
           style={{ ...fieldStyle, background: disabled ? '#f5f7fa' : '#fff' }}
         >
@@ -1160,6 +1084,7 @@ function Camp({
           value={value}
           disabled={disabled}
           onChange={(e) => onChange(e.target.value)}
+          onBlur={onBlur}
           style={{ ...fieldStyle, background: disabled ? '#f5f7fa' : '#fff' }}
         />
       )}

@@ -419,24 +419,36 @@ export default function MobilePage() {
             })}
           </div>
 
-          <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={!canSubmit}
+          <div
             style={{
-              width: '100%',
-              minHeight: '58px',
-              border: '1px solid #2e6ee6',
-              background: canSubmit ? '#2f80ed' : '#9ec5f8',
-              color: '#fff',
-              borderRadius: '14px',
-              fontSize: '18px',
-              fontWeight: 800,
-              cursor: canSubmit ? 'pointer' : 'not-allowed',
+              position: 'sticky',
+              bottom: '10px',
+              zIndex: 30,
+              background: 'rgba(238,242,246,0.92)',
+              paddingTop: '8px',
+              backdropFilter: 'blur(6px)',
             }}
           >
-            {saving ? 'Se adaugă piesa...' : 'Adaugă piesă'}
-          </button>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={!canSubmit}
+              style={{
+                width: '100%',
+                minHeight: '58px',
+                border: '1px solid #2e6ee6',
+                background: canSubmit ? '#2f80ed' : '#9ec5f8',
+                color: '#fff',
+                borderRadius: '14px',
+                fontSize: '18px',
+                fontWeight: 800,
+                cursor: canSubmit ? 'pointer' : 'not-allowed',
+                boxShadow: '0 8px 20px rgba(47,128,237,0.22)',
+              }}
+            >
+              {saving ? 'Se adaugă piesa...' : 'Adaugă piesă'}
+            </button>
+          </div>
         </div>
       </div>
     </main>

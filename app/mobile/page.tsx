@@ -12,45 +12,53 @@ type SelectedPhoto = {
 const MAX_FILES = 8
 
 export default function MobilePage() {
-  const [photos, setPhotos] = useState<SelectedPhoto[]>([])
+  const [photos, setPhotos] = useState<(SelectedPhoto | null)[]>(
+    Array.from({ length: MAX_FILES }, () => null)
+  )
   const [saving, setSaving] = useState(false)
-  const [status, setStatus] = useState('Poți adăuga poze pe rând sau mai multe din galerie.')
+  const [status, setStatus] = useState('Poți face poze una câte una sau alege mai multe din galerie.')
   const [createdCdp, setCreatedCdp] = useState<string | null>(null)
-  const [cameraInputKey, setCameraInputKey] = useState(1)
   const [galleryInputKey, setGalleryInputKey] = useState(1)
 
-  const cameraInputRef = useRef<HTMLInputElement | null>(null)
   const galleryInputRef = useRef<HTMLInputElement | null>(null)
 
-  const canSubmit = useMemo(() => photos.length > 0 && !saving, [photos, saving])
+  const photosCount = useMemo(() => photos.filter(Boolean).length, [photos])
+  const canSubmit = useMemo(() => photosCount > 0 && !saving, [photosCount, saving])
 
   function makePhotoId() {
     return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
   }
 
-  function resetInput(ref: React.RefObject<HTMLInputElement | null>) {
-    if (ref.current) ref.current.value = ''
+  function makeItem(file: File): SelectedPhoto {
+    return {
+      id: makePhotoId(),
+      file,
+      preview: URL.createObjectURL(file),
+    }
   }
 
-  function remountCameraInput() {
-    setTimeout(() => setCameraInputKey((v) => v + 1), 120)
+  function nextEmptyIndex(list: (SelectedPhoto | null)[]) {
+    return list.findIndex((p) => p === null)
   }
 
-  function remountGalleryInput() {
-    setTimeout(() => setGalleryInputKey((v) => v + 1), 0)
+  function addCameraFileAt(index: number, fileList: FileList | null) {
+    const file = fileList?.[0]
+    if (!file || !file.type.startsWith('image/')) {
+      setStatus('Nu s-a selectat nicio poză.')
+      return
+    }
+
+    setPhotos((prev) => {
+      const next = [...prev]
+      next[index] = makeItem(file)
+      const count = next.filter(Boolean).length
+      setStatus(`Poze pregătite: ${count} / ${MAX_FILES}`)
+      setCreatedCdp(null)
+      return next
+    })
   }
 
-  function openCamera() {
-    if (saving || photos.length >= MAX_FILES) return
-    cameraInputRef.current?.click()
-  }
-
-  function openGallery() {
-    if (saving || photos.length >= MAX_FILES) return
-    galleryInputRef.current?.click()
-  }
-
-  function addFiles(fileList: FileList | null) {
+  function addGalleryFiles(fileList: FileList | null) {
     if (!fileList || fileList.length === 0) {
       setStatus('Nu s-a selectat nicio poză.')
       return
@@ -61,33 +69,36 @@ export default function MobilePage() {
 
       for (const file of Array.from(fileList)) {
         if (!file.type.startsWith('image/')) continue
-        if (next.length >= MAX_FILES) break
-
-        next.push({
-          id: makePhotoId(),
-          file,
-          preview: URL.createObjectURL(file),
-        })
+        const emptyIdx = nextEmptyIndex(next)
+        if (emptyIdx === -1) break
+        next[emptyIdx] = makeItem(file)
       }
 
-      setStatus(`Poze pregătite: ${next.length} / ${MAX_FILES}`)
+      const count = next.filter(Boolean).length
+      setStatus(`Poze pregătite: ${count} / ${MAX_FILES}`)
       setCreatedCdp(null)
       return next
     })
+
+    if (galleryInputRef.current) {
+      galleryInputRef.current.value = ''
+    }
+    setGalleryInputKey((v) => v + 1)
   }
 
-  function removePhoto(id: string) {
+  function removePhoto(index: number) {
     setPhotos((prev) => {
-      const item = prev.find((p) => p.id === id)
+      const next = [...prev]
+      const item = next[index]
       if (item?.preview?.startsWith('blob:')) {
         URL.revokeObjectURL(item.preview)
       }
-
-      const next = prev.filter((p) => p.id !== id)
+      next[index] = null
+      const count = next.filter(Boolean).length
       setStatus(
-        next.length
-          ? `Poze pregătite: ${next.length} / ${MAX_FILES}`
-          : 'Poți adăuga poze pe rând sau mai multe din galerie.'
+        count
+          ? `Poze pregătite: ${count} / ${MAX_FILES}`
+          : 'Poți face poze una câte una sau alege mai multe din galerie.'
       )
       return next
     })
@@ -169,7 +180,8 @@ export default function MobilePage() {
   }
 
   async function handleSubmit() {
-    if (!photos.length) {
+    const validPhotos = photos.filter(Boolean) as SelectedPhoto[]
+    if (!validPhotos.length) {
       setStatus('Adaugă mai întâi pozele.')
       return
     }
@@ -184,7 +196,7 @@ export default function MobilePage() {
       setStatus('Se urcă pozele direct în Storage...')
       const urls = await uploadPhotosDirect(
         inserted.cdp,
-        photos.map((p) => p.file)
+        validPhotos.map((p) => p.file)
       )
 
       const { error: updateError } = await supabase
@@ -194,15 +206,15 @@ export default function MobilePage() {
 
       if (updateError) throw updateError
 
-      photos.forEach((p) => {
+      validPhotos.forEach((p) => {
         if (p.preview.startsWith('blob:')) URL.revokeObjectURL(p.preview)
       })
 
-      setPhotos([])
-      resetInput(cameraInputRef)
-      resetInput(galleryInputRef)
-      remountCameraInput()
-      remountGalleryInput()
+      setPhotos(Array.from({ length: MAX_FILES }, () => null))
+      setGalleryInputKey((v) => v + 1)
+      if (galleryInputRef.current) {
+        galleryInputRef.current.value = ''
+      }
       setCreatedCdp(inserted.cdp)
       setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze`)
     } catch (err: any) {
@@ -222,42 +234,6 @@ export default function MobilePage() {
         paddingBottom: '90px',
       }}
     >
-      <input
-        key={cameraInputKey}
-        ref={cameraInputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        disabled={saving || photos.length >= MAX_FILES}
-        style={{ display: 'none' }}
-        onClick={(e) => {
-          ;(e.currentTarget as HTMLInputElement).value = ''
-        }}
-        onChange={(e) => {
-          addFiles(e.target.files)
-          resetInput(cameraInputRef)
-          remountCameraInput()
-        }}
-      />
-
-      <input
-        key={galleryInputKey}
-        ref={galleryInputRef}
-        type="file"
-        accept="image/*"
-        multiple
-        disabled={saving || photos.length >= MAX_FILES}
-        style={{ display: 'none' }}
-        onClick={(e) => {
-          ;(e.currentTarget as HTMLInputElement).value = ''
-        }}
-        onChange={(e) => {
-          addFiles(e.target.files)
-          resetInput(galleryInputRef)
-          remountGalleryInput()
-        }}
-      />
-
       <div
         style={{
           maxWidth: '760px',
@@ -278,8 +254,7 @@ export default function MobilePage() {
             PieseApp Mobile
           </div>
           <div style={{ marginTop: '8px', fontSize: '14px', lineHeight: 1.5, color: '#667085' }}>
-            Pozele se urcă direct în Storage, fără limita Vercel. Le poți adăuga pe rând din cameră
-            sau mai multe din galerie.
+            Camera merge pe sloturi separate: faci poză 1, apoi poză 2, apoi poză 3, fără refresh.
           </div>
           <div
             style={{
@@ -296,7 +271,7 @@ export default function MobilePage() {
               color: '#344054',
             }}
           >
-            Poze pregătite: {photos.length} / {MAX_FILES}
+            Poze pregătite: {photosCount} / {MAX_FILES}
           </div>
         </div>
 
@@ -310,32 +285,7 @@ export default function MobilePage() {
             gap: '10px',
           }}
         >
-          <button
-            type="button"
-            onClick={openCamera}
-            disabled={saving || photos.length >= MAX_FILES}
-            style={{
-              display: 'block',
-              width: '100%',
-              minHeight: '58px',
-              border: '1px solid #2e6ee6',
-              background: '#2f80ed',
-              color: '#fff',
-              borderRadius: '14px',
-              fontSize: '18px',
-              fontWeight: 800,
-              textAlign: 'center',
-              cursor: saving || photos.length >= MAX_FILES ? 'not-allowed' : 'pointer',
-              opacity: saving || photos.length >= MAX_FILES ? 0.7 : 1,
-            }}
-          >
-            Fă poză
-          </button>
-
-          <button
-            type="button"
-            onClick={openGallery}
-            disabled={saving || photos.length >= MAX_FILES}
+          <label
             style={{
               display: 'block',
               width: '100%',
@@ -347,12 +297,26 @@ export default function MobilePage() {
               fontSize: '17px',
               fontWeight: 800,
               textAlign: 'center',
-              cursor: saving || photos.length >= MAX_FILES ? 'not-allowed' : 'pointer',
-              opacity: saving || photos.length >= MAX_FILES ? 0.7 : 1,
+              lineHeight: '54px',
+              cursor: saving || photosCount >= MAX_FILES ? 'not-allowed' : 'pointer',
+              opacity: saving || photosCount >= MAX_FILES ? 0.7 : 1,
             }}
           >
             Alege din galerie
-          </button>
+            <input
+              key={galleryInputKey}
+              ref={galleryInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              disabled={saving || photosCount >= MAX_FILES}
+              style={{ display: 'none' }}
+              onClick={(e) => {
+                ;(e.currentTarget as HTMLInputElement).value = ''
+              }}
+              onChange={(e) => addGalleryFiles(e.target.files)}
+            />
+          </label>
 
           <div
             style={{
@@ -376,86 +340,114 @@ export default function MobilePage() {
               gap: '10px',
             }}
           >
-            {Array.from({ length: MAX_FILES }).map((_, index) => {
-              const item = photos[index]
-
-              return (
+            {photos.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  minHeight: '208px',
+                  border: '1px solid #d8dee5',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  background: '#f8fafc',
+                  display: 'grid',
+                  gridTemplateRows: '110px auto auto',
+                }}
+              >
                 <div
-                  key={index}
                   style={{
-                    minHeight: '188px',
-                    border: '1px solid #d8dee5',
-                    borderRadius: '12px',
-                    overflow: 'hidden',
                     background: '#f8fafc',
-                    display: 'grid',
-                    gridTemplateRows: '110px auto auto',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  <div
-                    style={{
-                      background: '#f8fafc',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {item ? (
-                      <img
-                        src={item.preview}
-                        alt={`Poza ${index + 1}`}
-                        style={{
-                          width: '100%',
-                          height: '110px',
-                          objectFit: 'cover',
-                          display: 'block',
-                        }}
-                      />
-                    ) : (
-                      <div style={{ color: '#667085', fontSize: '14px', fontWeight: 700 }}>
-                        Poza {index + 1}
-                      </div>
-                    )}
-                  </div>
-
-                  <div
-                    style={{
-                      padding: '10px',
-                      fontSize: '12px',
-                      color: item ? '#101828' : '#667085',
-                      fontWeight: 700,
-                      lineHeight: 1.35,
-                      wordBreak: 'break-word',
-                    }}
-                  >
-                    {item ? item.file.name : 'Gol'}
-                  </div>
-
-                  <div style={{ padding: '0 10px 10px 10px' }}>
-                    {item ? (
-                      <button
-                        type="button"
-                        onClick={() => removePhoto(item.id)}
-                        disabled={saving}
-                        style={{
-                          width: '100%',
-                          minHeight: '38px',
-                          border: '1px solid #f1b5bb',
-                          background: '#fff5f5',
-                          color: '#b42318',
-                          borderRadius: '10px',
-                          fontSize: '13px',
-                          fontWeight: 800,
-                          cursor: saving ? 'not-allowed' : 'pointer',
-                        }}
-                      >
-                        Șterge poza
-                      </button>
-                    ) : null}
-                  </div>
+                  {item ? (
+                    <img
+                      src={item.preview}
+                      alt={`Poza ${index + 1}`}
+                      style={{
+                        width: '100%',
+                        height: '110px',
+                        objectFit: 'cover',
+                        display: 'block',
+                      }}
+                    />
+                  ) : (
+                    <div style={{ color: '#667085', fontSize: '14px', fontWeight: 700 }}>
+                      Poza {index + 1}
+                    </div>
+                  )}
                 </div>
-              )
-            })}
+
+                <div
+                  style={{
+                    padding: '10px',
+                    fontSize: '12px',
+                    color: item ? '#101828' : '#667085',
+                    fontWeight: 700,
+                    lineHeight: 1.35,
+                    wordBreak: 'break-word',
+                  }}
+                >
+                  {item ? item.file.name : 'Gol'}
+                </div>
+
+                <div style={{ padding: '0 10px 10px 10px', display: 'grid', gap: '8px' }}>
+                  {!item ? (
+                    <label
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        minHeight: '38px',
+                        border: '1px solid #2e6ee6',
+                        background: '#2f80ed',
+                        color: '#fff',
+                        borderRadius: '10px',
+                        fontSize: '13px',
+                        fontWeight: 800,
+                        textAlign: 'center',
+                        lineHeight: '38px',
+                        cursor: saving ? 'not-allowed' : 'pointer',
+                        opacity: saving ? 0.7 : 1,
+                      }}
+                    >
+                      Fă poză
+                      <input
+                        key={`camera-slot-${index}-${photosCount}`}
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        disabled={saving}
+                        style={{ display: 'none' }}
+                        onClick={(e) => {
+                          ;(e.currentTarget as HTMLInputElement).value = ''
+                        }}
+                        onChange={(e) => addCameraFileAt(index, e.target.files)}
+                      />
+                    </label>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => removePhoto(index)}
+                      disabled={saving}
+                      style={{
+                        width: '100%',
+                        minHeight: '38px',
+                        border: '1px solid #f1b5bb',
+                        background: '#fff5f5',
+                        color: '#b42318',
+                        borderRadius: '10px',
+                        fontSize: '13px',
+                        fontWeight: 800,
+                        cursor: saving ? 'not-allowed' : 'pointer',
+                      }}
+                    >
+                      Șterge poza
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
 
           <div

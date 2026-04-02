@@ -32,6 +32,24 @@ export default function MobilePage() {
     if (ref.current) ref.current.value = ''
   }
 
+  function remountCameraInput() {
+    setTimeout(() => setCameraInputKey((v) => v + 1), 120)
+  }
+
+  function remountGalleryInput() {
+    setTimeout(() => setGalleryInputKey((v) => v + 1), 0)
+  }
+
+  function openCamera() {
+    if (saving || photos.length >= MAX_FILES) return
+    cameraInputRef.current?.click()
+  }
+
+  function openGallery() {
+    if (saving || photos.length >= MAX_FILES) return
+    galleryInputRef.current?.click()
+  }
+
   function addFiles(fileList: FileList | null) {
     if (!fileList || fileList.length === 0) {
       setStatus('Nu s-a selectat nicio poză.')
@@ -66,7 +84,11 @@ export default function MobilePage() {
       }
 
       const next = prev.filter((p) => p.id !== id)
-      setStatus(next.length ? `Poze pregătite: ${next.length} / ${MAX_FILES}` : 'Poți adăuga poze pe rând sau mai multe din galerie.')
+      setStatus(
+        next.length
+          ? `Poze pregătite: ${next.length} / ${MAX_FILES}`
+          : 'Poți adăuga poze pe rând sau mai multe din galerie.'
+      )
       return next
     })
   }
@@ -179,8 +201,8 @@ export default function MobilePage() {
       setPhotos([])
       resetInput(cameraInputRef)
       resetInput(galleryInputRef)
-      setCameraInputKey((v) => v + 1)
-      setGalleryInputKey((v) => v + 1)
+      remountCameraInput()
+      remountGalleryInput()
       setCreatedCdp(inserted.cdp)
       setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze`)
     } catch (err: any) {
@@ -200,6 +222,42 @@ export default function MobilePage() {
         paddingBottom: '90px',
       }}
     >
+      <input
+        key={cameraInputKey}
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        disabled={saving || photos.length >= MAX_FILES}
+        style={{ display: 'none' }}
+        onClick={(e) => {
+          ;(e.currentTarget as HTMLInputElement).value = ''
+        }}
+        onChange={(e) => {
+          addFiles(e.target.files)
+          resetInput(cameraInputRef)
+          remountCameraInput()
+        }}
+      />
+
+      <input
+        key={galleryInputKey}
+        ref={galleryInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        disabled={saving || photos.length >= MAX_FILES}
+        style={{ display: 'none' }}
+        onClick={(e) => {
+          ;(e.currentTarget as HTMLInputElement).value = ''
+        }}
+        onChange={(e) => {
+          addFiles(e.target.files)
+          resetInput(galleryInputRef)
+          remountGalleryInput()
+        }}
+      />
+
       <div
         style={{
           maxWidth: '760px',
@@ -252,7 +310,10 @@ export default function MobilePage() {
             gap: '10px',
           }}
         >
-          <label
+          <button
+            type="button"
+            onClick={openCamera}
+            disabled={saving || photos.length >= MAX_FILES}
             style={{
               display: 'block',
               width: '100%',
@@ -264,29 +325,17 @@ export default function MobilePage() {
               fontSize: '18px',
               fontWeight: 800,
               textAlign: 'center',
-              lineHeight: '58px',
               cursor: saving || photos.length >= MAX_FILES ? 'not-allowed' : 'pointer',
               opacity: saving || photos.length >= MAX_FILES ? 0.7 : 1,
             }}
           >
             Fă poză
-            <input
-              key={cameraInputKey}
-              ref={cameraInputRef}
-              type="file"
-              accept="image/*"
-              capture="environment"
-              disabled={saving || photos.length >= MAX_FILES}
-              style={{ display: 'none' }}
-              onChange={(e) => {
-                addFiles(e.target.files)
-                resetInput(cameraInputRef)
-                setCameraInputKey((v) => v + 1)
-              }}
-            />
-          </label>
+          </button>
 
-          <label
+          <button
+            type="button"
+            onClick={openGallery}
+            disabled={saving || photos.length >= MAX_FILES}
             style={{
               display: 'block',
               width: '100%',
@@ -298,27 +347,12 @@ export default function MobilePage() {
               fontSize: '17px',
               fontWeight: 800,
               textAlign: 'center',
-              lineHeight: '54px',
               cursor: saving || photos.length >= MAX_FILES ? 'not-allowed' : 'pointer',
               opacity: saving || photos.length >= MAX_FILES ? 0.7 : 1,
             }}
           >
             Alege din galerie
-            <input
-              key={galleryInputKey}
-              ref={galleryInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              disabled={saving || photos.length >= MAX_FILES}
-              style={{ display: 'none' }}
-              onChange={(e) => {
-                addFiles(e.target.files)
-                resetInput(galleryInputRef)
-                setGalleryInputKey((v) => v + 1)
-              }}
-            />
-          </label>
+          </button>
 
           <div
             style={{
@@ -437,17 +471,17 @@ export default function MobilePage() {
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={photos.length === 0 || saving}
+              disabled={!canSubmit}
               style={{
                 width: '100%',
                 minHeight: '58px',
                 border: '1px solid #2e6ee6',
-                background: photos.length > 0 && !saving ? '#2f80ed' : '#9ec5f8',
+                background: canSubmit ? '#2f80ed' : '#9ec5f8',
                 color: '#fff',
                 borderRadius: '14px',
                 fontSize: '18px',
                 fontWeight: 800,
-                cursor: photos.length > 0 && !saving ? 'pointer' : 'not-allowed',
+                cursor: canSubmit ? 'pointer' : 'not-allowed',
                 boxShadow: '0 8px 20px rgba(47,128,237,0.22)',
               }}
             >

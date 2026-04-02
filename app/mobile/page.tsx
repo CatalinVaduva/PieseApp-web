@@ -16,14 +16,16 @@ export default function MobilePage() {
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState('Poți adăuga poze pe rând sau mai multe din galerie.')
   const [createdCdp, setCreatedCdp] = useState<string | null>(null)
+  const [cameraInputKey, setCameraInputKey] = useState(1)
+  const [galleryInputKey, setGalleryInputKey] = useState(1)
 
   const cameraInputRef = useRef<HTMLInputElement | null>(null)
   const galleryInputRef = useRef<HTMLInputElement | null>(null)
 
   const canSubmit = useMemo(() => photos.length > 0 && !saving, [photos, saving])
 
-  function makePhotoId(file: File) {
-    return `${file.name}-${file.size}-${file.lastModified}`
+  function makePhotoId() {
+    return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
   }
 
   function resetInput(ref: React.RefObject<HTMLInputElement | null>) {
@@ -43,12 +45,8 @@ export default function MobilePage() {
         if (!file.type.startsWith('image/')) continue
         if (next.length >= MAX_FILES) break
 
-        const id = makePhotoId(file)
-        const exists = next.some((p) => p.id === id)
-        if (exists) continue
-
         next.push({
-          id,
+          id: makePhotoId(),
           file,
           preview: URL.createObjectURL(file),
         })
@@ -181,6 +179,8 @@ export default function MobilePage() {
       setPhotos([])
       resetInput(cameraInputRef)
       resetInput(galleryInputRef)
+      setCameraInputKey((v) => v + 1)
+      setGalleryInputKey((v) => v + 1)
       setCreatedCdp(inserted.cdp)
       setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze`)
     } catch (err: any) {
@@ -197,6 +197,7 @@ export default function MobilePage() {
         background: '#eef2f6',
         fontFamily: 'Arial, sans-serif',
         padding: '12px',
+        paddingBottom: '90px',
       }}
     >
       <div
@@ -270,6 +271,7 @@ export default function MobilePage() {
           >
             Fă poză
             <input
+              key={cameraInputKey}
               ref={cameraInputRef}
               type="file"
               accept="image/*"
@@ -279,6 +281,7 @@ export default function MobilePage() {
               onChange={(e) => {
                 addFiles(e.target.files)
                 resetInput(cameraInputRef)
+                setCameraInputKey((v) => v + 1)
               }}
             />
           </label>
@@ -302,6 +305,7 @@ export default function MobilePage() {
           >
             Alege din galerie
             <input
+              key={galleryInputKey}
               ref={galleryInputRef}
               type="file"
               accept="image/*"
@@ -311,6 +315,7 @@ export default function MobilePage() {
               onChange={(e) => {
                 addFiles(e.target.files)
                 resetInput(galleryInputRef)
+                setGalleryInputKey((v) => v + 1)
               }}
             />
           </label>
@@ -432,17 +437,17 @@ export default function MobilePage() {
             <button
               type="button"
               onClick={handleSubmit}
-              disabled={!canSubmit}
+              disabled={photos.length === 0 || saving}
               style={{
                 width: '100%',
                 minHeight: '58px',
                 border: '1px solid #2e6ee6',
-                background: canSubmit ? '#2f80ed' : '#9ec5f8',
+                background: photos.length > 0 && !saving ? '#2f80ed' : '#9ec5f8',
                 color: '#fff',
                 borderRadius: '14px',
                 fontSize: '18px',
                 fontWeight: 800,
-                cursor: canSubmit ? 'pointer' : 'not-allowed',
+                cursor: photos.length > 0 && !saving ? 'pointer' : 'not-allowed',
                 boxShadow: '0 8px 20px rgba(47,128,237,0.22)',
               }}
             >

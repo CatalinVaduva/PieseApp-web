@@ -559,10 +559,13 @@ export default function Page() {
 
   const valoareStoc = useMemo(() => piese.reduce((sum, p) => sum + (p.pret || 0) * (p.cantitate || 0), 0), [piese])
 
-  const availableSubcategories = useMemo(() => {
-    if (!catalog || !selected?.pieseauto_main_category) return []
-    return catalog.subcategories[selected.pieseauto_main_category] || []
-  }, [catalog, selected?.pieseauto_main_category])
+  const allPieseautoSubcategories = useMemo(() => {
+    return Object.values(catalog?.subcategories || {})
+      .flat()
+      .map((x) => x.title)
+      .filter((value, index, arr) => arr.indexOf(value) === index)
+      .sort((a, b) => a.localeCompare(b, 'ro'))
+  }, [catalog])
 
   function handleRowMouseEnter(piesa: Piesa, e: React.MouseEvent<HTMLDivElement>) {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
@@ -659,18 +662,21 @@ export default function Page() {
                     <div style={{ fontSize: '14px', marginTop: '6px', fontWeight: 700 }}>{selected.denumire || '-'}</div>
                     <div style={{ fontSize: '12px', color: '#667085', marginTop: '4px' }}>{selected.masina || '-'}</div>
                     <div style={{ fontSize: '11px', color: '#667085', marginTop: '6px' }}>{autosaveStatus}</div>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '12px' }}>
+                      <button onClick={() => handleRotateSelected(-90)} disabled={!selectedPoza || rotating} style={smallSecondaryBtn}>{rotating ? 'Se rotește...' : '↺ Rotire stânga'}</button>
+                      <button onClick={() => handleRotateSelected(90)} disabled={!selectedPoza || rotating} style={smallSecondaryBtn}>{rotating ? 'Se rotește...' : 'Rotire dreapta ↻'}</button>
+                    </div>
                   </div>
                 </div>
                 {hoverPreview && selectedPoza && <div style={{ position: 'fixed', top: '80px', right: '20px', width: '600px', height: '600px', background: '#fff', border: '1px solid #d8dee5', borderRadius: '12px', boxShadow: '0 18px 40px rgba(0,0,0,0.18)', padding: '10px', zIndex: 9999 }}><img src={selectedPoza} alt="preview mare" style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px', background: '#f8fafc' }} /></div>}
               </div>
 
               <div style={cardStyle}>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                   <button onClick={updatePiesaManual} style={smallPrimaryBtn}>Salvează</button>
-                  <button onClick={handleVinde} style={smallSellBtn}>Vinde</button>
                   <button onClick={handleStergePiesa} disabled={deletingPiesa} style={smallDangerBtn}>{deletingPiesa ? 'Se șterge...' : 'Șterge'}</button>
-                  <button onClick={() => handleRotateSelected(-90)} disabled={!selectedPoza || rotating} style={smallSecondaryBtn}>{rotating ? 'Se rotește...' : '↺ Rotire stânga'}</button>
-                  <button onClick={() => handleRotateSelected(90)} disabled={!selectedPoza || rotating} style={smallSecondaryBtn}>{rotating ? 'Se rotește...' : 'Rotire dreapta ↻'}</button>
+                  <div style={{ width: '10px' }} />
+                  <button onClick={handleVinde} style={smallSellBtn}>Vinde</button>
                 </div>
               </div>
 
@@ -682,35 +688,35 @@ export default function Page() {
                   <Camp label="Denumire" value={selected.denumire} onChange={(value) => updateSelectedField('denumire', value)} onBlur={handleDenumireBlur} />
                   <Camp label="Categorie" value={selected.categorie || ''} onChange={(value) => updateSelectedField('categorie', value)} onBlur={saveSelectedOnBlur} asSelect options={INTERNAL_CATEGORIES} />
                   <Camp label="Mașină" value={selected.masina || ''} onChange={(value) => updateSelectedField('masina', value)} onBlur={saveSelectedOnBlur} />
-                  <Camp label="Compatibilitate" value={selected.compatibilitate || ''} onChange={(value) => updateSelectedField('compatibilitate', value)} onBlur={saveSelectedOnBlur} />
-                  <Camp
-                    label="Categorie pieseauto"
-                    value={selected.pieseauto_main_category || ''}
-                    onChange={(value) => {
-                      setManualCategoryEdited(true)
-                      const firstSub = (catalog?.subcategories[value] || [])[0]?.title || ''
-                      const path = firstSub ? `${value} > ${firstSub}` : value
-                      const updated = { ...selected, pieseauto_main_category: value, pieseauto_subcategory: firstSub, pieseauto_category_path: path }
-                      setSelected(updated)
-                      setPiese((prev) => prev.map((p) => p.id === updated.id ? updated : p))
-                    }}
-                    onBlur={saveSelectedOnBlur}
-                    asSelect
-                    options={catalog?.main_categories || []}
-                  />
                   <Camp
                     label="Subcategorie pieseauto"
                     value={selected.pieseauto_subcategory || ''}
                     onChange={(value) => {
                       setManualCategoryEdited(true)
-                      const path = selected.pieseauto_main_category ? `${selected.pieseauto_main_category} > ${value}` : value
-                      const updated = { ...selected, pieseauto_subcategory: value, pieseauto_category_path: path }
+
+                      let mainFound = ''
+                      for (const main of catalog?.main_categories || []) {
+                        const list = catalog?.subcategories[main] || []
+                        if (list.find((x) => x.title === value)) {
+                          mainFound = main
+                          break
+                        }
+                      }
+
+                      const path = mainFound ? `${mainFound} > ${value}` : value
+                      const updated = {
+                        ...selected,
+                        pieseauto_main_category: mainFound || null,
+                        pieseauto_subcategory: value,
+                        pieseauto_category_path: path,
+                      }
+
                       setSelected(updated)
                       setPiese((prev) => prev.map((p) => p.id === updated.id ? updated : p))
                     }}
                     onBlur={saveSelectedOnBlur}
                     asSelect
-                    options={availableSubcategories.map((x) => x.title)}
+                    options={allPieseautoSubcategories}
                   />
                   <Camp label="Raft" value={selected.raft || ''} onChange={(value) => updateSelectedField('raft', value)} onBlur={saveSelectedOnBlur} />
                   <Camp label="VIN" value={selected.vin || ''} onChange={(value) => updateSelectedField('vin', value)} onBlur={saveSelectedOnBlur} />

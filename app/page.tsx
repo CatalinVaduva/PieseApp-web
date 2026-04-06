@@ -29,6 +29,8 @@ type SortOption =
   | 'denumire_asc'
   | 'masina_asc'
 
+type StockFilter = 'toate' | 'in_stoc' | 'stoc_zero'
+
 const CATEGORII = [
   'Accesorii auto',
   'Accesorii roti',
@@ -37,6 +39,7 @@ const CATEGORII = [
   'Car audio',
   'Caroserie',
   'Climatizare',
+  'Dezmembrari auto',
   'Directie',
   'Diverse',
   'Electrica & Electronica Auto',
@@ -60,12 +63,88 @@ const CATEGORII = [
   'Transmisie',
   'Tuning',
   'Turbo',
+  'Ulei Auto',
   'Xenon',
-  'Dezmembrari auto',
 ]
 
 const PAGE_SIZE = 30
 const ROW_PREVIEW_DELAY = 220
+
+function normalizeText(value: string) {
+  return (value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[\/_.\-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function detectCategoryFromName(name: string) {
+  const hay = normalizeText(name)
+  if (!hay) return ''
+
+  const rules: Array<[string[], string]> = [
+    [['airbag', 'srs'], 'Electrica & Electronica Auto'],
+    [['ecu', 'ecm', 'calculator motor', 'calculator abs', 'calculator confort', 'calculator frana', 'calculator', 'modul abs', 'modul bcm', 'modul far', 'modul xenon', 'senzor ploaie', 'motoras stergator', 'claxon', 'electromotor', 'alternator', 'contact', 'bloc lumini'], 'Electrica & Electronica Auto'],
+    [['far', 'faro', 'far stanga', 'far dreapta', 'stop', 'tripla', 'lampa'], 'Faruri stopuri lumini'],
+    [['xenon', 'balast', 'bec xenon', 'droser'], 'Xenon'],
+    [['injector', 'injectie', 'pompa inalta', 'pompa combustibil', 'rampa injectie'], 'Pompe si injectoare'],
+    [['egr', 'turbina', 'turbo', 'galerie admisie', 'motor', 'chiulasa', 'capac culbutori', 'compresie', 'radiator gaze'], 'Piese Motoare'],
+    [['etrier', 'disc frana', 'placute', 'servofrana', 'pompa frana', 'abs roata'], 'Frane'],
+    [['amortizor', 'arc', 'telescop', 'flansa amortizor'], 'Suspensie'],
+    [['planetara', 'cutie viteze', 'volanta', 'ambreiaj', 'grup', 'diferential'], 'Transmisie'],
+    [['usa', 'usă', 'capota', 'bara', 'bara', 'aripa', 'portiera', 'haion', 'ornament', 'oglinda', 'grila', 'trager', 'suport bara', 'prag'], 'Caroserie'],
+    [['volan', 'ceasuri bord', 'bord', 'cotiera', 'tapiterie', 'tetiera', 'buton geam', 'maner usa interior'], 'Interioare auto'],
+    [['compresor clima', 'radiator clima', 'aeroterma', 'clima', 'ac'], 'Climatizare'],
+    [['filtru', 'filtru ulei', 'filtru aer', 'filtru motorina'], 'Filtre auto'],
+    [['janta', 'anvelopa', 'roata'], 'Jante & Anvelope'],
+    [['casetă directie', 'caseta directie', 'pompa servo', 'bieleta directie'], 'Directie'],
+    [['carlig', 'cablu', 'cablaj'], 'Cabluri auto'],
+    [['ulei'], 'Ulei Auto'],
+  ]
+
+  for (const [keywords, category] of rules) {
+    if (keywords.some((keyword) => hay.includes(normalizeText(keyword)))) {
+      return category
+    }
+  }
+
+  return ''
+}
+
+async function rotateImageFileFromUrl(imageUrl: string, degrees: 90 | -90) {
+  const response = await fetch(imageUrl)
+  if (!response.ok) {
+    throw new Error('Nu am putut citi poza pentru rotire.')
+  }
+
+  const blob = await response.blob()
+  const bitmap = await createImageBitmap(blob)
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+
+  if (!ctx) {
+    throw new Error('Canvas indisponibil.')
+  }
+
+  const clockwise = degrees === 90
+  canvas.width = bitmap.height
+  canvas.height = bitmap.width
+
+  ctx.translate(canvas.width / 2, canvas.height / 2)
+  ctx.rotate((degrees * Math.PI) / 180)
+  ctx.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2)
+
+  const rotatedBlob: Blob = await new Promise((resolve, reject) => {
+    canvas.toBlob((fileBlob) => {
+      if (fileBlob) resolve(fileBlob)
+      else reject(new Error('Nu am putut genera poza rotită.'))
+    }, 'image/jpeg', 0.95)
+  })
+
+  return rotatedBlob
+}
 
 export default function Page() {
   const [piese, setPiese] = useState<Piesa[]>([])
@@ -77,6 +156,7 @@ export default function Page() {
   const [deletingPiesa, setDeletingPiesa] = useState(false)
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState<SortOption>('cdp_desc')
+  const [stockFilter, setStockFilter] = useState<StockFilter>('toate')
   const [selectedPoza, setSelectedPoza] = useState<string | null>(null)
   const [autosaveStatus, setAutosaveStatus] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -85,6 +165,8 @@ export default function Page() {
   const [hoverCardVisible, setHoverCardVisible] = useState(false)
   const [hoverCardPos, setHoverCardPos] = useState({ x: 0, y: 0 })
   const [viewport, setViewport] = useState({ width: 1600, height: 900 })
+  const [rotating, setRotating] = useState(false)
+  const [manualCategoryEdited, setManualCategoryEdited] = useState(false)
 
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const lastSavedJson = useRef<string>('')
@@ -197,6 +279,7 @@ export default function Page() {
       await loadPiese(false)
       setSelected(data as Piesa)
       setSelectedPoza(null)
+      setManualCategoryEdited(false)
       lastSavedJson.current = JSON.stringify(buildPayload(data as Piesa))
     } catch (err: any) {
       alert('Eroare creare piesă: ' + (err?.message || 'necunoscută'))
@@ -219,7 +302,7 @@ export default function Page() {
     }
 
     lastSavedJson.current = JSON.stringify(payload)
-    setAutosaveStatus(markAsFinal ? 'Salvat' : 'Salvat')
+    setAutosaveStatus('Salvat')
     return true
   }
 
@@ -230,6 +313,17 @@ export default function Page() {
     if (ok) {
       setSelected(updated)
       setPiese((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
+    }
+  }
+
+  async function handleVinde() {
+    if (!selected) return
+    const updated = { ...selected, cantitate: 0, draft: false }
+    const ok = await savePiesaSilent(updated, true)
+    if (ok) {
+      setSelected(updated)
+      setPiese((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
+      setAutosaveStatus('Marcată ca vândută')
     }
   }
 
@@ -259,16 +353,40 @@ export default function Page() {
     }
   }
 
+  async function handleDenumireBlur() {
+    if (!selected) return
+
+    const detectedCategory = detectCategoryFromName(selected.denumire || '')
+    let nextSelected = selected
+
+    if (detectedCategory && (!manualCategoryEdited || !selected.categorie)) {
+      nextSelected = { ...selected, categorie: detectedCategory }
+      setSelected(nextSelected)
+      setPiese((prev) => prev.map((p) => (p.id === nextSelected.id ? nextSelected : p)))
+    }
+
+    const payload = buildPayload(nextSelected)
+    const currentJson = JSON.stringify(payload)
+    if (currentJson === lastSavedJson.current) return
+
+    const ok = await savePiesaSilent(nextSelected, false)
+    if (ok) {
+      setPiese((prev) => prev.map((p) => (p.id === nextSelected.id ? nextSelected : p)))
+    }
+  }
+
   useEffect(() => {
     if (!selected) {
       lastSavedJson.current = ''
       setAutosaveStatus('')
       setSelectedPoza(null)
+      setManualCategoryEdited(false)
       return
     }
 
     lastSavedJson.current = JSON.stringify(buildPayload(selected))
     setSelectedPoza(selected.poze?.[0] || null)
+    setManualCategoryEdited(false)
   }, [selected?.id])
 
   async function handleStergePiesa() {
@@ -366,6 +484,52 @@ export default function Page() {
     e.target.value = ''
   }
 
+  async function handleRotateSelected(degrees: 90 | -90) {
+    if (!selected || !selectedPoza) return
+
+    setRotating(true)
+    try {
+      const rotatedBlob = await rotateImageFileFromUrl(selectedPoza, degrees)
+      const extensie = 'jpg'
+      const oldPath = getStoragePathFromPublicUrl(selectedPoza)
+      const newStoragePath = `${selected.cdp}/${selected.cdp}-rotated-${Date.now()}.${extensie}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('piese-poze')
+        .upload(newStoragePath, rotatedBlob, {
+          contentType: 'image/jpeg',
+          upsert: false,
+        })
+
+      if (uploadError) throw uploadError
+
+      const { data } = supabase.storage.from('piese-poze').getPublicUrl(newStoragePath)
+      const nextPoze = (selected.poze || []).map((poza) =>
+        poza === selectedPoza ? data.publicUrl : poza
+      )
+
+      const { error: updateError } = await supabase
+        .from('piese')
+        .update({ poze: nextPoze })
+        .eq('id', selected.id)
+
+      if (updateError) throw updateError
+
+      if (oldPath) {
+        await supabase.storage.from('piese-poze').remove([oldPath])
+      }
+
+      const updated = { ...selected, poze: nextPoze }
+      setSelected(updated)
+      setSelectedPoza(data.publicUrl)
+      setPiese((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
+    } catch (err: any) {
+      alert('Eroare rotire poză: ' + (err?.message || 'necunoscută'))
+    } finally {
+      setRotating(false)
+    }
+  }
+
   async function handleStergePoza(pozaUrl: string) {
     if (!selected) return
 
@@ -405,51 +569,57 @@ export default function Page() {
   }
 
   const pieseFiltrateSiSortate = useMemo(() => {
-  const termen = search.trim().toLowerCase()
-  const terms = termen.split(/\s+/).filter(Boolean)
+    const termen = normalizeText(search)
+    const terms = termen.split(/\s+/).filter(Boolean)
 
-  let rezultat = !terms.length
-    ? [...piese]
-    : piese.filter((p) => {
-        const fields = [
-          p.cdp || '',
-          p.cod_piesa || '',
-          p.denumire || '',
-          p.masina || '',
-          p.categorie || '',
-          p.raft || '',
-          p.vin || '',
-          p.cod_culoare || '',
-          p.compatibilitate || '',
-          p.descriere || '',
-        ].map(v => String(v).toLowerCase())
+    let rezultat = !terms.length
+      ? [...piese]
+      : piese.filter((p) => {
+          const fields = [
+            p.cdp || '',
+            p.cod_piesa || '',
+            p.denumire || '',
+            p.masina || '',
+            p.categorie || '',
+            p.raft || '',
+            p.vin || '',
+            p.cod_culoare || '',
+            p.compatibilitate || '',
+            p.descriere || '',
+          ].map((v) => normalizeText(String(v)))
 
-        return terms.every((term) =>
-          fields.some((field) => field.includes(term))
-        )
-      })
+          return terms.every((term) =>
+            fields.some((field) => field.includes(term))
+          )
+        })
 
-  rezultat.sort((a, b) => {
-    switch (sortBy) {
-      case 'cdp_asc':
-        return (a.cdp || '').localeCompare(b.cdp || '', undefined, { numeric: true })
-      case 'cdp_desc':
-        return (b.cdp || '').localeCompare(a.cdp || '', undefined, { numeric: true })
-      case 'pret_asc':
-        return (a.pret || 0) - (b.pret || 0)
-      case 'pret_desc':
-        return (b.pret || 0) - (a.pret || 0)
-      case 'denumire_asc':
-        return (a.denumire || '').localeCompare(b.denumire || '')
-      case 'masina_asc':
-        return (a.masina || '').localeCompare(b.masina || '')
-      default:
-        return (b.cdp || '').localeCompare(a.cdp || '', undefined, { numeric: true })
+    if (stockFilter === 'in_stoc') {
+      rezultat = rezultat.filter((p) => (p.cantitate || 0) > 0)
+    } else if (stockFilter === 'stoc_zero') {
+      rezultat = rezultat.filter((p) => (p.cantitate || 0) <= 0)
     }
-  })
 
-  return rezultat
-}, [piese, search, sortBy])
+    rezultat.sort((a, b) => {
+      switch (sortBy) {
+        case 'cdp_asc':
+          return (a.cdp || '').localeCompare(b.cdp || '', undefined, { numeric: true })
+        case 'cdp_desc':
+          return (b.cdp || '').localeCompare(a.cdp || '', undefined, { numeric: true })
+        case 'pret_asc':
+          return (a.pret || 0) - (b.pret || 0)
+        case 'pret_desc':
+          return (b.pret || 0) - (a.pret || 0)
+        case 'denumire_asc':
+          return (a.denumire || '').localeCompare(b.denumire || '')
+        case 'masina_asc':
+          return (a.masina || '').localeCompare(b.masina || '')
+        default:
+          return (b.cdp || '').localeCompare(a.cdp || '', undefined, { numeric: true })
+      }
+    })
+
+    return rezultat
+  }, [piese, search, sortBy, stockFilter])
 
   const totalPages = Math.max(1, Math.ceil(pieseFiltrateSiSortate.length / PAGE_SIZE))
 
@@ -487,6 +657,14 @@ export default function Page() {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
     setHoverCardVisible(false)
     setHoveredPiesa(null)
+  }
+
+  function getRowBackground(p: Piesa) {
+    if (selected?.id === p.id && (p.cantitate || 0) <= 0) return '#fecaca'
+    if (selected?.id === p.id) return '#dbeafe'
+    if ((p.cantitate || 0) <= 0) return '#fee2e2'
+    if (p.draft) return '#fff8cc'
+    return '#fff'
   }
 
   return (
@@ -535,6 +713,16 @@ export default function Page() {
           <option value="pret_asc">Preț mic → mare</option>
           <option value="denumire_asc">Denumire A-Z</option>
           <option value="masina_asc">Mașină A-Z</option>
+        </select>
+
+        <select
+          value={stockFilter}
+          onChange={(e) => setStockFilter(e.target.value as StockFilter)}
+          style={topSelectStyle}
+        >
+          <option value="toate">Toate piesele</option>
+          <option value="in_stoc">Doar în stoc</option>
+          <option value="stoc_zero">Doar stoc 0</option>
         </select>
 
         <button onClick={handlePiesaNoua} disabled={creating} style={primaryBtn}>
@@ -628,8 +816,7 @@ export default function Page() {
                     padding: '7px 8px',
                     borderBottom: '1px solid #edf1f5',
                     cursor: 'pointer',
-                    background:
-                      selected?.id === p.id ? '#dbeafe' : p.draft ? '#fff8cc' : '#fff',
+                    background: getRowBackground(p),
                     alignItems: 'center',
                     fontSize: '11px',
                   }}
@@ -768,9 +955,9 @@ export default function Page() {
                       <div style={{ fontSize: '24px', fontWeight: 700 }}>{selected.cdp}</div>
                       <div
                         style={{
-                          background: selected.draft ? '#fff8cc' : '#ecfdf3',
-                          color: selected.draft ? '#8a6d00' : '#027a48',
-                          border: '1px solid ' + (selected.draft ? '#f4df93' : '#abefc6'),
+                          background: (selected.cantitate || 0) <= 0 ? '#fee2e2' : selected.draft ? '#fff8cc' : '#ecfdf3',
+                          color: (selected.cantitate || 0) <= 0 ? '#b42318' : selected.draft ? '#8a6d00' : '#027a48',
+                          border: '1px solid ' + ((selected.cantitate || 0) <= 0 ? '#fca5a5' : selected.draft ? '#f4df93' : '#abefc6'),
                           borderRadius: '999px',
                           padding: '6px 12px',
                           fontSize: '12px',
@@ -778,7 +965,7 @@ export default function Page() {
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        {selected.draft ? 'Draft' : 'Completă'}
+                        {(selected.cantitate || 0) <= 0 ? 'Stoc 0' : selected.draft ? 'Draft' : 'Completă'}
                       </div>
                     </div>
                     <div style={{ fontSize: '15px', fontWeight: 700, marginTop: '6px' }}>
@@ -832,12 +1019,29 @@ export default function Page() {
                   <button onClick={updatePiesaManual} style={smallPrimaryBtn}>
                     Salvează
                   </button>
+                  <button onClick={handleVinde} style={smallSellBtn}>
+                    Vinde
+                  </button>
                   <button
                     onClick={handleStergePiesa}
                     disabled={deletingPiesa}
                     style={smallDangerBtn}
                   >
                     {deletingPiesa ? 'Se șterge...' : 'Șterge'}
+                  </button>
+                  <button
+                    onClick={() => handleRotateSelected(-90)}
+                    disabled={!selectedPoza || rotating}
+                    style={smallSecondaryBtn}
+                  >
+                    {rotating ? 'Se rotește...' : '↺ Rotire stânga'}
+                  </button>
+                  <button
+                    onClick={() => handleRotateSelected(90)}
+                    disabled={!selectedPoza || rotating}
+                    style={smallSecondaryBtn}
+                  >
+                    {rotating ? 'Se rotește...' : 'Rotire dreapta ↻'}
                   </button>
                 </div>
               </div>
@@ -854,8 +1058,22 @@ export default function Page() {
                 >
                   <Camp label="CDP" value={selected.cdp} onChange={() => {}} disabled />
                   <Camp label="Cod piesă" value={selected.cod_piesa || ''} onChange={(value) => updateSelectedField('cod_piesa', value)} onBlur={saveSelectedOnBlur} />
-                  <Camp label="Denumire" value={selected.denumire} onChange={(value) => updateSelectedField('denumire', value)} onBlur={saveSelectedOnBlur} />
-                  <Camp label="Categorie" value={selected.categorie || ''} onChange={(value) => updateSelectedField('categorie', value)} onBlur={saveSelectedOnBlur} asSelect />
+                  <Camp
+                    label="Denumire"
+                    value={selected.denumire}
+                    onChange={(value) => updateSelectedField('denumire', value)}
+                    onBlur={handleDenumireBlur}
+                  />
+                  <Camp
+                    label="Categorie"
+                    value={selected.categorie || ''}
+                    onChange={(value) => {
+                      setManualCategoryEdited(true)
+                      updateSelectedField('categorie', value)
+                    }}
+                    onBlur={saveSelectedOnBlur}
+                    asSelect
+                  />
                   <Camp label="Mașină" value={selected.masina || ''} onChange={(value) => updateSelectedField('masina', value)} onBlur={saveSelectedOnBlur} />
                   <Camp label="Compatibilitate" value={selected.compatibilitate || ''} onChange={(value) => updateSelectedField('compatibilitate', value)} onBlur={saveSelectedOnBlur} />
                   <Camp label="VIN" value={selected.vin || ''} onChange={(value) => updateSelectedField('vin', value)} onBlur={saveSelectedOnBlur} />
@@ -869,7 +1087,10 @@ export default function Page() {
               <div style={cardStyle}>
                 <SectionTitle title="Poze piesă" />
                 <div style={{ marginBottom: '10px' }}>
-                  <input type="file" accept="image/*" multiple onChange={handlePozaUpload} />
+                  <label style={uploadLabelStyle}>
+                    <input type="file" accept="image/*" multiple onChange={handlePozaUpload} style={{ display: 'none' }} />
+                    + Adaugă poze
+                  </label>
                   {uploading && (
                     <div style={{ marginTop: '8px', fontSize: '12px', color: '#475467' }}>
                       Se încarcă pozele...
@@ -1166,6 +1387,28 @@ const smallPrimaryBtn: React.CSSProperties = {
   fontSize: '12px',
 }
 
+const smallSellBtn: React.CSSProperties = {
+  padding: '8px 12px',
+  cursor: 'pointer',
+  border: '1px solid #f59e0b',
+  background: '#fff7ed',
+  color: '#b45309',
+  borderRadius: '8px',
+  fontWeight: 700,
+  fontSize: '12px',
+}
+
+const smallSecondaryBtn: React.CSSProperties = {
+  padding: '8px 12px',
+  cursor: 'pointer',
+  border: '1px solid #c9d3dd',
+  background: '#fff',
+  color: '#344054',
+  borderRadius: '8px',
+  fontWeight: 700,
+  fontSize: '12px',
+}
+
 const smallDangerBtn: React.CSSProperties = {
   padding: '8px 12px',
   cursor: 'pointer',
@@ -1211,4 +1454,19 @@ const textareaStyle: React.CSSProperties = {
   borderRadius: '8px',
   resize: 'vertical',
   fontSize: '12px',
+}
+
+const uploadLabelStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minHeight: '40px',
+  padding: '0 14px',
+  border: '1px solid #c9d3dd',
+  borderRadius: '10px',
+  background: '#fff',
+  color: '#344054',
+  fontSize: '13px',
+  fontWeight: 700,
+  cursor: 'pointer',
 }

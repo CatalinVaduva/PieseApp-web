@@ -1,0 +1,3644 @@
+{
+  "main_categories": [
+    "Accesorii auto",
+    "Accesorii roti",
+    "Aprindere",
+    "Cabluri auto",
+    "Car audio",
+    "Caroserie",
+    "Climatizare",
+    "Dezmembrari auto",
+    "Directie",
+    "Diverse",
+    "Electrica & Electronica Auto",
+    "Evacuare",
+    "Faruri stopuri lumini",
+    "Filtre auto",
+    "Frane",
+    "Instalatii GPL",
+    "Interioare auto",
+    "Intretinere auto",
+    "Jante & Anvelope",
+    "Navigatie GPS",
+    "Pachete revizie",
+    "Piese moto",
+    "Piese Motoare",
+    "Pompe si injectoare",
+    "Punte si rulmenti",
+    "Racire",
+    "Scule auto",
+    "Suspensie",
+    "Transmisie",
+    "Tuning",
+    "Turbo",
+    "Ulei Auto",
+    "Xenon"
+  ],
+  "subcategories": {
+    "Accesorii auto": [
+      {
+        "title": "Alarme auto",
+        "fulltitle": "Accesorii auto > Alarme auto",
+        "url": "https://www.pieseauto.ro/alarme-auto"
+      },
+      {
+        "title": "Aspirator auto",
+        "fulltitle": "Accesorii auto > Aspirator auto",
+        "url": "https://www.pieseauto.ro/aspirator-auto"
+      },
+      {
+        "title": "Bare longitudinale",
+        "fulltitle": "Accesorii auto > Bare longitudinale",
+        "url": "https://www.pieseauto.ro/bare-longitudinale"
+      },
+      {
+        "title": "Bare portbagaj",
+        "fulltitle": "Accesorii auto > Bare portbagaj",
+        "url": "https://www.pieseauto.ro/bare-portbagaj"
+      },
+      {
+        "title": "Breloc",
+        "fulltitle": "Accesorii auto > Breloc",
+        "url": "https://www.pieseauto.ro/breloc"
+      },
+      {
+        "title": "Cablu remorcare",
+        "fulltitle": "Accesorii auto > Cablu remorcare",
+        "url": "https://www.pieseauto.ro/cablu-remorcare"
+      },
+      {
+        "title": "Cabluri pornire",
+        "fulltitle": "Accesorii auto > Cabluri pornire",
+        "url": "https://www.pieseauto.ro/cabluri-pornire"
+      },
+      {
+        "title": "Camera marsarier",
+        "fulltitle": "Accesorii auto > Camera marsarier",
+        "url": "https://www.pieseauto.ro/camera-marsarier"
+      },
+      {
+        "title": "Camera video auto",
+        "fulltitle": "Accesorii auto > Camera video auto",
+        "url": "https://www.pieseauto.ro/camera-video-auto"
+      },
+      {
+        "title": "Canistra",
+        "fulltitle": "Accesorii auto > Canistra",
+        "url": "https://www.pieseauto.ro/canistra"
+      },
+      {
+        "title": "Car kit",
+        "fulltitle": "Accesorii auto > Car kit",
+        "url": "https://www.pieseauto.ro/car-kit"
+      },
+      {
+        "title": "Carcasa cheie",
+        "fulltitle": "Accesorii auto > Carcasa cheie",
+        "url": "https://www.pieseauto.ro/chei-briceag"
+      },
+      {
+        "title": "Carlig remorcare",
+        "fulltitle": "Accesorii auto > Carlig remorcare",
+        "url": "https://www.pieseauto.ro/carlig-remorcare"
+      },
+      {
+        "title": "Chei brute",
+        "fulltitle": "Accesorii auto > Chei brute",
+        "url": "https://www.pieseauto.ro/chei-brute"
+      },
+      {
+        "title": "Compresor roti",
+        "fulltitle": "Accesorii auto > Compresor roti",
+        "url": "https://www.pieseauto.ro/compresor-roti"
+      },
+      {
+        "title": "Cui tractare",
+        "fulltitle": "Accesorii auto > Cui tractare",
+        "url": "https://www.pieseauto.ro/cui-tractare"
+      },
+      {
+        "title": "Deflector capota",
+        "fulltitle": "Accesorii auto > Deflector capota",
+        "url": "https://www.pieseauto.ro/deflector-capota"
+      },
+      {
+        "title": "Detector radar",
+        "fulltitle": "Accesorii auto > Detector radar",
+        "url": "https://www.pieseauto.ro/detector-radar"
+      },
+      {
+        "title": "Diverse accesorii auto",
+        "fulltitle": "Accesorii auto > Diverse accesorii auto",
+        "url": "https://www.pieseauto.ro/diverse-accesorii-auto"
+      },
+      {
+        "title": "Husa volan",
+        "fulltitle": "Accesorii auto > Husa volan",
+        "url": "https://www.pieseauto.ro/husa-volan"
+      },
+      {
+        "title": "Huse incalzite",
+        "fulltitle": "Accesorii auto > Huse incalzite",
+        "url": "https://www.pieseauto.ro/huse-incalzite"
+      },
+      {
+        "title": "Huse scaune",
+        "fulltitle": "Accesorii auto > Huse scaune",
+        "url": "https://www.pieseauto.ro/huse-scaune"
+      },
+      {
+        "title": "Inchidere centralizata",
+        "fulltitle": "Accesorii auto > Inchidere centralizata",
+        "url": "https://www.pieseauto.ro/inchidere-centralizata"
+      },
+      {
+        "title": "Invertor",
+        "fulltitle": "Accesorii auto > Invertor",
+        "url": "https://www.pieseauto.ro/invertor"
+      },
+      {
+        "title": "Lopata zapada",
+        "fulltitle": "Accesorii auto > Lopata zapada",
+        "url": "https://www.pieseauto.ro/lopata-zapada"
+      },
+      {
+        "title": "Pachet legislativ",
+        "fulltitle": "Accesorii auto > Pachet legislativ",
+        "url": "https://www.pieseauto.ro/pachet-legislativ"
+      },
+      {
+        "title": "Paravanturi",
+        "fulltitle": "Accesorii auto > Paravanturi",
+        "url": "https://www.pieseauto.ro/paravanturi"
+      },
+      {
+        "title": "Portbagaje auto",
+        "fulltitle": "Accesorii auto > Portbagaje auto",
+        "url": "https://www.pieseauto.ro/portbagaje-auto"
+      },
+      {
+        "title": "Prelata auto",
+        "fulltitle": "Accesorii auto > Prelata auto",
+        "url": "https://www.pieseauto.ro/prelata-auto"
+      },
+      {
+        "title": "Racleta",
+        "fulltitle": "Accesorii auto > Racleta",
+        "url": "https://www.pieseauto.ro/racleta"
+      },
+      {
+        "title": "Redresor auto",
+        "fulltitle": "Accesorii auto > Redresor auto",
+        "url": "https://www.pieseauto.ro/redresor-auto"
+      },
+      {
+        "title": "Scaune copii",
+        "fulltitle": "Accesorii auto > Scaune copii",
+        "url": "https://www.pieseauto.ro/scaune-copii"
+      },
+      {
+        "title": "Senzori parcare",
+        "fulltitle": "Accesorii auto > Senzori parcare",
+        "url": "https://www.pieseauto.ro/senzori-parcare"
+      },
+      {
+        "title": "Snorkel",
+        "fulltitle": "Accesorii auto > Snorkel",
+        "url": "https://www.pieseauto.ro/snorkel"
+      },
+      {
+        "title": "Statii emisie receptie",
+        "fulltitle": "Accesorii auto > Statii emisie receptie",
+        "url": "https://www.pieseauto.ro/statii-emisie-receptie"
+      },
+      {
+        "title": "Stergatoare",
+        "fulltitle": "Accesorii auto > Stergatoare",
+        "url": "https://www.pieseauto.ro/stergatoare"
+      },
+      {
+        "title": "Stergatoare lamelare",
+        "fulltitle": "Accesorii auto > Stergatoare lamelare",
+        "url": "https://www.pieseauto.ro/stergatoare-lamelare"
+      },
+      {
+        "title": "Stingatoare auto",
+        "fulltitle": "Accesorii auto > Stingatoare auto",
+        "url": "https://www.pieseauto.ro/stingatoare-auto"
+      },
+      {
+        "title": "Suport bicicleta",
+        "fulltitle": "Accesorii auto > Suport bicicleta",
+        "url": "https://www.pieseauto.ro/suport-bicicleta"
+      },
+      {
+        "title": "Suport schiuri",
+        "fulltitle": "Accesorii auto > Suport schiuri",
+        "url": "https://www.pieseauto.ro/suport-schiuri"
+      },
+      {
+        "title": "Trolii",
+        "fulltitle": "Accesorii auto > Trolii",
+        "url": "https://www.pieseauto.ro/trolii"
+      },
+      {
+        "title": "Trusa medicala",
+        "fulltitle": "Accesorii auto > Trusa medicala",
+        "url": "https://www.pieseauto.ro/trusa-medicala"
+      }
+    ],
+    "Accesorii roti": [
+      {
+        "title": "Alte accesorii roti",
+        "fulltitle": "Accesorii roti > Alte accesorii roti",
+        "url": "https://www.pieseauto.ro/alte-accesorii-roti"
+      },
+      {
+        "title": "Antifurt roti",
+        "fulltitle": "Accesorii roti > Antifurt roti",
+        "url": "https://www.pieseauto.ro/antifurt-roti"
+      },
+      {
+        "title": "Aparatori noroi",
+        "fulltitle": "Accesorii roti > Aparatori noroi",
+        "url": "https://www.pieseauto.ro/aparatori-noroi"
+      },
+      {
+        "title": "Capace centrale roata",
+        "fulltitle": "Accesorii roti > Capace centrale roata",
+        "url": "https://www.pieseauto.ro/capace-centrale-roata"
+      },
+      {
+        "title": "Capace roti",
+        "fulltitle": "Accesorii roti > Capace roti",
+        "url": "https://www.pieseauto.ro/capace-roti"
+      },
+      {
+        "title": "Capacele ventil",
+        "fulltitle": "Accesorii roti > Capacele ventil",
+        "url": "https://www.pieseauto.ro/capacele-ventil"
+      },
+      {
+        "title": "Cric",
+        "fulltitle": "Accesorii roti > Cric",
+        "url": "https://www.pieseauto.ro/cric"
+      },
+      {
+        "title": "Distantiere",
+        "fulltitle": "Accesorii roti > Distantiere",
+        "url": "https://www.pieseauto.ro/distantiere"
+      },
+      {
+        "title": "Flanse",
+        "fulltitle": "Accesorii roti > Flanse",
+        "url": "https://www.pieseauto.ro/flanse"
+      },
+      {
+        "title": "Huse antiderapante",
+        "fulltitle": "Accesorii roti > Huse antiderapante",
+        "url": "https://www.pieseauto.ro/huse-antiderapante"
+      },
+      {
+        "title": "Huse roti",
+        "fulltitle": "Accesorii roti > Huse roti",
+        "url": "https://www.pieseauto.ro/huse-roti"
+      },
+      {
+        "title": "Inel centrare",
+        "fulltitle": "Accesorii roti > Inel centrare",
+        "url": "https://www.pieseauto.ro/inel-centrare"
+      },
+      {
+        "title": "Kit pana",
+        "fulltitle": "Accesorii roti > Kit pana",
+        "url": "https://www.pieseauto.ro/kit-pana"
+      },
+      {
+        "title": "Kit roata de rezerva",
+        "fulltitle": "Accesorii roti > Kit roata de rezerva",
+        "url": "https://www.pieseauto.ro/kit-roata-de-rezerva"
+      },
+      {
+        "title": "Lanturi antiderapante",
+        "fulltitle": "Accesorii roti > Lanturi antiderapante",
+        "url": "https://www.pieseauto.ro/lanturi-antiderapante"
+      },
+      {
+        "title": "Piulite",
+        "fulltitle": "Accesorii roti > Piulite",
+        "url": "https://www.pieseauto.ro/piulite"
+      },
+      {
+        "title": "Prezoane",
+        "fulltitle": "Accesorii roti > Prezoane",
+        "url": "https://www.pieseauto.ro/prezoane"
+      },
+      {
+        "title": "Roata de rezerva",
+        "fulltitle": "Accesorii roti > Roata de rezerva",
+        "url": "https://www.pieseauto.ro/roata-de-rezerva"
+      }
+    ],
+    "Aprindere": [
+      {
+        "title": "Alte piese aprindere",
+        "fulltitle": "Aprindere > Alte piese aprindere",
+        "url": "https://www.pieseauto.ro/alte-piese-aprindere"
+      },
+      {
+        "title": "Aprindere electronica",
+        "fulltitle": "Aprindere > Aprindere electronica",
+        "url": "https://www.pieseauto.ro/aprindere-electronica"
+      },
+      {
+        "title": "Bobina inductie",
+        "fulltitle": "Aprindere > Bobina inductie",
+        "url": "https://www.pieseauto.ro/bobina-inductie"
+      },
+      {
+        "title": "Bujii",
+        "fulltitle": "Aprindere > Bujii",
+        "url": "https://www.pieseauto.ro/bujii"
+      },
+      {
+        "title": "Bujii incandescente",
+        "fulltitle": "Aprindere > Bujii incandescente",
+        "url": "https://www.pieseauto.ro/bujii-incandescente"
+      },
+      {
+        "title": "Delcou",
+        "fulltitle": "Aprindere > Delcou",
+        "url": "https://www.pieseauto.ro/delcou"
+      },
+      {
+        "title": "Fise bujii",
+        "fulltitle": "Aprindere > Fise bujii",
+        "url": "https://www.pieseauto.ro/fise-bujii"
+      },
+      {
+        "title": "Kit aprindere",
+        "fulltitle": "Aprindere > Kit aprindere",
+        "url": "https://www.pieseauto.ro/kit-aprindere"
+      },
+      {
+        "title": "Releu bujii",
+        "fulltitle": "Aprindere > Releu bujii",
+        "url": "https://www.pieseauto.ro/releu-bujii"
+      }
+    ],
+    "Cabluri auto": [
+      {
+        "title": "Alte cabluri auto",
+        "fulltitle": "Cabluri auto > Alte cabluri auto",
+        "url": "https://www.pieseauto.ro/alte-cabluri-auto"
+      },
+      {
+        "title": "Cablu acceleratie",
+        "fulltitle": "Cabluri auto > Cablu acceleratie",
+        "url": "https://www.pieseauto.ro/cablu-acceleratie"
+      },
+      {
+        "title": "Cablu ambreiaj",
+        "fulltitle": "Cabluri auto > Cablu ambreiaj",
+        "url": "https://www.pieseauto.ro/cablu-ambreiaj"
+      },
+      {
+        "title": "Cablu deschidere capota",
+        "fulltitle": "Cabluri auto > Cablu deschidere capota",
+        "url": "https://www.pieseauto.ro/cablu-deschidere-capota"
+      },
+      {
+        "title": "Cablu deschidere usa",
+        "fulltitle": "Cabluri auto > Cablu deschidere usa",
+        "url": "https://www.pieseauto.ro/cablu-deschidere-usa"
+      },
+      {
+        "title": "Cablu frana",
+        "fulltitle": "Cabluri auto > Cablu frana",
+        "url": "https://www.pieseauto.ro/cablu-frana"
+      },
+      {
+        "title": "Cablu kilometraj",
+        "fulltitle": "Cabluri auto > Cablu kilometraj",
+        "url": "https://www.pieseauto.ro/cablu-kilometraj"
+      }
+    ],
+    "Car audio": [
+      {
+        "title": "Accesorii montaj",
+        "fulltitle": "Car audio > Accesorii montaj",
+        "url": "https://www.pieseauto.ro/accesorii-montaj"
+      },
+      {
+        "title": "Alte componente car audio",
+        "fulltitle": "Car audio > Alte componente car audio",
+        "url": "https://www.pieseauto.ro/alte-componente-car-audio"
+      },
+      {
+        "title": "Amplificator audio",
+        "fulltitle": "Car audio > Amplificator audio",
+        "url": "https://www.pieseauto.ro/amplificator-audio"
+      },
+      {
+        "title": "Antena radio",
+        "fulltitle": "Car audio > Antena radio",
+        "url": "https://www.pieseauto.ro/antena-radio"
+      },
+      {
+        "title": "Baterii deep cycle",
+        "fulltitle": "Car audio > Baterii deep cycle",
+        "url": "https://www.pieseauto.ro/baterii-deep-cycle"
+      },
+      {
+        "title": "Boxe auto",
+        "fulltitle": "Car audio > Boxe auto",
+        "url": "https://www.pieseauto.ro/boxe-auto"
+      },
+      {
+        "title": "Car PC",
+        "fulltitle": "Car audio > Car PC",
+        "url": "https://www.pieseauto.ro/car-pc"
+      },
+      {
+        "title": "CD player auto",
+        "fulltitle": "Car audio > CD player auto",
+        "url": "https://www.pieseauto.ro/cd-player-auto"
+      },
+      {
+        "title": "Condensator audio",
+        "fulltitle": "Car audio > Condensator audio",
+        "url": "https://www.pieseauto.ro/condensator-audio"
+      },
+      {
+        "title": "Conectica auto",
+        "fulltitle": "Car audio > Conectica auto",
+        "url": "https://www.pieseauto.ro/conectica-auto"
+      },
+      {
+        "title": "DVD player",
+        "fulltitle": "Car audio > DVD player",
+        "url": "https://www.pieseauto.ro/dvd-player"
+      },
+      {
+        "title": "Insonorizare",
+        "fulltitle": "Car audio > Insonorizare",
+        "url": "https://www.pieseauto.ro/insonorizare"
+      },
+      {
+        "title": "Interfata audio",
+        "fulltitle": "Car audio > Interfata audio",
+        "url": "https://www.pieseauto.ro/interfata-audio"
+      },
+      {
+        "title": "Magazie CD",
+        "fulltitle": "Car audio > Magazie CD",
+        "url": "https://www.pieseauto.ro/magazie-cd"
+      },
+      {
+        "title": "Modulator FM",
+        "fulltitle": "Car audio > Modulator FM",
+        "url": "https://www.pieseauto.ro/modulator-fm"
+      },
+      {
+        "title": "Monitoare LCD auto",
+        "fulltitle": "Car audio > Monitoare LCD auto",
+        "url": "https://www.pieseauto.ro/monitoare-lcd-auto"
+      },
+      {
+        "title": "MP3 player auto",
+        "fulltitle": "Car audio > MP3 player auto",
+        "url": "https://www.pieseauto.ro/mp3-player-auto"
+      },
+      {
+        "title": "Pachete car audio",
+        "fulltitle": "Car audio > Pachete car audio",
+        "url": "https://www.pieseauto.ro/pachete-car-audio"
+      },
+      {
+        "title": "Rama adaptoare",
+        "fulltitle": "Car audio > Rama adaptoare",
+        "url": "https://www.pieseauto.ro/rama-adaptoare"
+      },
+      {
+        "title": "Subwoofer auto",
+        "fulltitle": "Car audio > Subwoofer auto",
+        "url": "https://www.pieseauto.ro/subwoofer-auto"
+      },
+      {
+        "title": "TV tuner auto",
+        "fulltitle": "Car audio > TV tuner auto",
+        "url": "https://www.pieseauto.ro/tv-tuner-auto"
+      }
+    ],
+    "Caroserie": [
+      {
+        "title": "Alte piese de caroserie",
+        "fulltitle": "Caroserie > Alte piese de caroserie",
+        "url": "https://www.pieseauto.ro/alte-piese-de-caroserie"
+      },
+      {
+        "title": "Amortizoare capota",
+        "fulltitle": "Caroserie > Amortizoare capota",
+        "url": "https://www.pieseauto.ro/amortizoare-capota"
+      },
+      {
+        "title": "Amortizoare haion",
+        "fulltitle": "Caroserie > Amortizoare haion",
+        "url": "https://www.pieseauto.ro/amortizoare-haion"
+      },
+      {
+        "title": "Aripa fata",
+        "fulltitle": "Caroserie > Aripa fata",
+        "url": "https://www.pieseauto.ro/aripa-fata"
+      },
+      {
+        "title": "Aripa spate",
+        "fulltitle": "Caroserie > Aripa spate",
+        "url": "https://www.pieseauto.ro/aripa-spate"
+      },
+      {
+        "title": "Armatura bara fata",
+        "fulltitle": "Caroserie > Armatura bara fata",
+        "url": "https://www.pieseauto.ro/armatura-bara-fata"
+      },
+      {
+        "title": "Armatura bara spate",
+        "fulltitle": "Caroserie > Armatura bara spate",
+        "url": "https://www.pieseauto.ro/armatura-bara-spate"
+      },
+      {
+        "title": "Balamale",
+        "fulltitle": "Caroserie > Balamale",
+        "url": "https://www.pieseauto.ro/balamale"
+      },
+      {
+        "title": "Bandouri",
+        "fulltitle": "Caroserie > Bandouri",
+        "url": "https://www.pieseauto.ro/bandouri"
+      },
+      {
+        "title": "Bara fata",
+        "fulltitle": "Caroserie > Bara fata",
+        "url": "https://www.pieseauto.ro/bara-fata"
+      },
+      {
+        "title": "Bara spate",
+        "fulltitle": "Caroserie > Bara spate",
+        "url": "https://www.pieseauto.ro/bara-spate"
+      },
+      {
+        "title": "Brat oglinda",
+        "fulltitle": "Caroserie > Brat oglinda",
+        "url": "https://www.pieseauto.ro/brat-oglinda"
+      },
+      {
+        "title": "Brat stergator",
+        "fulltitle": "Caroserie > Brat stergator",
+        "url": "https://www.pieseauto.ro/brat-stergatoare"
+      },
+      {
+        "title": "Broasca capota",
+        "fulltitle": "Caroserie > Broasca capota",
+        "url": "https://www.pieseauto.ro/broasca-capota"
+      },
+      {
+        "title": "Broasca haion",
+        "fulltitle": "Caroserie > Broasca haion",
+        "url": "https://www.pieseauto.ro/broasca-haion"
+      },
+      {
+        "title": "Broasca portbagaj",
+        "fulltitle": "Caroserie > Broasca portbagaj",
+        "url": "https://www.pieseauto.ro/broasca-portbagaj"
+      },
+      {
+        "title": "Broasca usa",
+        "fulltitle": "Caroserie > Broasca usa",
+        "url": "https://www.pieseauto.ro/broasca"
+      },
+      {
+        "title": "Bullbar",
+        "fulltitle": "Caroserie > Bullbar",
+        "url": "https://www.pieseauto.ro/bullbar"
+      },
+      {
+        "title": "Buson rezervor",
+        "fulltitle": "Caroserie > Buson rezervor",
+        "url": "https://www.pieseauto.ro/capac-rezervor"
+      },
+      {
+        "title": "Buson vas lichid parbriz",
+        "fulltitle": "Caroserie > Buson vas lichid parbriz",
+        "url": "https://www.pieseauto.ro/buson-vas-lichid-parbriz"
+      },
+      {
+        "title": "Butuc capota",
+        "fulltitle": "Caroserie > Butuc capota",
+        "url": "https://www.pieseauto.ro/butuc-capota"
+      },
+      {
+        "title": "Butuc haion",
+        "fulltitle": "Caroserie > Butuc haion",
+        "url": "https://www.pieseauto.ro/butuc-haion"
+      },
+      {
+        "title": "Butuc portbagaj",
+        "fulltitle": "Caroserie > Butuc portbagaj",
+        "url": "https://www.pieseauto.ro/butuc-portbagaj"
+      },
+      {
+        "title": "Butuc usa",
+        "fulltitle": "Caroserie > Butuc usa",
+        "url": "https://www.pieseauto.ro/butuc-usa"
+      },
+      {
+        "title": "Cadru motor",
+        "fulltitle": "Caroserie > Cadru motor",
+        "url": "https://www.pieseauto.ro/cadru-motor"
+      },
+      {
+        "title": "Capac bara",
+        "fulltitle": "Caroserie > Capac bara",
+        "url": "https://www.pieseauto.ro/capac-bara"
+      },
+      {
+        "title": "Capac oglinda",
+        "fulltitle": "Caroserie > Capac oglinda",
+        "url": "https://www.pieseauto.ro/carcasa-oglinda"
+      },
+      {
+        "title": "Capac spalator faruri",
+        "fulltitle": "Caroserie > Capac spalator faruri",
+        "url": "https://www.pieseauto.ro/capac-spalator-faruri"
+      },
+      {
+        "title": "Capota",
+        "fulltitle": "Caroserie > Capota",
+        "url": "https://www.pieseauto.ro/capota"
+      },
+      {
+        "title": "Capota portbagaj",
+        "fulltitle": "Caroserie > Capota portbagaj",
+        "url": "https://www.pieseauto.ro/capota-portbagaj"
+      },
+      {
+        "title": "Carcasa baterie auto",
+        "fulltitle": "Caroserie > Carcasa baterie auto",
+        "url": "https://www.pieseauto.ro/carcasa-baterie-auto"
+      },
+      {
+        "title": "Carenaj roata",
+        "fulltitle": "Caroserie > Carenaj roata",
+        "url": "https://www.pieseauto.ro/carenaj-roata"
+      },
+      {
+        "title": "Catadioptru",
+        "fulltitle": "Caroserie > Catadioptru",
+        "url": "https://www.pieseauto.ro/catadioptru"
+      },
+      {
+        "title": "Chedere",
+        "fulltitle": "Caroserie > Chedere",
+        "url": "https://www.pieseauto.ro/chedere"
+      },
+      {
+        "title": "Clipsuri auto",
+        "fulltitle": "Caroserie > Clipsuri auto",
+        "url": "https://www.pieseauto.ro/clipsuri-auto"
+      },
+      {
+        "title": "Difuzor bara fata",
+        "fulltitle": "Caroserie > Difuzor bara fata",
+        "url": "https://www.pieseauto.ro/difuzor-bara-fata"
+      },
+      {
+        "title": "Difuzor bara spate",
+        "fulltitle": "Caroserie > Difuzor bara spate",
+        "url": "https://www.pieseauto.ro/difuzor-bara-spate"
+      },
+      {
+        "title": "Duza spalare parbriz",
+        "fulltitle": "Caroserie > Duza spalare parbriz",
+        "url": "https://www.pieseauto.ro/duza-spalare-parbriz"
+      },
+      {
+        "title": "Emblema",
+        "fulltitle": "Caroserie > Emblema",
+        "url": "https://www.pieseauto.ro/emblema"
+      },
+      {
+        "title": "Fata completa",
+        "fulltitle": "Caroserie > Fata completa",
+        "url": "https://www.pieseauto.ro/fata-completa"
+      },
+      {
+        "title": "Flaps bara",
+        "fulltitle": "Caroserie > Flaps bara",
+        "url": "https://www.pieseauto.ro/flaps-bara"
+      },
+      {
+        "title": "Geamuri",
+        "fulltitle": "Caroserie > Geamuri",
+        "url": "https://www.pieseauto.ro/geamuri"
+      },
+      {
+        "title": "Grila",
+        "fulltitle": "Caroserie > Grila",
+        "url": "https://www.pieseauto.ro/grila"
+      },
+      {
+        "title": "Grila bara",
+        "fulltitle": "Caroserie > Grila bara",
+        "url": "https://www.pieseauto.ro/grila-bara"
+      },
+      {
+        "title": "Grila proiector",
+        "fulltitle": "Caroserie > Grila proiector",
+        "url": "https://www.pieseauto.ro/grila-proiector"
+      },
+      {
+        "title": "Grila radiator",
+        "fulltitle": "Caroserie > Grila radiator",
+        "url": "https://www.pieseauto.ro/grila-radiator"
+      },
+      {
+        "title": "Grila stergatoare",
+        "fulltitle": "Caroserie > Grila stergatoare",
+        "url": "https://www.pieseauto.ro/grila-stergatoare"
+      },
+      {
+        "title": "Haion",
+        "fulltitle": "Caroserie > Haion",
+        "url": "https://www.pieseauto.ro/haion"
+      },
+      {
+        "title": "Hardtop",
+        "fulltitle": "Caroserie > Hardtop",
+        "url": "https://www.pieseauto.ro/hardtop"
+      },
+      {
+        "title": "Kit reparatie macara",
+        "fulltitle": "Caroserie > Kit reparatie macara",
+        "url": "https://www.pieseauto.ro/kit-reparatie-macara"
+      },
+      {
+        "title": "Luneta",
+        "fulltitle": "Caroserie > Luneta",
+        "url": "https://www.pieseauto.ro/luneta"
+      },
+      {
+        "title": "Maner deschidere capota",
+        "fulltitle": "Caroserie > Maner deschidere capota",
+        "url": "https://www.pieseauto.ro/maner-deschidere-capota"
+      },
+      {
+        "title": "Maner haion",
+        "fulltitle": "Caroserie > Maner haion",
+        "url": "https://www.pieseauto.ro/maner-haion"
+      },
+      {
+        "title": "Maner portbagaj",
+        "fulltitle": "Caroserie > Maner portbagaj",
+        "url": "https://www.pieseauto.ro/maner-portbagaj"
+      },
+      {
+        "title": "Maner usa",
+        "fulltitle": "Caroserie > Maner usa",
+        "url": "https://www.pieseauto.ro/maner-usa"
+      },
+      {
+        "title": "Oglinzi complete",
+        "fulltitle": "Caroserie > Oglinzi complete",
+        "url": "https://www.pieseauto.ro/oglinzi"
+      },
+      {
+        "title": "Opritor usa",
+        "fulltitle": "Caroserie > Opritor usa",
+        "url": "https://www.pieseauto.ro/opritor-usa"
+      },
+      {
+        "title": "Ornament far",
+        "fulltitle": "Caroserie > Ornament far",
+        "url": "https://www.pieseauto.ro/ornament-far"
+      },
+      {
+        "title": "Panou despartitor",
+        "fulltitle": "Caroserie > Panou despartitor",
+        "url": "https://www.pieseauto.ro/panou-despartitor"
+      },
+      {
+        "title": "Parbriz",
+        "fulltitle": "Caroserie > Parbriz",
+        "url": "https://www.pieseauto.ro/parbriz"
+      },
+      {
+        "title": "Perie geam",
+        "fulltitle": "Caroserie > Perie geam",
+        "url": "https://www.pieseauto.ro/perie-geam"
+      },
+      {
+        "title": "Praguri",
+        "fulltitle": "Caroserie > Praguri",
+        "url": "https://www.pieseauto.ro/praguri"
+      },
+      {
+        "title": "Rola usa culisanta",
+        "fulltitle": "Caroserie > Rola usa culisanta",
+        "url": "https://www.pieseauto.ro/rola-usa-culisanta"
+      },
+      {
+        "title": "Scut cutie de viteze",
+        "fulltitle": "Caroserie > Scut cutie de viteze",
+        "url": "https://www.pieseauto.ro/scut-cutie-de-viteze"
+      },
+      {
+        "title": "Scut motor metalic",
+        "fulltitle": "Caroserie > Scut motor metalic",
+        "url": "https://www.pieseauto.ro/scut-motor-metalic"
+      },
+      {
+        "title": "Scut Motor Plastic",
+        "fulltitle": "Caroserie > Scut Motor Plastic",
+        "url": "https://www.pieseauto.ro/scut-motor-plastic"
+      },
+      {
+        "title": "Scut sub bara",
+        "fulltitle": "Caroserie > Scut sub bara",
+        "url": "https://www.pieseauto.ro/scut-sub-bara"
+      },
+      {
+        "title": "Spalator faruri",
+        "fulltitle": "Caroserie > Spalator faruri",
+        "url": "https://www.pieseauto.ro/spalator-faruri"
+      },
+      {
+        "title": "Spoilere",
+        "fulltitle": "Caroserie > Spoilere",
+        "url": "https://www.pieseauto.ro/spoilere"
+      },
+      {
+        "title": "Sticla oglinda",
+        "fulltitle": "Caroserie > Sticla oglinda",
+        "url": "https://www.pieseauto.ro/sticla-oglinda"
+      },
+      {
+        "title": "Suport baterie auto",
+        "fulltitle": "Caroserie > Suport baterie auto",
+        "url": "https://www.pieseauto.ro/suport-baterie-auto"
+      },
+      {
+        "title": "Suport far",
+        "fulltitle": "Caroserie > Suport far",
+        "url": "https://www.pieseauto.ro/suport-far"
+      },
+      {
+        "title": "Suport numar inmatriculare",
+        "fulltitle": "Caroserie > Suport numar inmatriculare",
+        "url": "https://www.pieseauto.ro/suport-numar-inmatriculare"
+      },
+      {
+        "title": "Suporti prindere bara",
+        "fulltitle": "Caroserie > Suporti prindere bara",
+        "url": "https://www.pieseauto.ro/suporti-prindere-bara"
+      },
+      {
+        "title": "Trager",
+        "fulltitle": "Caroserie > Trager",
+        "url": "https://www.pieseauto.ro/trager"
+      },
+      {
+        "title": "Trapa",
+        "fulltitle": "Caroserie > Trapa",
+        "url": "https://www.pieseauto.ro/trapa"
+      },
+      {
+        "title": "Usa culisanta",
+        "fulltitle": "Caroserie > Usa culisanta",
+        "url": "https://www.pieseauto.ro/usa-culisanta"
+      },
+      {
+        "title": "Usa fata",
+        "fulltitle": "Caroserie > Usa fata",
+        "url": "https://www.pieseauto.ro/usa-fata"
+      },
+      {
+        "title": "Usa spate",
+        "fulltitle": "Caroserie > Usa spate",
+        "url": "https://www.pieseauto.ro/usa-spate"
+      },
+      {
+        "title": "Usita rezervor",
+        "fulltitle": "Caroserie > Usita rezervor",
+        "url": "https://www.pieseauto.ro/usita-rezervor"
+      },
+      {
+        "title": "Vas lichid parbriz",
+        "fulltitle": "Caroserie > Vas lichid parbriz",
+        "url": "https://www.pieseauto.ro/vas-lichid-parbriz"
+      }
+    ],
+    "Climatizare": [
+      {
+        "title": "Aer conditionat auto",
+        "fulltitle": "Climatizare > Aer conditionat auto",
+        "url": "https://www.pieseauto.ro/aer-conditionat-auto"
+      },
+      {
+        "title": "Aeroterma",
+        "fulltitle": "Climatizare > Aeroterma",
+        "url": "https://www.pieseauto.ro/aeroterma"
+      },
+      {
+        "title": "Alte piese clima auto",
+        "fulltitle": "Climatizare > Alte piese clima auto",
+        "url": "https://www.pieseauto.ro/alte-piese-clima-auto"
+      },
+      {
+        "title": "Ambreiaj compresor AC",
+        "fulltitle": "Climatizare > Ambreiaj compresor AC",
+        "url": "https://www.pieseauto.ro/ambreiaj-compresor-ac"
+      },
+      {
+        "title": "Bobina compresor AC",
+        "fulltitle": "Climatizare > Bobina compresor AC",
+        "url": "https://www.pieseauto.ro/bobina-compresor-ac"
+      },
+      {
+        "title": "Calorifer",
+        "fulltitle": "Climatizare > Calorifer",
+        "url": "https://www.pieseauto.ro/calorifer"
+      },
+      {
+        "title": "Climatronic",
+        "fulltitle": "Climatizare > Climatronic",
+        "url": "https://www.pieseauto.ro/climatronic"
+      },
+      {
+        "title": "Compresor AC",
+        "fulltitle": "Climatizare > Compresor AC",
+        "url": "https://www.pieseauto.ro/compresor-ac"
+      },
+      {
+        "title": "Conducte AC",
+        "fulltitle": "Climatizare > Conducte AC",
+        "url": "https://www.pieseauto.ro/furtune-si-conducte"
+      },
+      {
+        "title": "Electroventilator clima AC",
+        "fulltitle": "Climatizare > Electroventilator clima AC",
+        "url": "https://www.pieseauto.ro/electroventilator-clima-ac"
+      },
+      {
+        "title": "Fulie compresor AC",
+        "fulltitle": "Climatizare > Fulie compresor AC",
+        "url": "https://www.pieseauto.ro/fulie-compresor-ac"
+      },
+      {
+        "title": "Motoras clapeta aeroterma",
+        "fulltitle": "Climatizare > Motoras clapeta aeroterma",
+        "url": "https://www.pieseauto.ro/motoras-clapeta-aeroterma"
+      },
+      {
+        "title": "Panou comanda AC clima",
+        "fulltitle": "Climatizare > Panou comanda AC clima",
+        "url": "https://www.pieseauto.ro/panou-comanda-ac"
+      },
+      {
+        "title": "Radiator clima AC",
+        "fulltitle": "Climatizare > Radiator clima AC",
+        "url": "https://www.pieseauto.ro/radiator-clima-ac"
+      },
+      {
+        "title": "Senzor presiune AC",
+        "fulltitle": "Climatizare > Senzor presiune AC",
+        "url": "https://www.pieseauto.ro/senzor-presiune-ac"
+      },
+      {
+        "title": "Supapa expansiune clima",
+        "fulltitle": "Climatizare > Supapa expansiune clima",
+        "url": "https://www.pieseauto.ro/supapa-expansiune-clima"
+      },
+      {
+        "title": "Uscator AC",
+        "fulltitle": "Climatizare > Uscator AC",
+        "url": "https://www.pieseauto.ro/uscator-ac"
+      },
+      {
+        "title": "Vaporizator",
+        "fulltitle": "Climatizare > Vaporizator",
+        "url": "https://www.pieseauto.ro/vaporizator"
+      },
+      {
+        "title": "Webasto",
+        "fulltitle": "Climatizare > Webasto",
+        "url": "https://www.pieseauto.ro/webasto"
+      }
+    ],
+    "Directie": [
+      {
+        "title": "Alte piese directie",
+        "fulltitle": "Directie > Alte piese directie",
+        "url": "https://www.pieseauto.ro/alte-piese-directie"
+      },
+      {
+        "title": "Bara directie",
+        "fulltitle": "Directie > Bara directie",
+        "url": "https://www.pieseauto.ro/bara-directie"
+      },
+      {
+        "title": "Bieleta antiruliu",
+        "fulltitle": "Directie > Bieleta antiruliu",
+        "url": "https://www.pieseauto.ro/bieleta-antiruliu"
+      },
+      {
+        "title": "Bieleta directie",
+        "fulltitle": "Directie > Bieleta directie",
+        "url": "https://www.pieseauto.ro/bieleta-directie"
+      },
+      {
+        "title": "Blocaj volan",
+        "fulltitle": "Directie > Blocaj volan",
+        "url": "https://www.pieseauto.ro/blocaj-volan"
+      },
+      {
+        "title": "Brate si bascule",
+        "fulltitle": "Directie > Brate si bascule",
+        "url": "https://www.pieseauto.ro/bascule"
+      },
+      {
+        "title": "Bucsa bara stabilizatoare",
+        "fulltitle": "Directie > Bucsa bara stabilizatoare",
+        "url": "https://www.pieseauto.ro/bucsa-bara-stabilizatoare"
+      },
+      {
+        "title": "Bucsa bascula",
+        "fulltitle": "Directie > Bucsa bascula",
+        "url": "https://www.pieseauto.ro/bucsa-bascula"
+      },
+      {
+        "title": "Bucse",
+        "fulltitle": "Directie > Bucse",
+        "url": "https://www.pieseauto.ro/bucse"
+      },
+      {
+        "title": "Burduf caseta directie",
+        "fulltitle": "Directie > Burduf caseta directie",
+        "url": "https://www.pieseauto.ro/burduf-caseta-directie"
+      },
+      {
+        "title": "Cap de bara",
+        "fulltitle": "Directie > Cap de bara",
+        "url": "https://www.pieseauto.ro/cap-de-bara"
+      },
+      {
+        "title": "Caseta directie",
+        "fulltitle": "Directie > Caseta directie",
+        "url": "https://www.pieseauto.ro/caseta-directie"
+      },
+      {
+        "title": "Coloana directie",
+        "fulltitle": "Directie > Coloana directie",
+        "url": "https://www.pieseauto.ro/coloana-directie"
+      },
+      {
+        "title": "Conducte servodirectie",
+        "fulltitle": "Directie > Conducte servodirectie",
+        "url": "https://www.pieseauto.ro/conducte-servodirectie"
+      },
+      {
+        "title": "Fuzeta",
+        "fulltitle": "Directie > Fuzeta",
+        "url": "https://www.pieseauto.ro/fuzeta"
+      },
+      {
+        "title": "Kit mutare volan",
+        "fulltitle": "Directie > Kit mutare volan",
+        "url": "https://www.pieseauto.ro/kit-mutare-volan"
+      },
+      {
+        "title": "Pivot",
+        "fulltitle": "Directie > Pivot",
+        "url": "https://www.pieseauto.ro/pivot"
+      },
+      {
+        "title": "Pompa servodirectie",
+        "fulltitle": "Directie > Pompa servodirectie",
+        "url": "https://www.pieseauto.ro/pompa-servodirectie"
+      },
+      {
+        "title": "Vas lichid servodirectie",
+        "fulltitle": "Directie > Vas lichid servodirectie",
+        "url": "https://www.pieseauto.ro/vas-lichid-servodirectie"
+      }
+    ],
+    "Electrica & Electronica Auto": [
+      {
+        "title": "Actuator inchidere centralizata",
+        "fulltitle": "Electrica & Electronica Auto > Actuator inchidere centralizata",
+        "url": "https://www.pieseauto.ro/actuator-inchidere-centralizata"
+      },
+      {
+        "title": "Acumulatori auto",
+        "fulltitle": "Electrica & Electronica Auto > Acumulatori auto",
+        "url": "https://www.pieseauto.ro/acumulatori-auto"
+      },
+      {
+        "title": "Alte piese Electrica & Electronica",
+        "fulltitle": "Electrica & Electronica Auto > Alte piese Electrica & Electronica",
+        "url": "https://www.pieseauto.ro/alte-piese-electrica-electronica"
+      },
+      {
+        "title": "Alternator",
+        "fulltitle": "Electrica & Electronica Auto > Alternator",
+        "url": "https://www.pieseauto.ro/alternator"
+      },
+      {
+        "title": "Ansamblu stergatoare",
+        "fulltitle": "Electrica & Electronica Auto > Ansamblu stergatoare",
+        "url": "https://www.pieseauto.ro/ansamblu-stergatoare"
+      },
+      {
+        "title": "Bendix electromotor",
+        "fulltitle": "Electrica & Electronica Auto > Bendix electromotor",
+        "url": "https://www.pieseauto.ro/bendix-electromotor"
+      },
+      {
+        "title": "Bloc lumini",
+        "fulltitle": "Electrica & Electronica Auto > Bloc lumini",
+        "url": "https://www.pieseauto.ro/bloc-lumini"
+      },
+      {
+        "title": "Bobina electromotor",
+        "fulltitle": "Electrica & Electronica Auto > Bobina electromotor",
+        "url": "https://www.pieseauto.ro/bobina-electromotor"
+      },
+      {
+        "title": "Borne baterie",
+        "fulltitle": "Electrica & Electronica Auto > Borne baterie",
+        "url": "https://www.pieseauto.ro/borne-baterie"
+      },
+      {
+        "title": "Cablaj carlig",
+        "fulltitle": "Electrica & Electronica Auto > Cablaj carlig",
+        "url": "https://www.pieseauto.ro/cablaj-carlig"
+      },
+      {
+        "title": "Calculator ABS",
+        "fulltitle": "Electrica & Electronica Auto > Calculator ABS",
+        "url": "https://www.pieseauto.ro/calculator-abs"
+      },
+      {
+        "title": "Calculator airbag",
+        "fulltitle": "Electrica & Electronica Auto > Calculator airbag",
+        "url": "https://www.pieseauto.ro/calculator-airbag"
+      },
+      {
+        "title": "Calculator clima",
+        "fulltitle": "Electrica & Electronica Auto > Calculator clima",
+        "url": "https://www.pieseauto.ro/calculator-clima"
+      },
+      {
+        "title": "Calculator confort",
+        "fulltitle": "Electrica & Electronica Auto > Calculator confort",
+        "url": "https://www.pieseauto.ro/calculator-confort"
+      },
+      {
+        "title": "Calculator cutie automata",
+        "fulltitle": "Electrica & Electronica Auto > Calculator cutie automata",
+        "url": "https://www.pieseauto.ro/calculator-cutie-automata"
+      },
+      {
+        "title": "Calculator ECU",
+        "fulltitle": "Electrica & Electronica Auto > Calculator ECU",
+        "url": "https://www.pieseauto.ro/calculator-ecu"
+      },
+      {
+        "title": "Calculator ESP",
+        "fulltitle": "Electrica & Electronica Auto > Calculator ESP",
+        "url": "https://www.pieseauto.ro/calculator-esp"
+      },
+      {
+        "title": "Calculator frana mana",
+        "fulltitle": "Electrica & Electronica Auto > Calculator frana mana",
+        "url": "https://www.pieseauto.ro/calculator-frana-mana"
+      },
+      {
+        "title": "Calculator injectie",
+        "fulltitle": "Electrica & Electronica Auto > Calculator injectie",
+        "url": "https://www.pieseauto.ro/calculator-injectie"
+      },
+      {
+        "title": "Calculator lumini",
+        "fulltitle": "Electrica & Electronica Auto > Calculator lumini",
+        "url": "https://www.pieseauto.ro/calculator-lumini"
+      },
+      {
+        "title": "Calculator parcare",
+        "fulltitle": "Electrica & Electronica Auto > Calculator parcare",
+        "url": "https://www.pieseauto.ro/calculator-parcare"
+      },
+      {
+        "title": "Claxon",
+        "fulltitle": "Electrica & Electronica Auto > Claxon",
+        "url": "https://www.pieseauto.ro/claxon"
+      },
+      {
+        "title": "Comutator pedala ambreiaj",
+        "fulltitle": "Electrica & Electronica Auto > Comutator pedala ambreiaj",
+        "url": "https://www.pieseauto.ro/comutator-pedala-ambreiaj"
+      },
+      {
+        "title": "Contact auto",
+        "fulltitle": "Electrica & Electronica Auto > Contact auto",
+        "url": "https://www.pieseauto.ro/contact-auto"
+      },
+      {
+        "title": "Debitmetru",
+        "fulltitle": "Electrica & Electronica Auto > Debitmetru",
+        "url": "https://www.pieseauto.ro/debitmetru"
+      },
+      {
+        "title": "Diode alternator",
+        "fulltitle": "Electrica & Electronica Auto > Diode alternator",
+        "url": "https://www.pieseauto.ro/diode-alternator"
+      },
+      {
+        "title": "Electromotor",
+        "fulltitle": "Electrica & Electronica Auto > Electromotor",
+        "url": "https://www.pieseauto.ro/electromotor"
+      },
+      {
+        "title": "Imobilizator",
+        "fulltitle": "Electrica & Electronica Auto > Imobilizator",
+        "url": "https://www.pieseauto.ro/imobilizator"
+      },
+      {
+        "title": "Instalatie electrica",
+        "fulltitle": "Electrica & Electronica Auto > Instalatie electrica",
+        "url": "https://www.pieseauto.ro/instalatie-electrica"
+      },
+      {
+        "title": "Interfete diagnoza",
+        "fulltitle": "Electrica & Electronica Auto > Interfete diagnoza",
+        "url": "https://www.pieseauto.ro/interfete-diagnoza"
+      },
+      {
+        "title": "Kit impamantare",
+        "fulltitle": "Electrica & Electronica Auto > Kit impamantare",
+        "url": "https://www.pieseauto.ro/kit-impamantare"
+      },
+      {
+        "title": "Kit pornire",
+        "fulltitle": "Electrica & Electronica Auto > Kit pornire",
+        "url": "https://www.pieseauto.ro/kit-pornire"
+      },
+      {
+        "title": "Macara geam electric",
+        "fulltitle": "Electrica & Electronica Auto > Macara geam electric",
+        "url": "https://www.pieseauto.ro/macara-geam"
+      },
+      {
+        "title": "Maneta semnalizare",
+        "fulltitle": "Electrica & Electronica Auto > Maneta semnalizare",
+        "url": "https://www.pieseauto.ro/maneta-semnalizare"
+      },
+      {
+        "title": "Maneta stergatoare",
+        "fulltitle": "Electrica & Electronica Auto > Maneta stergatoare",
+        "url": "https://www.pieseauto.ro/maneta-stergatoare"
+      },
+      {
+        "title": "Maneta tempomat",
+        "fulltitle": "Electrica & Electronica Auto > Maneta tempomat",
+        "url": "https://www.pieseauto.ro/maneta-tempomat"
+      },
+      {
+        "title": "Modul inchidere centralizata",
+        "fulltitle": "Electrica & Electronica Auto > Modul inchidere centralizata",
+        "url": "https://www.pieseauto.ro/modul-inchidere-centralizata"
+      },
+      {
+        "title": "Motoras deschidere portbagaj",
+        "fulltitle": "Electrica & Electronica Auto > Motoras deschidere portbagaj",
+        "url": "https://www.pieseauto.ro/motoras-deschidere-portbagaj"
+      },
+      {
+        "title": "Motoras macara geam",
+        "fulltitle": "Electrica & Electronica Auto > Motoras macara geam",
+        "url": "https://www.pieseauto.ro/motoras-macara-geam"
+      },
+      {
+        "title": "Motoras stergatoare",
+        "fulltitle": "Electrica & Electronica Auto > Motoras stergatoare",
+        "url": "https://www.pieseauto.ro/motoras-stergatoare"
+      },
+      {
+        "title": "Panou sigurante",
+        "fulltitle": "Electrica & Electronica Auto > Panou sigurante",
+        "url": "https://www.pieseauto.ro/panou-sigurante"
+      },
+      {
+        "title": "Pedala acceleratie",
+        "fulltitle": "Electrica & Electronica Auto > Pedala acceleratie",
+        "url": "https://www.pieseauto.ro/pedala-acceleratie"
+      },
+      {
+        "title": "Perii alternator",
+        "fulltitle": "Electrica & Electronica Auto > Perii alternator",
+        "url": "https://www.pieseauto.ro/perii-alternator"
+      },
+      {
+        "title": "Perii electromotor",
+        "fulltitle": "Electrica & Electronica Auto > Perii electromotor",
+        "url": "https://www.pieseauto.ro/perii-electromotor"
+      },
+      {
+        "title": "Pompita lichid parbriz",
+        "fulltitle": "Electrica & Electronica Auto > Pompita lichid parbriz",
+        "url": "https://www.pieseauto.ro/pompita-lichid-parbriz"
+      },
+      {
+        "title": "Priza carlig",
+        "fulltitle": "Electrica & Electronica Auto > Priza carlig",
+        "url": "https://www.pieseauto.ro/priza-carlig"
+      },
+      {
+        "title": "Relee",
+        "fulltitle": "Electrica & Electronica Auto > Relee",
+        "url": "https://www.pieseauto.ro/relee"
+      },
+      {
+        "title": "Releu alternator",
+        "fulltitle": "Electrica & Electronica Auto > Releu alternator",
+        "url": "https://www.pieseauto.ro/releu-alternator"
+      },
+      {
+        "title": "Releu pompa combustibil",
+        "fulltitle": "Electrica & Electronica Auto > Releu pompa combustibil",
+        "url": "https://www.pieseauto.ro/releu-pompa-combustibil"
+      },
+      {
+        "title": "Releu semnalizare",
+        "fulltitle": "Electrica & Electronica Auto > Releu semnalizare",
+        "url": "https://www.pieseauto.ro/releu-semnalizare"
+      },
+      {
+        "title": "Releu ventilator",
+        "fulltitle": "Electrica & Electronica Auto > Releu ventilator",
+        "url": "https://www.pieseauto.ro/releu-ventilator"
+      },
+      {
+        "title": "Rezistenta aeroterma",
+        "fulltitle": "Electrica & Electronica Auto > Rezistenta aeroterma",
+        "url": "https://www.pieseauto.ro/rezistenta-aeroterma"
+      },
+      {
+        "title": "Senzor ax came",
+        "fulltitle": "Electrica & Electronica Auto > Senzor ax came",
+        "url": "https://www.pieseauto.ro/senzor-ax-came"
+      },
+      {
+        "title": "Senzor batai",
+        "fulltitle": "Electrica & Electronica Auto > Senzor batai",
+        "url": "https://www.pieseauto.ro/senzor-batai"
+      },
+      {
+        "title": "Senzor ESP",
+        "fulltitle": "Electrica & Electronica Auto > Senzor ESP",
+        "url": "https://www.pieseauto.ro/senzor-esp"
+      },
+      {
+        "title": "Senzor kilometraj",
+        "fulltitle": "Electrica & Electronica Auto > Senzor kilometraj",
+        "url": "https://www.pieseauto.ro/senzor-kilometraj"
+      },
+      {
+        "title": "Senzor MAP",
+        "fulltitle": "Electrica & Electronica Auto > Senzor MAP",
+        "url": "https://www.pieseauto.ro/senzor-map"
+      },
+      {
+        "title": "Senzor nivel ulei",
+        "fulltitle": "Electrica & Electronica Auto > Senzor nivel ulei",
+        "url": "https://www.pieseauto.ro/senzor-nivel-ulei"
+      },
+      {
+        "title": "Senzor NOx",
+        "fulltitle": "Electrica & Electronica Auto > Senzor NOx",
+        "url": "https://www.pieseauto.ro/senzor-nox"
+      },
+      {
+        "title": "Senzor pozitie clapeta acceleratie",
+        "fulltitle": "Electrica & Electronica Auto > Senzor pozitie clapeta acceleratie",
+        "url": "https://www.pieseauto.ro/senzor-pozitie-clapeta-acceleratie"
+      },
+      {
+        "title": "Senzor presiune combustibil",
+        "fulltitle": "Electrica & Electronica Auto > Senzor presiune combustibil",
+        "url": "https://www.pieseauto.ro/senzor-presiune-combustibil"
+      },
+      {
+        "title": "Senzor presiune gaze evacuare",
+        "fulltitle": "Electrica & Electronica Auto > Senzor presiune gaze evacuare",
+        "url": "https://www.pieseauto.ro/senzor-presiune-gaze-evacuare"
+      },
+      {
+        "title": "Senzor temperatura aer admisie",
+        "fulltitle": "Electrica & Electronica Auto > Senzor temperatura aer admisie",
+        "url": "https://www.pieseauto.ro/senzor-temperatura-aer-admisie"
+      },
+      {
+        "title": "Senzor temperatura exterioara",
+        "fulltitle": "Electrica & Electronica Auto > Senzor temperatura exterioara",
+        "url": "https://www.pieseauto.ro/senzor-temperatura-exterioara"
+      },
+      {
+        "title": "Senzor temperatura gaze evacuare",
+        "fulltitle": "Electrica & Electronica Auto > Senzor temperatura gaze evacuare",
+        "url": "https://www.pieseauto.ro/senzor-temperatura-gaze-evacuare"
+      },
+      {
+        "title": "Senzor temperatura interioara",
+        "fulltitle": "Electrica & Electronica Auto > Senzor temperatura interioara",
+        "url": "https://www.pieseauto.ro/senzor-temperatura-interioara"
+      },
+      {
+        "title": "Senzor temperatura ulei",
+        "fulltitle": "Electrica & Electronica Auto > Senzor temperatura ulei",
+        "url": "https://www.pieseauto.ro/senzor-temperatura-ulei"
+      },
+      {
+        "title": "Senzor vibrochen",
+        "fulltitle": "Electrica & Electronica Auto > Senzor vibrochen",
+        "url": "https://www.pieseauto.ro/senzor-vibrochen"
+      },
+      {
+        "title": "Senzor viteza",
+        "fulltitle": "Electrica & Electronica Auto > Senzor viteza",
+        "url": "https://www.pieseauto.ro/senzor-viteza"
+      },
+      {
+        "title": "Senzori auto",
+        "fulltitle": "Electrica & Electronica Auto > Senzori auto",
+        "url": "https://www.pieseauto.ro/senzori-auto"
+      },
+      {
+        "title": "Senzori lumina",
+        "fulltitle": "Electrica & Electronica Auto > Senzori lumina",
+        "url": "https://www.pieseauto.ro/senzori-lumina"
+      },
+      {
+        "title": "Senzori motor",
+        "fulltitle": "Electrica & Electronica Auto > Senzori motor",
+        "url": "https://www.pieseauto.ro/senzori-motor"
+      },
+      {
+        "title": "Senzori ploaie",
+        "fulltitle": "Electrica & Electronica Auto > Senzori ploaie",
+        "url": "https://www.pieseauto.ro/senzori-ploaie"
+      },
+      {
+        "title": "Senzori presiune roti",
+        "fulltitle": "Electrica & Electronica Auto > Senzori presiune roti",
+        "url": "https://www.pieseauto.ro/senzori-presiune-roti"
+      },
+      {
+        "title": "Sigurante",
+        "fulltitle": "Electrica & Electronica Auto > Sigurante",
+        "url": "https://www.pieseauto.ro/sigurante"
+      },
+      {
+        "title": "Sonda marsarier",
+        "fulltitle": "Electrica & Electronica Auto > Sonda marsarier",
+        "url": "https://www.pieseauto.ro/sonda-marsarier"
+      },
+      {
+        "title": "Spirala airbag",
+        "fulltitle": "Electrica & Electronica Auto > Spirala airbag",
+        "url": "https://www.pieseauto.ro/spirala-airbag"
+      },
+      {
+        "title": "Switch frana",
+        "fulltitle": "Electrica & Electronica Auto > Switch frana",
+        "url": "https://www.pieseauto.ro/switch-frana"
+      }
+    ],
+    "Evacuare": [
+      {
+        "title": "Alte piese evacuare",
+        "fulltitle": "Evacuare > Alte piese evacuare",
+        "url": "https://www.pieseauto.ro/alte-piese-evacuare"
+      },
+      {
+        "title": "Catalizator auto",
+        "fulltitle": "Evacuare > Catalizator auto",
+        "url": "https://www.pieseauto.ro/catalizator-auto"
+      },
+      {
+        "title": "Colier esapament",
+        "fulltitle": "Evacuare > Colier esapament",
+        "url": "https://www.pieseauto.ro/colier-esapament"
+      },
+      {
+        "title": "Conector teava esapament",
+        "fulltitle": "Evacuare > Conector teava esapament",
+        "url": "https://www.pieseauto.ro/conector-teava-esapament"
+      },
+      {
+        "title": "Filtru de particule",
+        "fulltitle": "Evacuare > Filtru de particule",
+        "url": "https://www.pieseauto.ro/filtru-de-particule"
+      },
+      {
+        "title": "Galerie evacuare",
+        "fulltitle": "Evacuare > Galerie evacuare",
+        "url": "https://www.pieseauto.ro/galerie-evacuare"
+      },
+      {
+        "title": "Garnitura evacuare",
+        "fulltitle": "Evacuare > Garnitura evacuare",
+        "url": "https://www.pieseauto.ro/garnitura-evacuare"
+      },
+      {
+        "title": "Ornament toba",
+        "fulltitle": "Evacuare > Ornament toba",
+        "url": "https://www.pieseauto.ro/ornament-toba"
+      },
+      {
+        "title": "Racord flexibil",
+        "fulltitle": "Evacuare > Racord flexibil",
+        "url": "https://www.pieseauto.ro/racord-flexibil"
+      },
+      {
+        "title": "Tampon esapament",
+        "fulltitle": "Evacuare > Tampon esapament",
+        "url": "https://www.pieseauto.ro/tampon-esapament"
+      },
+      {
+        "title": "Teava esapament",
+        "fulltitle": "Evacuare > Teava esapament",
+        "url": "https://www.pieseauto.ro/teava-esapament"
+      },
+      {
+        "title": "Toba esapament",
+        "fulltitle": "Evacuare > Toba esapament",
+        "url": "https://www.pieseauto.ro/toba-esapament"
+      },
+      {
+        "title": "Toba intermediara",
+        "fulltitle": "Evacuare > Toba intermediara",
+        "url": "https://www.pieseauto.ro/toba-intermediara"
+      },
+      {
+        "title": "Toba sport",
+        "fulltitle": "Evacuare > Toba sport",
+        "url": "https://www.pieseauto.ro/toba-sport"
+      },
+      {
+        "title": "Traseu complet evacuare",
+        "fulltitle": "Evacuare > Traseu complet evacuare",
+        "url": "https://www.pieseauto.ro/traseu-complet-evacuare"
+      }
+    ],
+    "Faruri stopuri lumini": [
+      {
+        "title": "Alte piese lumini auto",
+        "fulltitle": "Faruri stopuri lumini > Alte piese lumini auto",
+        "url": "https://www.pieseauto.ro/alte-piese-lumini-auto"
+      },
+      {
+        "title": "Angel eyes",
+        "fulltitle": "Faruri stopuri lumini > Angel eyes",
+        "url": "https://www.pieseauto.ro/angel-eyes"
+      },
+      {
+        "title": "Becuri",
+        "fulltitle": "Faruri stopuri lumini > Becuri",
+        "url": "https://www.pieseauto.ro/becuri"
+      },
+      {
+        "title": "Becuri led",
+        "fulltitle": "Faruri stopuri lumini > Becuri led",
+        "url": "https://www.pieseauto.ro/becuri-led"
+      },
+      {
+        "title": "Faruri",
+        "fulltitle": "Faruri stopuri lumini > Faruri",
+        "url": "https://www.pieseauto.ro/faruri"
+      },
+      {
+        "title": "Lampi numar",
+        "fulltitle": "Faruri stopuri lumini > Lampi numar",
+        "url": "https://www.pieseauto.ro/lampi-numar"
+      },
+      {
+        "title": "Leduri",
+        "fulltitle": "Faruri stopuri lumini > Leduri",
+        "url": "https://www.pieseauto.ro/leduri"
+      },
+      {
+        "title": "Lucas",
+        "fulltitle": "Faruri stopuri lumini > Lucas",
+        "url": "https://www.pieseauto.ro/lucas"
+      },
+      {
+        "title": "Lumini de zi",
+        "fulltitle": "Faruri stopuri lumini > Lumini de zi",
+        "url": "https://www.pieseauto.ro/lumini-de-zi"
+      },
+      {
+        "title": "Lumini interior",
+        "fulltitle": "Faruri stopuri lumini > Lumini interior",
+        "url": "https://www.pieseauto.ro/lumini-interior"
+      },
+      {
+        "title": "Motoras far",
+        "fulltitle": "Faruri stopuri lumini > Motoras far",
+        "url": "https://www.pieseauto.ro/motoras-far"
+      },
+      {
+        "title": "Proiectoare auto",
+        "fulltitle": "Faruri stopuri lumini > Proiectoare auto",
+        "url": "https://www.pieseauto.ro/proiectoare-auto"
+      },
+      {
+        "title": "Semnalizare oglinda",
+        "fulltitle": "Faruri stopuri lumini > Semnalizare oglinda",
+        "url": "https://www.pieseauto.ro/semnalizare-oglinda"
+      },
+      {
+        "title": "Semnalizatoare",
+        "fulltitle": "Faruri stopuri lumini > Semnalizatoare",
+        "url": "https://www.pieseauto.ro/semnalizatoare"
+      },
+      {
+        "title": "Sticla far",
+        "fulltitle": "Faruri stopuri lumini > Sticla far",
+        "url": "https://www.pieseauto.ro/sticla-far"
+      },
+      {
+        "title": "Stopuri",
+        "fulltitle": "Faruri stopuri lumini > Stopuri",
+        "url": "https://www.pieseauto.ro/stopuri"
+      }
+    ],
+    "Filtre auto": [
+      {
+        "title": "Alte filtre auto",
+        "fulltitle": "Filtre auto > Alte filtre auto",
+        "url": "https://www.pieseauto.ro/alte-filtre-auto"
+      },
+      {
+        "title": "Canistra carbon",
+        "fulltitle": "Filtre auto > Canistra carbon",
+        "url": "https://www.pieseauto.ro/canistra-carbon"
+      },
+      {
+        "title": "Carcasa filtru aer",
+        "fulltitle": "Filtre auto > Carcasa filtru aer",
+        "url": "https://www.pieseauto.ro/carcasa-filtru-aer"
+      },
+      {
+        "title": "Carcasa filtru motorina",
+        "fulltitle": "Filtre auto > Carcasa filtru motorina",
+        "url": "https://www.pieseauto.ro/carcasa-filtru-motorina"
+      },
+      {
+        "title": "Filtru aer",
+        "fulltitle": "Filtre auto > Filtru aer",
+        "url": "https://www.pieseauto.ro/filtru-aer"
+      },
+      {
+        "title": "Filtru benzina",
+        "fulltitle": "Filtre auto > Filtru benzina",
+        "url": "https://www.pieseauto.ro/filtru-benzina"
+      },
+      {
+        "title": "Filtru combustibil",
+        "fulltitle": "Filtre auto > Filtru combustibil",
+        "url": "https://www.pieseauto.ro/filtru-combustibil"
+      },
+      {
+        "title": "Filtru cutie automata",
+        "fulltitle": "Filtre auto > Filtru cutie automata",
+        "url": "https://www.pieseauto.ro/filtru-cutie-automata"
+      },
+      {
+        "title": "Filtru epurator",
+        "fulltitle": "Filtre auto > Filtru epurator",
+        "url": "https://www.pieseauto.ro/filtru-epurator"
+      },
+      {
+        "title": "Filtru motorina",
+        "fulltitle": "Filtre auto > Filtru motorina",
+        "url": "https://www.pieseauto.ro/filtru-motorina"
+      },
+      {
+        "title": "Filtru polen",
+        "fulltitle": "Filtre auto > Filtru polen",
+        "url": "https://www.pieseauto.ro/filtru-polen"
+      },
+      {
+        "title": "Filtru ulei",
+        "fulltitle": "Filtre auto > Filtru ulei",
+        "url": "https://www.pieseauto.ro/filtru-ulei"
+      },
+      {
+        "title": "Kit admisie",
+        "fulltitle": "Filtre auto > Kit admisie",
+        "url": "https://www.pieseauto.ro/kit-admisie"
+      },
+      {
+        "title": "Tubulatura admisie",
+        "fulltitle": "Filtre auto > Tubulatura admisie",
+        "url": "https://www.pieseauto.ro/tubulatura-admisie"
+      }
+    ],
+    "Frane": [
+      {
+        "title": "Alte elemente frana",
+        "fulltitle": "Frane > Alte elemente frana",
+        "url": "https://www.pieseauto.ro/alte-elemente-frana"
+      },
+      {
+        "title": "Arc etrier",
+        "fulltitle": "Frane > Arc etrier",
+        "url": "https://www.pieseauto.ro/arc-etrier"
+      },
+      {
+        "title": "Cilindru frana",
+        "fulltitle": "Frane > Cilindru frana",
+        "url": "https://www.pieseauto.ro/cilindru-frana"
+      },
+      {
+        "title": "Conducte frana",
+        "fulltitle": "Frane > Conducte frana",
+        "url": "https://www.pieseauto.ro/conducta-frana"
+      },
+      {
+        "title": "Discuri frana",
+        "fulltitle": "Frane > Discuri frana",
+        "url": "https://www.pieseauto.ro/discuri-frana"
+      },
+      {
+        "title": "Etriere",
+        "fulltitle": "Frane > Etriere",
+        "url": "https://www.pieseauto.ro/etriere"
+      },
+      {
+        "title": "Furtun frana",
+        "fulltitle": "Frane > Furtun frana",
+        "url": "https://www.pieseauto.ro/furtun-frana"
+      },
+      {
+        "title": "Inel senzor ABS",
+        "fulltitle": "Frane > Inel senzor ABS",
+        "url": "https://www.pieseauto.ro/inel-senzor-abs"
+      },
+      {
+        "title": "Kit frane",
+        "fulltitle": "Frane > Kit frane",
+        "url": "https://www.pieseauto.ro/kit-frane"
+      },
+      {
+        "title": "Lichid frana",
+        "fulltitle": "Frane > Lichid frana",
+        "url": "https://www.pieseauto.ro/lichid-frana"
+      },
+      {
+        "title": "Motoras etrier",
+        "fulltitle": "Frane > Motoras etrier",
+        "url": "https://www.pieseauto.ro/motoras-etrier"
+      },
+      {
+        "title": "Piston etrier",
+        "fulltitle": "Frane > Piston etrier",
+        "url": "https://www.pieseauto.ro/piston-etrier"
+      },
+      {
+        "title": "Pistonas frana",
+        "fulltitle": "Frane > Pistonas frana",
+        "url": "https://www.pieseauto.ro/pistonas-frana"
+      },
+      {
+        "title": "Placute frana",
+        "fulltitle": "Frane > Placute frana",
+        "url": "https://www.pieseauto.ro/placute-frana"
+      },
+      {
+        "title": "Pompa ABS",
+        "fulltitle": "Frane > Pompa ABS",
+        "url": "https://www.pieseauto.ro/pompa-abs"
+      },
+      {
+        "title": "Pompa centrala frana",
+        "fulltitle": "Frane > Pompa centrala frana",
+        "url": "https://www.pieseauto.ro/pompa-centrala-frana"
+      },
+      {
+        "title": "Pompa servofrana",
+        "fulltitle": "Frane > Pompa servofrana",
+        "url": "https://www.pieseauto.ro/pompa-servofrana"
+      },
+      {
+        "title": "Protectie disc frana",
+        "fulltitle": "Frane > Protectie disc frana",
+        "url": "https://www.pieseauto.ro/protectie-disc-frana"
+      },
+      {
+        "title": "Repartitor frana",
+        "fulltitle": "Frane > Repartitor frana",
+        "url": "https://www.pieseauto.ro/repartitor-frana"
+      },
+      {
+        "title": "Saboti frana",
+        "fulltitle": "Frane > Saboti frana",
+        "url": "https://www.pieseauto.ro/saboti-frana"
+      },
+      {
+        "title": "Senzori ABS",
+        "fulltitle": "Frane > Senzori ABS",
+        "url": "https://www.pieseauto.ro/senzori-abs"
+      },
+      {
+        "title": "Senzori uzura placute",
+        "fulltitle": "Frane > Senzori uzura placute",
+        "url": "https://www.pieseauto.ro/senzori-uzura-placute"
+      },
+      {
+        "title": "Set bucse ghidaj etrier",
+        "fulltitle": "Frane > Set bucse ghidaj etrier",
+        "url": "https://www.pieseauto.ro/set-bucse-ghidaj-etrier"
+      },
+      {
+        "title": "Set reparatie etrier",
+        "fulltitle": "Frane > Set reparatie etrier",
+        "url": "https://www.pieseauto.ro/set-reparatie-etrier"
+      },
+      {
+        "title": "Suport etrier",
+        "fulltitle": "Frane > Suport etrier",
+        "url": "https://www.pieseauto.ro/suport-etrier"
+      },
+      {
+        "title": "Tamburi frana",
+        "fulltitle": "Frane > Tamburi frana",
+        "url": "https://www.pieseauto.ro/tamburi-frana"
+      },
+      {
+        "title": "Tulumba frana",
+        "fulltitle": "Frane > Tulumba frana",
+        "url": "https://www.pieseauto.ro/tulumba-frana"
+      },
+      {
+        "title": "Vas lichid frana",
+        "fulltitle": "Frane > Vas lichid frana",
+        "url": "https://www.pieseauto.ro/vas-lichid-frana"
+      }
+    ],
+    "Interioare auto": [
+      {
+        "title": "Airbag",
+        "fulltitle": "Interioare auto > Airbag",
+        "url": "https://www.pieseauto.ro/airbag"
+      },
+      {
+        "title": "Alte butoane",
+        "fulltitle": "Interioare auto > Alte butoane",
+        "url": "https://www.pieseauto.ro/alte-butoane"
+      },
+      {
+        "title": "Alte piese interior",
+        "fulltitle": "Interioare auto > Alte piese interior",
+        "url": "https://www.pieseauto.ro/alte-piese-interior"
+      },
+      {
+        "title": "Bancheta",
+        "fulltitle": "Interioare auto > Bancheta",
+        "url": "https://www.pieseauto.ro/bancheta"
+      },
+      {
+        "title": "Bricheta",
+        "fulltitle": "Interioare auto > Bricheta",
+        "url": "https://www.pieseauto.ro/bricheta"
+      },
+      {
+        "title": "Butoane geamuri electrice",
+        "fulltitle": "Interioare auto > Butoane geamuri electrice",
+        "url": "https://www.pieseauto.ro/butoane-geamuri-electrice"
+      },
+      {
+        "title": "Buton avarie",
+        "fulltitle": "Interioare auto > Buton avarie",
+        "url": "https://www.pieseauto.ro/buton-avarie"
+      },
+      {
+        "title": "Buton frana de mana",
+        "fulltitle": "Interioare auto > Buton frana de mana",
+        "url": "https://www.pieseauto.ro/buton-frana-de-mana"
+      },
+      {
+        "title": "Buton reglaj faruri",
+        "fulltitle": "Interioare auto > Buton reglaj faruri",
+        "url": "https://www.pieseauto.ro/buton-reglaj-faruri"
+      },
+      {
+        "title": "Buton reglaj oglinzi",
+        "fulltitle": "Interioare auto > Buton reglaj oglinzi",
+        "url": "https://www.pieseauto.ro/buton-reglaj-oglinzi"
+      },
+      {
+        "title": "Buton Start Stop",
+        "fulltitle": "Interioare auto > Buton Start Stop",
+        "url": "https://www.pieseauto.ro/buton-start-stop"
+      },
+      {
+        "title": "Capac airbag",
+        "fulltitle": "Interioare auto > Capac airbag",
+        "url": "https://www.pieseauto.ro/capac-airbag"
+      },
+      {
+        "title": "Ceasuri bord",
+        "fulltitle": "Interioare auto > Ceasuri bord",
+        "url": "https://www.pieseauto.ro/ceasuri-bord"
+      },
+      {
+        "title": "Centuri siguranta",
+        "fulltitle": "Interioare auto > Centuri siguranta",
+        "url": "https://www.pieseauto.ro/centuri-siguranta"
+      },
+      {
+        "title": "Comenzi volan",
+        "fulltitle": "Interioare auto > Comenzi volan",
+        "url": "https://www.pieseauto.ro/comenzi-volan"
+      },
+      {
+        "title": "Consola centrala",
+        "fulltitle": "Interioare auto > Consola centrala",
+        "url": "https://www.pieseauto.ro/consola-centrala"
+      },
+      {
+        "title": "Cotiera auto",
+        "fulltitle": "Interioare auto > Cotiera auto",
+        "url": "https://www.pieseauto.ro/cotiera-auto"
+      },
+      {
+        "title": "Covorase",
+        "fulltitle": "Interioare auto > Covorase",
+        "url": "https://www.pieseauto.ro/covorase"
+      },
+      {
+        "title": "Display",
+        "fulltitle": "Interioare auto > Display",
+        "url": "https://www.pieseauto.ro/display"
+      },
+      {
+        "title": "Fete usi",
+        "fulltitle": "Interioare auto > Fete usi",
+        "url": "https://www.pieseauto.ro/fete-usi"
+      },
+      {
+        "title": "Guri ventilatie",
+        "fulltitle": "Interioare auto > Guri ventilatie",
+        "url": "https://www.pieseauto.ro/guri-ventilatie"
+      },
+      {
+        "title": "Interior complet",
+        "fulltitle": "Interioare auto > Interior complet",
+        "url": "https://www.pieseauto.ro/interior-complet"
+      },
+      {
+        "title": "Maner frana mana",
+        "fulltitle": "Interioare auto > Maner frana mana",
+        "url": "https://www.pieseauto.ro/maner-frana-mana"
+      },
+      {
+        "title": "Maner plafon",
+        "fulltitle": "Interioare auto > Maner plafon",
+        "url": "https://www.pieseauto.ro/maner-plafon"
+      },
+      {
+        "title": "Manere usi interior",
+        "fulltitle": "Interioare auto > Manere usi interior",
+        "url": "https://www.pieseauto.ro/manere-usi-interior"
+      },
+      {
+        "title": "Manson schimbator",
+        "fulltitle": "Interioare auto > Manson schimbator",
+        "url": "https://www.pieseauto.ro/manson-schimbator"
+      },
+      {
+        "title": "Mocheta podea interior",
+        "fulltitle": "Interioare auto > Mocheta podea interior",
+        "url": "https://www.pieseauto.ro/mocheta-podea-interior"
+      },
+      {
+        "title": "Mocheta portbagaj",
+        "fulltitle": "Interioare auto > Mocheta portbagaj",
+        "url": "https://www.pieseauto.ro/mocheta-portbagaj"
+      },
+      {
+        "title": "Mochete",
+        "fulltitle": "Interioare auto > Mochete",
+        "url": "https://www.pieseauto.ro/mochete"
+      },
+      {
+        "title": "Nuca schimbator",
+        "fulltitle": "Interioare auto > Nuca schimbator",
+        "url": "https://www.pieseauto.ro/nuca-schimbator"
+      },
+      {
+        "title": "Oglinda retrovizoare",
+        "fulltitle": "Interioare auto > Oglinda retrovizoare",
+        "url": "https://www.pieseauto.ro/oglinda-retrovizoare"
+      },
+      {
+        "title": "Ornamente",
+        "fulltitle": "Interioare auto > Ornamente",
+        "url": "https://www.pieseauto.ro/ornamente"
+      },
+      {
+        "title": "Parasolar",
+        "fulltitle": "Interioare auto > Parasolar",
+        "url": "https://www.pieseauto.ro/parasolar"
+      },
+      {
+        "title": "Pedale",
+        "fulltitle": "Interioare auto > Pedale",
+        "url": "https://www.pieseauto.ro/pedale"
+      },
+      {
+        "title": "Plafon",
+        "fulltitle": "Interioare auto > Plafon",
+        "url": "https://www.pieseauto.ro/plafon"
+      },
+      {
+        "title": "Plafoniera",
+        "fulltitle": "Interioare auto > Plafoniera",
+        "url": "https://www.pieseauto.ro/plafoniera"
+      },
+      {
+        "title": "Plansa bord",
+        "fulltitle": "Interioare auto > Plansa bord",
+        "url": "https://www.pieseauto.ro/plansa-bord"
+      },
+      {
+        "title": "Polita portbagaj",
+        "fulltitle": "Interioare auto > Polita portbagaj",
+        "url": "https://www.pieseauto.ro/polita-portbagaj"
+      },
+      {
+        "title": "Rulou portbagaj",
+        "fulltitle": "Interioare auto > Rulou portbagaj",
+        "url": "https://www.pieseauto.ro/rulou-portbagaj"
+      },
+      {
+        "title": "Scaune auto",
+        "fulltitle": "Interioare auto > Scaune auto",
+        "url": "https://www.pieseauto.ro/scaune-auto"
+      },
+      {
+        "title": "Scrumiera",
+        "fulltitle": "Interioare auto > Scrumiera",
+        "url": "https://www.pieseauto.ro/scrumiera"
+      },
+      {
+        "title": "Suport pahare",
+        "fulltitle": "Interioare auto > Suport pahare",
+        "url": "https://www.pieseauto.ro/suport-pahare"
+      },
+      {
+        "title": "Tavita portbagaj",
+        "fulltitle": "Interioare auto > Tavita portbagaj",
+        "url": "https://www.pieseauto.ro/tavita-portbagaj"
+      },
+      {
+        "title": "Tetiere",
+        "fulltitle": "Interioare auto > Tetiere",
+        "url": "https://www.pieseauto.ro/tetiere"
+      },
+      {
+        "title": "Torpedou",
+        "fulltitle": "Interioare auto > Torpedou",
+        "url": "https://www.pieseauto.ro/torpedou"
+      },
+      {
+        "title": "Volane",
+        "fulltitle": "Interioare auto > Volane",
+        "url": "https://www.pieseauto.ro/volane"
+      }
+    ],
+    "Intretinere auto": [
+      {
+        "title": "Alte produse intretinere",
+        "fulltitle": "Intretinere auto > Alte produse intretinere",
+        "url": "https://www.pieseauto.ro/alte-produse-intretinere"
+      },
+      {
+        "title": "Bureti auto",
+        "fulltitle": "Intretinere auto > Bureti auto",
+        "url": "https://www.pieseauto.ro/bureti-auto"
+      },
+      {
+        "title": "Ceara auto",
+        "fulltitle": "Intretinere auto > Ceara auto",
+        "url": "https://www.pieseauto.ro/ceara-auto"
+      },
+      {
+        "title": "Cosmetice auto",
+        "fulltitle": "Intretinere auto > Cosmetice auto",
+        "url": "https://www.pieseauto.ro/cosmetice-auto"
+      },
+      {
+        "title": "Detergenti auto",
+        "fulltitle": "Intretinere auto > Detergenti auto",
+        "url": "https://www.pieseauto.ro/detergenti-auto"
+      },
+      {
+        "title": "Lavete",
+        "fulltitle": "Intretinere auto > Lavete",
+        "url": "https://www.pieseauto.ro/lavete"
+      },
+      {
+        "title": "Lichid parbriz",
+        "fulltitle": "Intretinere auto > Lichid parbriz",
+        "url": "https://www.pieseauto.ro/lichid-parbriz"
+      },
+      {
+        "title": "Odorizante auto",
+        "fulltitle": "Intretinere auto > Odorizante auto",
+        "url": "https://www.pieseauto.ro/odorizante-auto"
+      },
+      {
+        "title": "Pasta curatat maini",
+        "fulltitle": "Intretinere auto > Pasta curatat maini",
+        "url": "https://www.pieseauto.ro/pasta-curatat-maini"
+      },
+      {
+        "title": "Polish auto",
+        "fulltitle": "Intretinere auto > Polish auto",
+        "url": "https://www.pieseauto.ro/polish-auto"
+      },
+      {
+        "title": "Silicon auto",
+        "fulltitle": "Intretinere auto > Silicon auto",
+        "url": "https://www.pieseauto.ro/silicon-auto"
+      },
+      {
+        "title": "Silicon garnituri",
+        "fulltitle": "Intretinere auto > Silicon garnituri",
+        "url": "https://www.pieseauto.ro/silicon-garnituri"
+      },
+      {
+        "title": "Spray curatat tapiterie",
+        "fulltitle": "Intretinere auto > Spray curatat tapiterie",
+        "url": "https://www.pieseauto.ro/spray-curatat-tapiterie"
+      },
+      {
+        "title": "Spray degripant",
+        "fulltitle": "Intretinere auto > Spray degripant",
+        "url": "https://www.pieseauto.ro/spray-degripant"
+      },
+      {
+        "title": "Spray dezghetare",
+        "fulltitle": "Intretinere auto > Spray dezghetare",
+        "url": "https://www.pieseauto.ro/spray-dezghetare"
+      },
+      {
+        "title": "Spray frane",
+        "fulltitle": "Intretinere auto > Spray frane",
+        "url": "https://www.pieseauto.ro/spray-frane"
+      },
+      {
+        "title": "Spray vopsea",
+        "fulltitle": "Intretinere auto > Spray vopsea",
+        "url": "https://www.pieseauto.ro/spray-vopsea"
+      },
+      {
+        "title": "Vaselina",
+        "fulltitle": "Intretinere auto > Vaselina",
+        "url": "https://www.pieseauto.ro/vaselina"
+      }
+    ],
+    "Jante & Anvelope": [
+      {
+        "title": "Anvelope",
+        "fulltitle": "Jante & Anvelope > Anvelope",
+        "url": "https://www.pieseauto.ro/cauciucuri"
+      },
+      {
+        "title": "Jante",
+        "fulltitle": "Jante & Anvelope > Jante",
+        "url": "https://www.pieseauto.ro/jante"
+      }
+    ],
+    "Navigatie GPS": [
+      {
+        "title": "GPS auto",
+        "fulltitle": "Navigatie GPS > GPS auto",
+        "url": "https://www.pieseauto.ro/gps-auto"
+      },
+      {
+        "title": "Harti GPS CD DVD",
+        "fulltitle": "Navigatie GPS > Harti GPS CD DVD",
+        "url": "https://www.pieseauto.ro/harti-gps-cd-dvd"
+      },
+      {
+        "title": "Navigatie auto",
+        "fulltitle": "Navigatie GPS > Navigatie auto",
+        "url": "https://www.pieseauto.ro/navigatie-auto"
+      },
+      {
+        "title": "Navigatie dedicata",
+        "fulltitle": "Navigatie GPS > Navigatie dedicata",
+        "url": "https://www.pieseauto.ro/navigatie-dedicata"
+      },
+      {
+        "title": "Navigatie originala",
+        "fulltitle": "Navigatie GPS > Navigatie originala",
+        "url": "https://www.pieseauto.ro/navigatie-originala"
+      }
+    ],
+    "Pachete revizie": [
+      {
+        "title": "Pachet revizie",
+        "fulltitle": "Pachete revizie > Pachet revizie",
+        "url": "https://www.pieseauto.ro/pachet-revizie"
+      },
+      {
+        "title": "Pachet revizie cutie automata",
+        "fulltitle": "Pachete revizie > Pachet revizie cutie automata",
+        "url": "https://www.pieseauto.ro/pachet-revizie-cutie-automata"
+      }
+    ],
+    "Piese Motoare": [
+      {
+        "title": "Alte fulii",
+        "fulltitle": "Piese Motoare > Alte fulii",
+        "url": "https://www.pieseauto.ro/alte-fulii"
+      },
+      {
+        "title": "Alte piese motor",
+        "fulltitle": "Piese Motoare > Alte piese motor",
+        "url": "https://www.pieseauto.ro/alte-piese-motor"
+      },
+      {
+        "title": "Alte pompe",
+        "fulltitle": "Piese Motoare > Alte pompe",
+        "url": "https://www.pieseauto.ro/alte-pompe"
+      },
+      {
+        "title": "Alte sonde",
+        "fulltitle": "Piese Motoare > Alte sonde",
+        "url": "https://www.pieseauto.ro/alte-sonde"
+      },
+      {
+        "title": "Axe came",
+        "fulltitle": "Piese Motoare > Axe came",
+        "url": "https://www.pieseauto.ro/axe-came"
+      },
+      {
+        "title": "Baie ulei",
+        "fulltitle": "Piese Motoare > Baie ulei",
+        "url": "https://www.pieseauto.ro/baie-ulei"
+      },
+      {
+        "title": "Biela",
+        "fulltitle": "Piese Motoare > Biela",
+        "url": "https://www.pieseauto.ro/biela"
+      },
+      {
+        "title": "Bloc motor",
+        "fulltitle": "Piese Motoare > Bloc motor",
+        "url": "https://www.pieseauto.ro/bloc-motor"
+      },
+      {
+        "title": "Buson umplere ulei",
+        "fulltitle": "Piese Motoare > Buson umplere ulei",
+        "url": "https://www.pieseauto.ro/buson-umplere-ulei"
+      },
+      {
+        "title": "Capac carcasa filtru ulei",
+        "fulltitle": "Piese Motoare > Capac carcasa filtru ulei",
+        "url": "https://www.pieseauto.ro/capac-carcasa-filtru-ulei"
+      },
+      {
+        "title": "Capac chiulasa",
+        "fulltitle": "Piese Motoare > Capac chiulasa",
+        "url": "https://www.pieseauto.ro/capac-chiuloasa"
+      },
+      {
+        "title": "Capac distributie",
+        "fulltitle": "Piese Motoare > Capac distributie",
+        "url": "https://www.pieseauto.ro/capac-distributie"
+      },
+      {
+        "title": "Capac motor",
+        "fulltitle": "Piese Motoare > Capac motor",
+        "url": "https://www.pieseauto.ro/capac-motor"
+      },
+      {
+        "title": "Carcasa filtru ulei",
+        "fulltitle": "Piese Motoare > Carcasa filtru ulei",
+        "url": "https://www.pieseauto.ro/carcasa-filtru-ulei"
+      },
+      {
+        "title": "Chiulasa",
+        "fulltitle": "Piese Motoare > Chiulasa",
+        "url": "https://www.pieseauto.ro/chiuloasa"
+      },
+      {
+        "title": "Clapeta acceleratie",
+        "fulltitle": "Piese Motoare > Clapeta acceleratie",
+        "url": "https://www.pieseauto.ro/clapeta-acceleratie"
+      },
+      {
+        "title": "Conducta EGR",
+        "fulltitle": "Piese Motoare > Conducta EGR",
+        "url": "https://www.pieseauto.ro/conducta-egr"
+      },
+      {
+        "title": "Conducte ulei",
+        "fulltitle": "Piese Motoare > Conducte ulei",
+        "url": "https://www.pieseauto.ro/conducte-ulei"
+      },
+      {
+        "title": "Curea accesorii",
+        "fulltitle": "Piese Motoare > Curea accesorii",
+        "url": "https://www.pieseauto.ro/curele-auto"
+      },
+      {
+        "title": "Curea distributie",
+        "fulltitle": "Piese Motoare > Curea distributie",
+        "url": "https://www.pieseauto.ro/curea-distributie"
+      },
+      {
+        "title": "Cuzineti",
+        "fulltitle": "Piese Motoare > Cuzineti",
+        "url": "https://www.pieseauto.ro/cuzineti"
+      },
+      {
+        "title": "EGR",
+        "fulltitle": "Piese Motoare > EGR",
+        "url": "https://www.pieseauto.ro/egr"
+      },
+      {
+        "title": "Electrovalva",
+        "fulltitle": "Piese Motoare > Electrovalva",
+        "url": "https://www.pieseauto.ro/electrovalva"
+      },
+      {
+        "title": "Fulie alternator",
+        "fulltitle": "Piese Motoare > Fulie alternator",
+        "url": "https://www.pieseauto.ro/fulie-alternator"
+      },
+      {
+        "title": "Fulie ax came",
+        "fulltitle": "Piese Motoare > Fulie ax came",
+        "url": "https://www.pieseauto.ro/fulie-ax-came"
+      },
+      {
+        "title": "Fulie pompa apa",
+        "fulltitle": "Piese Motoare > Fulie pompa apa",
+        "url": "https://www.pieseauto.ro/fulie-pompa-apa"
+      },
+      {
+        "title": "Fulie pompa servo",
+        "fulltitle": "Piese Motoare > Fulie pompa servo",
+        "url": "https://www.pieseauto.ro/fulie-pompa-servo"
+      },
+      {
+        "title": "Fulie vibrochen",
+        "fulltitle": "Piese Motoare > Fulie vibrochen",
+        "url": "https://www.pieseauto.ro/fulie-vibrochen"
+      },
+      {
+        "title": "Furtun admisie",
+        "fulltitle": "Piese Motoare > Furtun admisie",
+        "url": "https://www.pieseauto.ro/furtun-admisie"
+      },
+      {
+        "title": "Furtun EGR",
+        "fulltitle": "Piese Motoare > Furtun EGR",
+        "url": "https://www.pieseauto.ro/furtun-egr"
+      },
+      {
+        "title": "Furtun vacuum",
+        "fulltitle": "Piese Motoare > Furtun vacuum",
+        "url": "https://www.pieseauto.ro/furtun-vacuum"
+      },
+      {
+        "title": "Galerie admisie",
+        "fulltitle": "Piese Motoare > Galerie admisie",
+        "url": "https://www.pieseauto.ro/galerie-admisie"
+      },
+      {
+        "title": "Garnitura chiulasa",
+        "fulltitle": "Piese Motoare > Garnitura chiulasa",
+        "url": "https://www.pieseauto.ro/garnitura-chiulasa"
+      },
+      {
+        "title": "Garnituri",
+        "fulltitle": "Piese Motoare > Garnituri",
+        "url": "https://www.pieseauto.ro/garnituri"
+      },
+      {
+        "title": "Ghidaj lant distributie",
+        "fulltitle": "Piese Motoare > Ghidaj lant distributie",
+        "url": "https://www.pieseauto.ro/ghidaj-lant-distributie"
+      },
+      {
+        "title": "Intinzator lant distributie",
+        "fulltitle": "Piese Motoare > Intinzator lant distributie",
+        "url": "https://www.pieseauto.ro/intinzator-lant-distributie"
+      },
+      {
+        "title": "Joja ulei",
+        "fulltitle": "Piese Motoare > Joja ulei",
+        "url": "https://www.pieseauto.ro/joja-ulei"
+      },
+      {
+        "title": "Kit distributie",
+        "fulltitle": "Piese Motoare > Kit distributie",
+        "url": "https://www.pieseauto.ro/kit-distributie"
+      },
+      {
+        "title": "Kit lant distributie",
+        "fulltitle": "Piese Motoare > Kit lant distributie",
+        "url": "https://www.pieseauto.ro/kit-lant-distributie"
+      },
+      {
+        "title": "Lant distributie",
+        "fulltitle": "Piese Motoare > Lant distributie",
+        "url": "https://www.pieseauto.ro/lant-distributie"
+      },
+      {
+        "title": "Litrometru",
+        "fulltitle": "Piese Motoare > Litrometru",
+        "url": "https://www.pieseauto.ro/litrometru"
+      },
+      {
+        "title": "Motor complet",
+        "fulltitle": "Piese Motoare > Motor complet",
+        "url": "https://www.pieseauto.ro/motor"
+      },
+      {
+        "title": "Motoras pas cu pas",
+        "fulltitle": "Piese Motoare > Motoras pas cu pas",
+        "url": "https://www.pieseauto.ro/motoras-pas-cu-pas"
+      },
+      {
+        "title": "Oil catch tank",
+        "fulltitle": "Piese Motoare > Oil catch tank",
+        "url": "https://www.pieseauto.ro/oil-catch-tank"
+      },
+      {
+        "title": "Pistoane",
+        "fulltitle": "Piese Motoare > Pistoane",
+        "url": "https://www.pieseauto.ro/pistoane"
+      },
+      {
+        "title": "Pompa aer secundara",
+        "fulltitle": "Piese Motoare > Pompa aer secundara",
+        "url": "https://www.pieseauto.ro/pompa-aer-secundara"
+      },
+      {
+        "title": "Pompa apa",
+        "fulltitle": "Piese Motoare > Pompa apa",
+        "url": "https://www.pieseauto.ro/pompa-apa"
+      },
+      {
+        "title": "Pompa tandem",
+        "fulltitle": "Piese Motoare > Pompa tandem",
+        "url": "https://www.pieseauto.ro/pompa-tandem"
+      },
+      {
+        "title": "Pompa ulei",
+        "fulltitle": "Piese Motoare > Pompa ulei",
+        "url": "https://www.pieseauto.ro/pompa-ulei"
+      },
+      {
+        "title": "Pompa vacuum",
+        "fulltitle": "Piese Motoare > Pompa vacuum",
+        "url": "https://www.pieseauto.ro/pompa-vacuum"
+      },
+      {
+        "title": "Racitor gaze",
+        "fulltitle": "Piese Motoare > Racitor gaze",
+        "url": "https://www.pieseauto.ro/racitor-gaze"
+      },
+      {
+        "title": "Rezervor vacuum",
+        "fulltitle": "Piese Motoare > Rezervor vacuum",
+        "url": "https://www.pieseauto.ro/rezervor-vacuum"
+      },
+      {
+        "title": "Rola ghidaj accesorii",
+        "fulltitle": "Piese Motoare > Rola ghidaj accesorii",
+        "url": "https://www.pieseauto.ro/rola-ghidaj"
+      },
+      {
+        "title": "Rola ghidaj distributie",
+        "fulltitle": "Piese Motoare > Rola ghidaj distributie",
+        "url": "https://www.pieseauto.ro/rola-ghidaj-distributie"
+      },
+      {
+        "title": "Rola intinzatoare accesorii",
+        "fulltitle": "Piese Motoare > Rola intinzatoare accesorii",
+        "url": "https://www.pieseauto.ro/rola-intinzatoare"
+      },
+      {
+        "title": "Rola intinzatoare distributie",
+        "fulltitle": "Piese Motoare > Rola intinzatoare distributie",
+        "url": "https://www.pieseauto.ro/rola-distributie"
+      },
+      {
+        "title": "Segmenti",
+        "fulltitle": "Piese Motoare > Segmenti",
+        "url": "https://www.pieseauto.ro/segmenti"
+      },
+      {
+        "title": "Senzor temperatura apa",
+        "fulltitle": "Piese Motoare > Senzor temperatura apa",
+        "url": "https://www.pieseauto.ro/sonda-temperatura-apa"
+      },
+      {
+        "title": "Set curea transmisie",
+        "fulltitle": "Piese Motoare > Set curea transmisie",
+        "url": "https://www.pieseauto.ro/set-curea-transmisie"
+      },
+      {
+        "title": "Set garnituri",
+        "fulltitle": "Piese Motoare > Set garnituri",
+        "url": "https://www.pieseauto.ro/set-garnituri"
+      },
+      {
+        "title": "Set motor",
+        "fulltitle": "Piese Motoare > Set motor",
+        "url": "https://www.pieseauto.ro/set-motor"
+      },
+      {
+        "title": "Simeringuri",
+        "fulltitle": "Piese Motoare > Simeringuri",
+        "url": "https://www.pieseauto.ro/simeringuri"
+      },
+      {
+        "title": "Sonda Lambda",
+        "fulltitle": "Piese Motoare > Sonda Lambda",
+        "url": "https://www.pieseauto.ro/sonda-lambda"
+      },
+      {
+        "title": "Sonda presiune ulei",
+        "fulltitle": "Piese Motoare > Sonda presiune ulei",
+        "url": "https://www.pieseauto.ro/sonda-presiune-ulei"
+      },
+      {
+        "title": "Sorb pompa ulei",
+        "fulltitle": "Piese Motoare > Sorb pompa ulei",
+        "url": "https://www.pieseauto.ro/sorb-pompa-ulei"
+      },
+      {
+        "title": "Supapa admisie",
+        "fulltitle": "Piese Motoare > Supapa admisie",
+        "url": "https://www.pieseauto.ro/supapa-admisie"
+      },
+      {
+        "title": "Supapa evacuare",
+        "fulltitle": "Piese Motoare > Supapa evacuare",
+        "url": "https://www.pieseauto.ro/supapa-evacuare"
+      },
+      {
+        "title": "Suport alternator",
+        "fulltitle": "Piese Motoare > Suport alternator",
+        "url": "https://www.pieseauto.ro/suport-alternator"
+      },
+      {
+        "title": "Suport compresor AC",
+        "fulltitle": "Piese Motoare > Suport compresor AC",
+        "url": "https://www.pieseauto.ro/suport-compresor-ac"
+      },
+      {
+        "title": "Suport electromotor",
+        "fulltitle": "Piese Motoare > Suport electromotor",
+        "url": "https://www.pieseauto.ro/suport-electromotor"
+      },
+      {
+        "title": "Suport filtru ulei",
+        "fulltitle": "Piese Motoare > Suport filtru ulei",
+        "url": "https://www.pieseauto.ro/suport-filtru-ulei"
+      },
+      {
+        "title": "Suport rola accesorii",
+        "fulltitle": "Piese Motoare > Suport rola accesorii",
+        "url": "https://www.pieseauto.ro/suport-rola-accesorii"
+      },
+      {
+        "title": "Suporti motor",
+        "fulltitle": "Piese Motoare > Suporti motor",
+        "url": "https://www.pieseauto.ro/suporti-motor"
+      },
+      {
+        "title": "Surub golire baie ulei",
+        "fulltitle": "Piese Motoare > Surub golire baie ulei",
+        "url": "https://www.pieseauto.ro/surub-golire-baie-ulei"
+      },
+      {
+        "title": "Suruburi chiulasa",
+        "fulltitle": "Piese Motoare > Suruburi chiulasa",
+        "url": "https://www.pieseauto.ro/suruburi-chiulasa"
+      },
+      {
+        "title": "Tacheti",
+        "fulltitle": "Piese Motoare > Tacheti",
+        "url": "https://www.pieseauto.ro/tacheti"
+      },
+      {
+        "title": "Vibrochen",
+        "fulltitle": "Piese Motoare > Vibrochen",
+        "url": "https://www.pieseauto.ro/vibrochen"
+      }
+    ],
+    "Piese moto": [
+      {
+        "title": "Accesorii moto",
+        "fulltitle": "Piese moto > Accesorii moto",
+        "url": "https://www.pieseauto.ro/accesorii-moto"
+      },
+      {
+        "title": "Piese ATV",
+        "fulltitle": "Piese moto > Piese ATV",
+        "url": "https://www.pieseauto.ro/piese-atv"
+      },
+      {
+        "title": "Piese motociclete",
+        "fulltitle": "Piese moto > Piese motociclete",
+        "url": "https://www.pieseauto.ro/piese-motociclete"
+      },
+      {
+        "title": "Piese scutere",
+        "fulltitle": "Piese moto > Piese scutere",
+        "url": "https://www.pieseauto.ro/piese-scutere"
+      }
+    ],
+    "Pompe si injectoare": [
+      {
+        "title": "Alte piese alimentare",
+        "fulltitle": "Pompe si injectoare > Alte piese alimentare",
+        "url": "https://www.pieseauto.ro/alte-piese-alimentare"
+      },
+      {
+        "title": "Carburator",
+        "fulltitle": "Pompe si injectoare > Carburator",
+        "url": "https://www.pieseauto.ro/carburator"
+      },
+      {
+        "title": "Conducte alimentare",
+        "fulltitle": "Pompe si injectoare > Conducte alimentare",
+        "url": "https://www.pieseauto.ro/conducte-alimentare"
+      },
+      {
+        "title": "Incalzitor motorina",
+        "fulltitle": "Pompe si injectoare > Incalzitor motorina",
+        "url": "https://www.pieseauto.ro/incalzitor-motorina"
+      },
+      {
+        "title": "Injectoare",
+        "fulltitle": "Pompe si injectoare > Injectoare",
+        "url": "https://www.pieseauto.ro/injectoare"
+      },
+      {
+        "title": "Kit reparatie injectoare",
+        "fulltitle": "Pompe si injectoare > Kit reparatie injectoare",
+        "url": "https://www.pieseauto.ro/kit-reparatie-injectoare"
+      },
+      {
+        "title": "Pompa AdBlue",
+        "fulltitle": "Pompe si injectoare > Pompa AdBlue",
+        "url": "https://www.pieseauto.ro/pompa-adblue"
+      },
+      {
+        "title": "Pompa amorsare",
+        "fulltitle": "Pompe si injectoare > Pompa amorsare",
+        "url": "https://www.pieseauto.ro/pompa-amorsare"
+      },
+      {
+        "title": "Pompa benzina",
+        "fulltitle": "Pompe si injectoare > Pompa benzina",
+        "url": "https://www.pieseauto.ro/pompa-benzina"
+      },
+      {
+        "title": "Pompa injectie",
+        "fulltitle": "Pompe si injectoare > Pompa injectie",
+        "url": "https://www.pieseauto.ro/pompa-injectie"
+      },
+      {
+        "title": "Pompa motorina din rezervor",
+        "fulltitle": "Pompe si injectoare > Pompa motorina din rezervor",
+        "url": "https://www.pieseauto.ro/pompa-motorina-din-rezervor"
+      },
+      {
+        "title": "Pompa rezervor",
+        "fulltitle": "Pompe si injectoare > Pompa rezervor",
+        "url": "https://www.pieseauto.ro/pompa-rezervor"
+      },
+      {
+        "title": "Racitor motorina",
+        "fulltitle": "Pompe si injectoare > Racitor motorina",
+        "url": "https://www.pieseauto.ro/racitor-motorina"
+      },
+      {
+        "title": "Rampa injectoare",
+        "fulltitle": "Pompe si injectoare > Rampa injectoare",
+        "url": "https://www.pieseauto.ro/rampa-injectoare"
+      },
+      {
+        "title": "Rampa retur injectoare",
+        "fulltitle": "Pompe si injectoare > Rampa retur injectoare",
+        "url": "https://www.pieseauto.ro/rampa-retur-injectoare"
+      },
+      {
+        "title": "Regulator presiune",
+        "fulltitle": "Pompe si injectoare > Regulator presiune",
+        "url": "https://www.pieseauto.ro/regulator-presiune"
+      },
+      {
+        "title": "Rezervoare auto",
+        "fulltitle": "Pompe si injectoare > Rezervoare auto",
+        "url": "https://www.pieseauto.ro/rezervoare-auto"
+      },
+      {
+        "title": "Rezervor AdBlue",
+        "fulltitle": "Pompe si injectoare > Rezervor AdBlue",
+        "url": "https://www.pieseauto.ro/rezervor-adblue"
+      },
+      {
+        "title": "Supape retur",
+        "fulltitle": "Pompe si injectoare > Supape retur",
+        "url": "https://www.pieseauto.ro/supape-retur"
+      }
+    ],
+    "Punte si rulmenti": [
+      {
+        "title": "Alte piese tren rulare",
+        "fulltitle": "Punte si rulmenti > Alte piese tren rulare",
+        "url": "https://www.pieseauto.ro/alte-piese-tren-rulare"
+      },
+      {
+        "title": "Butuc roata",
+        "fulltitle": "Punte si rulmenti > Butuc roata",
+        "url": "https://www.pieseauto.ro/butuc-roata"
+      },
+      {
+        "title": "Punte fata",
+        "fulltitle": "Punte si rulmenti > Punte fata",
+        "url": "https://www.pieseauto.ro/punte-fata"
+      },
+      {
+        "title": "Punte spate",
+        "fulltitle": "Punte si rulmenti > Punte spate",
+        "url": "https://www.pieseauto.ro/punte-spate"
+      },
+      {
+        "title": "Rulmenti",
+        "fulltitle": "Punte si rulmenti > Rulmenti",
+        "url": "https://www.pieseauto.ro/rulmenti"
+      }
+    ],
+    "Racire": [
+      {
+        "title": "Alte piese racire",
+        "fulltitle": "Racire > Alte piese racire",
+        "url": "https://www.pieseauto.ro/alte-piese-racire"
+      },
+      {
+        "title": "Antigel",
+        "fulltitle": "Racire > Antigel",
+        "url": "https://www.pieseauto.ro/antigel"
+      },
+      {
+        "title": "Buson radiator",
+        "fulltitle": "Racire > Buson radiator",
+        "url": "https://www.pieseauto.ro/buson-radiator"
+      },
+      {
+        "title": "Buson vas expansiune",
+        "fulltitle": "Racire > Buson vas expansiune",
+        "url": "https://www.pieseauto.ro/buson-vas-expansiune"
+      },
+      {
+        "title": "Carcasa termostat",
+        "fulltitle": "Racire > Carcasa termostat",
+        "url": "https://www.pieseauto.ro/carcasa-termostat"
+      },
+      {
+        "title": "Electroventilator",
+        "fulltitle": "Racire > Electroventilator",
+        "url": "https://www.pieseauto.ro/electroventilator"
+      },
+      {
+        "title": "Flansa lichid racire",
+        "fulltitle": "Racire > Flansa lichid racire",
+        "url": "https://www.pieseauto.ro/flansa-lichid-racire"
+      },
+      {
+        "title": "Furtun apa",
+        "fulltitle": "Racire > Furtun apa",
+        "url": "https://www.pieseauto.ro/furtune-apa"
+      },
+      {
+        "title": "Paleta ventilator",
+        "fulltitle": "Racire > Paleta ventilator",
+        "url": "https://www.pieseauto.ro/paleta-ventilator"
+      },
+      {
+        "title": "Radiator apa",
+        "fulltitle": "Racire > Radiator apa",
+        "url": "https://www.pieseauto.ro/radiator-apa"
+      },
+      {
+        "title": "Radiator cutie automata",
+        "fulltitle": "Racire > Radiator cutie automata",
+        "url": "https://www.pieseauto.ro/radiator-cutie-automata"
+      },
+      {
+        "title": "Radiator ulei termoflot",
+        "fulltitle": "Racire > Radiator ulei termoflot",
+        "url": "https://www.pieseauto.ro/radiator-ulei-termoflot"
+      },
+      {
+        "title": "Termocupla",
+        "fulltitle": "Racire > Termocupla",
+        "url": "https://www.pieseauto.ro/termocupla"
+      },
+      {
+        "title": "Termostat auto",
+        "fulltitle": "Racire > Termostat auto",
+        "url": "https://www.pieseauto.ro/termostat-auto"
+      },
+      {
+        "title": "Vas expansiune",
+        "fulltitle": "Racire > Vas expansiune",
+        "url": "https://www.pieseauto.ro/vas-expansiune"
+      },
+      {
+        "title": "Vascocuplaj",
+        "fulltitle": "Racire > Vascocuplaj",
+        "url": "https://www.pieseauto.ro/vascocuplaj"
+      }
+    ],
+    "Scule auto": [
+      {
+        "title": "Alte scule auto",
+        "fulltitle": "Scule auto > Alte scule auto",
+        "url": "https://www.pieseauto.ro/alte-scule-auto"
+      },
+      {
+        "title": "Aparate de sablat",
+        "fulltitle": "Scule auto > Aparate de sablat",
+        "url": "https://www.pieseauto.ro/aparate-de-sablat"
+      },
+      {
+        "title": "Aparate de sudura si accesorii",
+        "fulltitle": "Scule auto > Aparate de sudura si accesorii",
+        "url": "https://www.pieseauto.ro/aparate-de-sudura-si-accesorii"
+      },
+      {
+        "title": "Baie ultrasunete",
+        "fulltitle": "Scule auto > Baie ultrasunete",
+        "url": "https://www.pieseauto.ro/baie-ultrasunete"
+      },
+      {
+        "title": "Burghie",
+        "fulltitle": "Scule auto > Burghie",
+        "url": "https://www.pieseauto.ro/burghie"
+      },
+      {
+        "title": "Chei",
+        "fulltitle": "Scule auto > Chei",
+        "url": "https://www.pieseauto.ro/chei"
+      },
+      {
+        "title": "Chei dinamometrice",
+        "fulltitle": "Scule auto > Chei dinamometrice",
+        "url": "https://www.pieseauto.ro/chei-dinamometrice"
+      },
+      {
+        "title": "Clesti si surubelnite",
+        "fulltitle": "Scule auto > Clesti si surubelnite",
+        "url": "https://www.pieseauto.ro/clesti-si-surubelnite"
+      },
+      {
+        "title": "Clicheti",
+        "fulltitle": "Scule auto > Clicheti",
+        "url": "https://www.pieseauto.ro/clicheti"
+      },
+      {
+        "title": "Consumabile pentru atelier",
+        "fulltitle": "Scule auto > Consumabile pentru atelier",
+        "url": "https://www.pieseauto.ro/consumabile-pentru-atelier"
+      },
+      {
+        "title": "Consumabile pentru scule",
+        "fulltitle": "Scule auto > Consumabile pentru scule",
+        "url": "https://www.pieseauto.ro/consumabile-pentru-scule"
+      },
+      {
+        "title": "Cricuri si prese hidraulice",
+        "fulltitle": "Scule auto > Cricuri si prese hidraulice",
+        "url": "https://www.pieseauto.ro/cricuri-si-prese-hidraulice"
+      },
+      {
+        "title": "Echipamente de atelier",
+        "fulltitle": "Scule auto > Echipamente de atelier",
+        "url": "https://www.pieseauto.ro/echipamente-de-atelier"
+      },
+      {
+        "title": "Echipamente de protectie",
+        "fulltitle": "Scule auto > Echipamente de protectie",
+        "url": "https://www.pieseauto.ro/echipamente-de-protectie"
+      },
+      {
+        "title": "Elevator auto",
+        "fulltitle": "Scule auto > Elevator auto",
+        "url": "https://www.pieseauto.ro/elevator-auto"
+      },
+      {
+        "title": "Extractor bujii incandescente",
+        "fulltitle": "Scule auto > Extractor bujii incandescente",
+        "url": "https://www.pieseauto.ro/extractor-bujii-incandescente"
+      },
+      {
+        "title": "Imbusuri la bucata",
+        "fulltitle": "Scule auto > Imbusuri la bucata",
+        "url": "https://www.pieseauto.ro/imbusuri-la-bucata"
+      },
+      {
+        "title": "Lampi portabile",
+        "fulltitle": "Scule auto > Lampi portabile",
+        "url": "https://www.pieseauto.ro/lampi-portabile"
+      },
+      {
+        "title": "Macara girafa si suporti motor",
+        "fulltitle": "Scule auto > Macara girafa si suporti motor",
+        "url": "https://www.pieseauto.ro/macara-girafa-si-suporti-motor"
+      },
+      {
+        "title": "Mobilier si dulapuri de scule",
+        "fulltitle": "Scule auto > Mobilier si dulapuri de scule",
+        "url": "https://www.pieseauto.ro/mobilier-si-dulapuri-de-scule"
+      },
+      {
+        "title": "Prese si extractoare",
+        "fulltitle": "Scule auto > Prese si extractoare",
+        "url": "https://www.pieseauto.ro/prese-si-extractoare"
+      },
+      {
+        "title": "Roboti de pornire",
+        "fulltitle": "Scule auto > Roboti de pornire",
+        "url": "https://www.pieseauto.ro/roboti-de-pornire"
+      },
+      {
+        "title": "Scule aer",
+        "fulltitle": "Scule auto > Scule aer",
+        "url": "https://www.pieseauto.ro/scule-aer"
+      },
+      {
+        "title": "Scule camioane",
+        "fulltitle": "Scule auto > Scule camioane",
+        "url": "https://www.pieseauto.ro/scule-camioane"
+      },
+      {
+        "title": "Scule electrice",
+        "fulltitle": "Scule auto > Scule electrice",
+        "url": "https://www.pieseauto.ro/scule-electrice"
+      },
+      {
+        "title": "Scule motociclete si ATV-uri",
+        "fulltitle": "Scule auto > Scule motociclete si ATV-uri",
+        "url": "https://www.pieseauto.ro/scule-motociclete-si-atv-uri"
+      },
+      {
+        "title": "Scule parbrize",
+        "fulltitle": "Scule auto > Scule parbrize",
+        "url": "https://www.pieseauto.ro/scule-parbrize"
+      },
+      {
+        "title": "Scule pentru suspensii",
+        "fulltitle": "Scule auto > Scule pentru suspensii",
+        "url": "https://www.pieseauto.ro/scule-pentru-suspensii"
+      },
+      {
+        "title": "Scule pneumatice",
+        "fulltitle": "Scule auto > Scule pneumatice",
+        "url": "https://www.pieseauto.ro/scule-pneumatice"
+      },
+      {
+        "title": "Scule service auto",
+        "fulltitle": "Scule auto > Scule service auto",
+        "url": "https://www.pieseauto.ro/scule-service-auto"
+      },
+      {
+        "title": "Scule service ulei si gresare",
+        "fulltitle": "Scule auto > Scule service ulei si gresare",
+        "url": "https://www.pieseauto.ro/scule-service-ulei-si-gresare"
+      },
+      {
+        "title": "Scule servicii frana",
+        "fulltitle": "Scule auto > Scule servicii frana",
+        "url": "https://www.pieseauto.ro/scule-servicii-frana"
+      },
+      {
+        "title": "Scule servicii motor",
+        "fulltitle": "Scule auto > Scule servicii motor",
+        "url": "https://www.pieseauto.ro/scule-servicii-motor"
+      },
+      {
+        "title": "Scule speciale",
+        "fulltitle": "Scule auto > Scule speciale",
+        "url": "https://www.pieseauto.ro/scule-speciale"
+      },
+      {
+        "title": "Scule tinichigerie",
+        "fulltitle": "Scule auto > Scule tinichigerie",
+        "url": "https://www.pieseauto.ro/scule-tinichigerie"
+      },
+      {
+        "title": "Scule vulcanizare",
+        "fulltitle": "Scule auto > Scule vulcanizare",
+        "url": "https://www.pieseauto.ro/scule-vulcanizare"
+      },
+      {
+        "title": "Seturi de chei",
+        "fulltitle": "Scule auto > Seturi de chei",
+        "url": "https://www.pieseauto.ro/seturi-de-chei"
+      },
+      {
+        "title": "Tarozi si filiere",
+        "fulltitle": "Scule auto > Tarozi si filiere",
+        "url": "https://www.pieseauto.ro/tarozi-si-filiere"
+      },
+      {
+        "title": "Tester presiune Common Rail",
+        "fulltitle": "Scule auto > Tester presiune Common Rail",
+        "url": "https://www.pieseauto.ro/tester-presiune-common-rail"
+      },
+      {
+        "title": "Testere si aparate diagnoza",
+        "fulltitle": "Scule auto > Testere si aparate diagnoza",
+        "url": "https://www.pieseauto.ro/testere-si-aparate-diagnoza"
+      },
+      {
+        "title": "Trusa torx",
+        "fulltitle": "Scule auto > Trusa torx",
+        "url": "https://www.pieseauto.ro/trusa-torx"
+      },
+      {
+        "title": "Truse blocaje distributie",
+        "fulltitle": "Scule auto > Truse blocaje distributie",
+        "url": "https://www.pieseauto.ro/truse-blocaje-distributie"
+      },
+      {
+        "title": "Truse de imbusuri",
+        "fulltitle": "Scule auto > Truse de imbusuri",
+        "url": "https://www.pieseauto.ro/truse-de-imbusuri"
+      },
+      {
+        "title": "Truse de scule",
+        "fulltitle": "Scule auto > Truse de scule",
+        "url": "https://www.pieseauto.ro/truse-de-scule"
+      },
+      {
+        "title": "Truse de tubulare",
+        "fulltitle": "Scule auto > Truse de tubulare",
+        "url": "https://www.pieseauto.ro/truse-de-tubulare"
+      },
+      {
+        "title": "Tubulare",
+        "fulltitle": "Scule auto > Tubulare",
+        "url": "https://www.pieseauto.ro/tubulare"
+      }
+    ],
+    "Suspensie": [
+      {
+        "title": "Alte piese suspensie",
+        "fulltitle": "Suspensie > Alte piese suspensie",
+        "url": "https://www.pieseauto.ro/alte-piese-suspensie"
+      },
+      {
+        "title": "Amortizoare",
+        "fulltitle": "Suspensie > Amortizoare",
+        "url": "https://www.pieseauto.ro/amortizoare"
+      },
+      {
+        "title": "Ansamblu amortizor arc",
+        "fulltitle": "Suspensie > Ansamblu amortizor arc",
+        "url": "https://www.pieseauto.ro/ansamblu-amortizor-arc"
+      },
+      {
+        "title": "Arcuri auto",
+        "fulltitle": "Suspensie > Arcuri auto",
+        "url": "https://www.pieseauto.ro/arcuri-auto"
+      },
+      {
+        "title": "Arcuri sport",
+        "fulltitle": "Suspensie > Arcuri sport",
+        "url": "https://www.pieseauto.ro/arcuri-sport"
+      },
+      {
+        "title": "Bare rigidizare",
+        "fulltitle": "Suspensie > Bare rigidizare",
+        "url": "https://www.pieseauto.ro/bare-rigidizare"
+      },
+      {
+        "title": "Bare stabilizatoare",
+        "fulltitle": "Suspensie > Bare stabilizatoare",
+        "url": "https://www.pieseauto.ro/bare-stabilizatoare"
+      },
+      {
+        "title": "Brida arc",
+        "fulltitle": "Suspensie > Brida arc",
+        "url": "https://www.pieseauto.ro/brida-arc"
+      },
+      {
+        "title": "Compresor perne aer",
+        "fulltitle": "Suspensie > Compresor perne aer",
+        "url": "https://www.pieseauto.ro/compresor-perne-aer"
+      },
+      {
+        "title": "Flanse amortizor",
+        "fulltitle": "Suspensie > Flanse amortizor",
+        "url": "https://www.pieseauto.ro/flanse-amortizor"
+      },
+      {
+        "title": "Foi de arc",
+        "fulltitle": "Suspensie > Foi de arc",
+        "url": "https://www.pieseauto.ro/foi-de-arc"
+      },
+      {
+        "title": "Kit Brate",
+        "fulltitle": "Suspensie > Kit Brate",
+        "url": "https://www.pieseauto.ro/kit-brate"
+      },
+      {
+        "title": "Kit suspensie auto",
+        "fulltitle": "Suspensie > Kit suspensie auto",
+        "url": "https://www.pieseauto.ro/kit-suspensie-auto"
+      },
+      {
+        "title": "Perne aer",
+        "fulltitle": "Suspensie > Perne aer",
+        "url": "https://www.pieseauto.ro/perne-aer"
+      },
+      {
+        "title": "Protectie amortizor",
+        "fulltitle": "Suspensie > Protectie amortizor",
+        "url": "https://www.pieseauto.ro/protectie-amortizor"
+      },
+      {
+        "title": "Suspensie sport",
+        "fulltitle": "Suspensie > Suspensie sport",
+        "url": "https://www.pieseauto.ro/suspensie-sport"
+      },
+      {
+        "title": "Tampon cauciuc suspensie",
+        "fulltitle": "Suspensie > Tampon cauciuc suspensie",
+        "url": "https://www.pieseauto.ro/tampon-cauciuc-suspensie"
+      }
+    ],
+    "Transmisie": [
+      {
+        "title": "Alte piese transmisie",
+        "fulltitle": "Transmisie > Alte piese transmisie",
+        "url": "https://www.pieseauto.ro/alte-piese-transmisie"
+      },
+      {
+        "title": "Baie ulei cutie automata",
+        "fulltitle": "Transmisie > Baie ulei cutie automata",
+        "url": "https://www.pieseauto.ro/baie-ulei-cutie-automata"
+      },
+      {
+        "title": "Bloc valve cutie",
+        "fulltitle": "Transmisie > Bloc valve cutie",
+        "url": "https://www.pieseauto.ro/bloc-valve-cutie"
+      },
+      {
+        "title": "Burduf planetara",
+        "fulltitle": "Transmisie > Burduf planetara",
+        "url": "https://www.pieseauto.ro/burduf-planetara"
+      },
+      {
+        "title": "Cap planetara",
+        "fulltitle": "Transmisie > Cap planetara",
+        "url": "https://www.pieseauto.ro/cap-planetara"
+      },
+      {
+        "title": "Cardan",
+        "fulltitle": "Transmisie > Cardan",
+        "url": "https://www.pieseauto.ro/cardan"
+      },
+      {
+        "title": "Cilindru ambreiaj",
+        "fulltitle": "Transmisie > Cilindru ambreiaj",
+        "url": "https://www.pieseauto.ro/cilindru-ambreiaj"
+      },
+      {
+        "title": "Convertizor",
+        "fulltitle": "Transmisie > Convertizor",
+        "url": "https://www.pieseauto.ro/convertizor"
+      },
+      {
+        "title": "Coroana volant",
+        "fulltitle": "Transmisie > Coroana volant",
+        "url": "https://www.pieseauto.ro/coroana-volant"
+      },
+      {
+        "title": "Cruce cardan",
+        "fulltitle": "Transmisie > Cruce cardan",
+        "url": "https://www.pieseauto.ro/cruce-cardan"
+      },
+      {
+        "title": "Cutie de transfer",
+        "fulltitle": "Transmisie > Cutie de transfer",
+        "url": "https://www.pieseauto.ro/cutie-de-transfer"
+      },
+      {
+        "title": "Cutie de viteze",
+        "fulltitle": "Transmisie > Cutie de viteze",
+        "url": "https://www.pieseauto.ro/cutie-de-viteze"
+      },
+      {
+        "title": "Cutie viteze automata",
+        "fulltitle": "Transmisie > Cutie viteze automata",
+        "url": "https://www.pieseauto.ro/cutie-viteze-automata"
+      },
+      {
+        "title": "Diferentiale",
+        "fulltitle": "Transmisie > Diferentiale",
+        "url": "https://www.pieseauto.ro/diferentiale"
+      },
+      {
+        "title": "Disc ambreiaj",
+        "fulltitle": "Transmisie > Disc ambreiaj",
+        "url": "https://www.pieseauto.ro/disc-ambreiaj"
+      },
+      {
+        "title": "Flansa cardan",
+        "fulltitle": "Transmisie > Flansa cardan",
+        "url": "https://www.pieseauto.ro/flansa-cardan"
+      },
+      {
+        "title": "Furca ambreiaj",
+        "fulltitle": "Transmisie > Furca ambreiaj",
+        "url": "https://www.pieseauto.ro/furca-ambreiaj"
+      },
+      {
+        "title": "Kit ambreiaj",
+        "fulltitle": "Transmisie > Kit ambreiaj",
+        "url": "https://www.pieseauto.ro/kit-ambreiaj"
+      },
+      {
+        "title": "Placa presiune",
+        "fulltitle": "Transmisie > Placa presiune",
+        "url": "https://www.pieseauto.ro/placa-presiune"
+      },
+      {
+        "title": "Planetare",
+        "fulltitle": "Transmisie > Planetare",
+        "url": "https://www.pieseauto.ro/planetare"
+      },
+      {
+        "title": "Pompa ambreiaj",
+        "fulltitle": "Transmisie > Pompa ambreiaj",
+        "url": "https://www.pieseauto.ro/pompa-ambreiaj"
+      },
+      {
+        "title": "Rulment cardan",
+        "fulltitle": "Transmisie > Rulment cardan",
+        "url": "https://www.pieseauto.ro/rulment-cardan"
+      },
+      {
+        "title": "Rulment presiune",
+        "fulltitle": "Transmisie > Rulment presiune",
+        "url": "https://www.pieseauto.ro/rulment-presiune"
+      },
+      {
+        "title": "Schimbator viteze",
+        "fulltitle": "Transmisie > Schimbator viteze",
+        "url": "https://www.pieseauto.ro/schimbator-viteze"
+      },
+      {
+        "title": "Suport cutie viteze",
+        "fulltitle": "Transmisie > Suport cutie viteze",
+        "url": "https://www.pieseauto.ro/suport-cutie-viteze"
+      },
+      {
+        "title": "Suruburi volanta",
+        "fulltitle": "Transmisie > Suruburi volanta",
+        "url": "https://www.pieseauto.ro/suruburi-volanta"
+      },
+      {
+        "title": "Timonerie",
+        "fulltitle": "Transmisie > Timonerie",
+        "url": "https://www.pieseauto.ro/timonerie"
+      },
+      {
+        "title": "Tripoda planetara",
+        "fulltitle": "Transmisie > Tripoda planetara",
+        "url": "https://www.pieseauto.ro/tripoda-planetara"
+      },
+      {
+        "title": "Volanta",
+        "fulltitle": "Transmisie > Volanta",
+        "url": "https://www.pieseauto.ro/volanta"
+      }
+    ],
+    "Tuning": [
+      {
+        "title": "Alte piese de tuning",
+        "fulltitle": "Tuning > Alte piese de tuning",
+        "url": "https://www.pieseauto.ro/alte-piese-de-tuning"
+      },
+      {
+        "title": "Body kit",
+        "fulltitle": "Tuning > Body kit",
+        "url": "https://www.pieseauto.ro/body-kit"
+      },
+      {
+        "title": "Butoane",
+        "fulltitle": "Tuning > Butoane",
+        "url": "https://www.pieseauto.ro/butoane"
+      },
+      {
+        "title": "Ceasuri plasma",
+        "fulltitle": "Tuning > Ceasuri plasma",
+        "url": "https://www.pieseauto.ro/ceasuri-plasma"
+      },
+      {
+        "title": "Ceasuri si indicatoare",
+        "fulltitle": "Tuning > Ceasuri si indicatoare",
+        "url": "https://www.pieseauto.ro/ceasuri-si-indicatoare"
+      },
+      {
+        "title": "Colantare auto",
+        "fulltitle": "Tuning > Colantare auto",
+        "url": "https://www.pieseauto.ro/colantare-auto"
+      },
+      {
+        "title": "Eleron",
+        "fulltitle": "Tuning > Eleron",
+        "url": "https://www.pieseauto.ro/eleron"
+      },
+      {
+        "title": "Filtru aer sport",
+        "fulltitle": "Tuning > Filtru aer sport",
+        "url": "https://www.pieseauto.ro/filtru-aer-sport"
+      },
+      {
+        "title": "Folie auto",
+        "fulltitle": "Tuning > Folie auto",
+        "url": "https://www.pieseauto.ro/folie-auto"
+      },
+      {
+        "title": "Frana tuning",
+        "fulltitle": "Tuning > Frana tuning",
+        "url": "https://www.pieseauto.ro/frana-tuning"
+      },
+      {
+        "title": "Huse tuning",
+        "fulltitle": "Tuning > Huse tuning",
+        "url": "https://www.pieseauto.ro/huse-tuning"
+      },
+      {
+        "title": "Lambo doors",
+        "fulltitle": "Tuning > Lambo doors",
+        "url": "https://www.pieseauto.ro/lambo-doors"
+      },
+      {
+        "title": "Manere auto",
+        "fulltitle": "Tuning > Manere auto",
+        "url": "https://www.pieseauto.ro/manere-auto"
+      },
+      {
+        "title": "Neoane",
+        "fulltitle": "Tuning > Neoane",
+        "url": "https://www.pieseauto.ro/neoane"
+      },
+      {
+        "title": "Oglinzi tuning",
+        "fulltitle": "Tuning > Oglinzi tuning",
+        "url": "https://www.pieseauto.ro/oglinzi-tuning"
+      },
+      {
+        "title": "Pedale tuning",
+        "fulltitle": "Tuning > Pedale tuning",
+        "url": "https://www.pieseauto.ro/pedale-tuning"
+      },
+      {
+        "title": "Pleoape",
+        "fulltitle": "Tuning > Pleoape",
+        "url": "https://www.pieseauto.ro/pleoape"
+      },
+      {
+        "title": "Prelungire bara fata",
+        "fulltitle": "Tuning > Prelungire bara fata",
+        "url": "https://www.pieseauto.ro/prelungire-bara-fata"
+      },
+      {
+        "title": "Prelungire bara spate",
+        "fulltitle": "Tuning > Prelungire bara spate",
+        "url": "https://www.pieseauto.ro/prelungire-bara-spate"
+      },
+      {
+        "title": "Scaune sport",
+        "fulltitle": "Tuning > Scaune sport",
+        "url": "https://www.pieseauto.ro/scaune-sport"
+      },
+      {
+        "title": "Schimbator tuning",
+        "fulltitle": "Tuning > Schimbator tuning",
+        "url": "https://www.pieseauto.ro/schimbator-tuning"
+      },
+      {
+        "title": "Stickere auto",
+        "fulltitle": "Tuning > Stickere auto",
+        "url": "https://www.pieseauto.ro/stickere-auto"
+      },
+      {
+        "title": "Tuning bara fata",
+        "fulltitle": "Tuning > Tuning bara fata",
+        "url": "https://www.pieseauto.ro/tuning-bara-fata"
+      },
+      {
+        "title": "Tuning bara spate",
+        "fulltitle": "Tuning > Tuning bara spate",
+        "url": "https://www.pieseauto.ro/tuning-bara-spate"
+      },
+      {
+        "title": "Tuning capota",
+        "fulltitle": "Tuning > Tuning capota",
+        "url": "https://www.pieseauto.ro/tuning-capota"
+      },
+      {
+        "title": "Volane tuning",
+        "fulltitle": "Tuning > Volane tuning",
+        "url": "https://www.pieseauto.ro/volane-tuning"
+      }
+    ],
+    "Turbo": [
+      {
+        "title": "Actuator turbo",
+        "fulltitle": "Turbo > Actuator turbo",
+        "url": "https://www.pieseauto.ro/actuator-turbo"
+      },
+      {
+        "title": "Alte piese turbo",
+        "fulltitle": "Turbo > Alte piese turbo",
+        "url": "https://www.pieseauto.ro/alte-piese-turbo"
+      },
+      {
+        "title": "Blow off valve",
+        "fulltitle": "Turbo > Blow off valve",
+        "url": "https://www.pieseauto.ro/blow-off-valve"
+      },
+      {
+        "title": "Boost controller",
+        "fulltitle": "Turbo > Boost controller",
+        "url": "https://www.pieseauto.ro/boost-controller"
+      },
+      {
+        "title": "Compresor auto",
+        "fulltitle": "Turbo > Compresor auto",
+        "url": "https://www.pieseauto.ro/compresor-auto"
+      },
+      {
+        "title": "Furtun intercooler turbo",
+        "fulltitle": "Turbo > Furtun intercooler turbo",
+        "url": "https://www.pieseauto.ro/furtun-intercooler-turbo"
+      },
+      {
+        "title": "Intercooler",
+        "fulltitle": "Turbo > Intercooler",
+        "url": "https://www.pieseauto.ro/intercooler"
+      },
+      {
+        "title": "Kit turbo",
+        "fulltitle": "Turbo > Kit turbo",
+        "url": "https://www.pieseauto.ro/kit-turbo"
+      },
+      {
+        "title": "Reparatii turbosuflante",
+        "fulltitle": "Turbo > Reparatii turbosuflante",
+        "url": "https://www.pieseauto.ro/reparatii-turbosuflante"
+      },
+      {
+        "title": "Tubulatura intercooler",
+        "fulltitle": "Turbo > Tubulatura intercooler",
+        "url": "https://www.pieseauto.ro/tubulatura-intercooler"
+      },
+      {
+        "title": "Turbine",
+        "fulltitle": "Turbo > Turbine",
+        "url": "https://www.pieseauto.ro/turbine"
+      },
+      {
+        "title": "Wastegate",
+        "fulltitle": "Turbo > Wastegate",
+        "url": "https://www.pieseauto.ro/wastegate"
+      }
+    ],
+    "Ulei Auto": [
+      {
+        "title": "Aditiv curatare motor",
+        "fulltitle": "Ulei Auto > Aditiv curatare motor",
+        "url": "https://www.pieseauto.ro/aditiv-curatare-motor"
+      },
+      {
+        "title": "Aditiv filtru particule",
+        "fulltitle": "Ulei Auto > Aditiv filtru particule",
+        "url": "https://www.pieseauto.ro/aditiv-filtru-particule"
+      },
+      {
+        "title": "Aditiv ulei",
+        "fulltitle": "Ulei Auto > Aditiv ulei",
+        "url": "https://www.pieseauto.ro/aditiv-ulei"
+      },
+      {
+        "title": "Aditivi benzina",
+        "fulltitle": "Ulei Auto > Aditivi benzina",
+        "url": "https://www.pieseauto.ro/aditivi-benzina"
+      },
+      {
+        "title": "Aditivi motorina",
+        "fulltitle": "Ulei Auto > Aditivi motorina",
+        "url": "https://www.pieseauto.ro/aditivi-motorina"
+      },
+      {
+        "title": "Alte uleiuri auto",
+        "fulltitle": "Ulei Auto > Alte uleiuri auto",
+        "url": "https://www.pieseauto.ro/alte-uleiuri-auto"
+      },
+      {
+        "title": "Tratament motor",
+        "fulltitle": "Ulei Auto > Tratament motor",
+        "url": "https://www.pieseauto.ro/tratament-motor"
+      },
+      {
+        "title": "Ulei cutie automata",
+        "fulltitle": "Ulei Auto > Ulei cutie automata",
+        "url": "https://www.pieseauto.ro/ulei-cutie-automata"
+      },
+      {
+        "title": "Ulei cutie de viteze",
+        "fulltitle": "Ulei Auto > Ulei cutie de viteze",
+        "url": "https://www.pieseauto.ro/ulei-cutie-de-viteze"
+      },
+      {
+        "title": "Ulei diferential",
+        "fulltitle": "Ulei Auto > Ulei diferential",
+        "url": "https://www.pieseauto.ro/ulei-diferential"
+      },
+      {
+        "title": "Ulei hidraulic",
+        "fulltitle": "Ulei Auto > Ulei hidraulic",
+        "url": "https://www.pieseauto.ro/ulei-hidraulic"
+      },
+      {
+        "title": "Ulei motor",
+        "fulltitle": "Ulei Auto > Ulei motor",
+        "url": "https://www.pieseauto.ro/ulei-motor"
+      },
+      {
+        "title": "Ulei servodirectie",
+        "fulltitle": "Ulei Auto > Ulei servodirectie",
+        "url": "https://www.pieseauto.ro/ulei-servodirectie"
+      },
+      {
+        "title": "Ulei transmisie",
+        "fulltitle": "Ulei Auto > Ulei transmisie",
+        "url": "https://www.pieseauto.ro/ulei-transmisie"
+      }
+    ],
+    "Xenon": [
+      {
+        "title": "Alte elemente Xenon",
+        "fulltitle": "Xenon > Alte elemente Xenon",
+        "url": "https://www.pieseauto.ro/alte-elemente-xenon"
+      },
+      {
+        "title": "Balast Xenon",
+        "fulltitle": "Xenon > Balast Xenon",
+        "url": "https://www.pieseauto.ro/balast-xenon"
+      },
+      {
+        "title": "Becuri Xenon",
+        "fulltitle": "Xenon > Becuri Xenon",
+        "url": "https://www.pieseauto.ro/becuri-xenon"
+      },
+      {
+        "title": "Kit Xenon",
+        "fulltitle": "Xenon > Kit Xenon",
+        "url": "https://www.pieseauto.ro/kit-xenon"
+      }
+    ]
+  }
+}

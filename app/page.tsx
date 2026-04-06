@@ -405,48 +405,51 @@ export default function Page() {
   }
 
   const pieseFiltrateSiSortate = useMemo(() => {
-    const termen = search.trim().toLowerCase()
+  const termen = search.trim().toLowerCase()
+  const terms = termen.split(/\s+/).filter(Boolean)
 
-    let rezultat = !termen
-      ? [...piese]
-      : piese.filter((p) => {
-          const text = [
-            p.cdp || '',
-            p.cod_piesa || '',
-            p.denumire || '',
-            p.masina || '',
-            p.categorie || '',
-            p.raft || '',
-            p.vin || '',
-            p.cod_culoare || '',
-          ]
-            .join(' ')
-            .toLowerCase()
+  let rezultat = !terms.length
+    ? [...piese]
+    : piese.filter((p) => {
+        const fields = [
+          p.cdp || '',
+          p.cod_piesa || '',
+          p.denumire || '',
+          p.masina || '',
+          p.categorie || '',
+          p.raft || '',
+          p.vin || '',
+          p.cod_culoare || '',
+          p.compatibilitate || '',
+          p.descriere || '',
+        ].map(v => String(v).toLowerCase())
 
-          return text.includes(termen)
-        })
+        return terms.every((term) =>
+          fields.some((field) => field.includes(term))
+        )
+      })
 
-    rezultat.sort((a, b) => {
-      switch (sortBy) {
-        case 'cdp_asc':
-          return (a.cdp || '').localeCompare(b.cdp || '', undefined, { numeric: true })
-        case 'cdp_desc':
-          return (b.cdp || '').localeCompare(a.cdp || '', undefined, { numeric: true })
-        case 'pret_asc':
-          return (a.pret || 0) - (b.pret || 0)
-        case 'pret_desc':
-          return (b.pret || 0) - (a.pret || 0)
-        case 'denumire_asc':
-          return (a.denumire || '').localeCompare(b.denumire || '')
-        case 'masina_asc':
-          return (a.masina || '').localeCompare(b.masina || '')
-        default:
-          return (b.cdp || '').localeCompare(a.cdp || '', undefined, { numeric: true })
-      }
-    })
+  rezultat.sort((a, b) => {
+    switch (sortBy) {
+      case 'cdp_asc':
+        return (a.cdp || '').localeCompare(b.cdp || '', undefined, { numeric: true })
+      case 'cdp_desc':
+        return (b.cdp || '').localeCompare(a.cdp || '', undefined, { numeric: true })
+      case 'pret_asc':
+        return (a.pret || 0) - (b.pret || 0)
+      case 'pret_desc':
+        return (b.pret || 0) - (a.pret || 0)
+      case 'denumire_asc':
+        return (a.denumire || '').localeCompare(b.denumire || '')
+      case 'masina_asc':
+        return (a.masina || '').localeCompare(b.masina || '')
+      default:
+        return (b.cdp || '').localeCompare(a.cdp || '', undefined, { numeric: true })
+    }
+  })
 
-    return rezultat
-  }, [piese, search, sortBy])
+  return rezultat
+}, [piese, search, sortBy])
 
   const totalPages = Math.max(1, Math.ceil(pieseFiltrateSiSortate.length / PAGE_SIZE))
 

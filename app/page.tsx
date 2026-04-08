@@ -73,14 +73,14 @@ function scoreSubcategory(name: string, title: string) {
 function detectInternalCategory(name: string) {
   const hay = normalizeText(name)
   const rules: Array<[string[], string]> = [
-    [['airbag', 'ecu', 'modul', 'alternator', 'electromotor', 'senzor'], 'Electrica & Electronica Auto'],
+    [['calculator abs', 'calculator ecu', 'modul abs', 'modul airbag', 'alternator', 'electromotor', 'senzor', 'ecu'], 'Electrica & Electronica Auto'],
     [['far', 'stop'], 'Faruri stopuri lumini'],
     [['xenon', 'balast'], 'Xenon'],
     [['injector', 'pompa'], 'Pompe si injectoare'],
     [['etrier', 'disc frana'], 'Frane'],
     [['bara', 'usa', 'portiera', 'aripa', 'capota', 'haion', 'oglinda'], 'Caroserie'],
-    [['volan', 'bord', 'tapiterie'], 'Interioare auto'],
-    [['planetara', 'ambreiaj', 'cutie viteze'], 'Transmisie'],
+    [['volan', 'bord', 'tapiterie', 'airbag'], 'Interioare auto'],
+    [['planetara', 'ambreiaj', 'cutie viteze', 'volanta'], 'Transmisie'],
     [['amortizor', 'arc'], 'Suspensie'],
     [['compresor clima', 'clima'], 'Climatizare'],
     [['turbina', 'turbo'], 'Turbo'],
@@ -91,54 +91,116 @@ function detectInternalCategory(name: string) {
   return ''
 }
 
+function mapMainOrSubToInternalCategory(main: string, sub: string) {
+  const joined = normalizeText(`${main} ${sub}`)
+  if (!joined) return ''
+
+  const rules: Array<[string[], string]> = [
+    [['electrica electronica auto', 'calculator', 'ecu', 'abs', 'electromotor', 'alternator'], 'Electrica & Electronica Auto'],
+    [['faruri stopuri lumini', 'faruri', 'stopuri'], 'Faruri stopuri lumini'],
+    [['xenon', 'balast'], 'Xenon'],
+    [['injectoare', 'pompa inalta', 'pompe injectoare'], 'Pompe si injectoare'],
+    [['frane', 'etrieri', 'discuri'], 'Frane'],
+    [['caroserie', 'portiere', 'bare', 'aripi', 'capote', 'haioane', 'oglinzi'], 'Caroserie'],
+    [['interioare auto', 'volane', 'ceasuri bord', 'tapiterie', 'airbag'], 'Interioare auto'],
+    [['transmisie', 'cutii viteze', 'planetare', 'ambreiaj', 'volanta'], 'Transmisie'],
+    [['suspensie', 'amortizoare', 'arcuri'], 'Suspensie'],
+    [['climatizare', 'compresoare clima'], 'Climatizare'],
+    [['turbo', 'turbine'], 'Turbo'],
+    [['directie', 'casete directie'], 'Directie'],
+    [['racire', 'radiatoare'], 'Racire'],
+    [['filtre auto', 'filtru'], 'Filtre auto'],
+    [['jante anvelope', 'jante', 'anvelope'], 'Jante & Anvelope'],
+    [['aprindere', 'bobine', 'bujii'], 'Aprindere'],
+  ]
+
+  for (const [needles, category] of rules) {
+    if (needles.some((n) => joined.includes(normalizeText(n)))) return category
+  }
+
+  return detectInternalCategory(`${main} ${sub}`)
+}
+
+function findBestCatalogSubcategory(catalog: PieseautoCatalog | null, desiredMain: string, desiredSub: string) {
+  const normalizedSub = normalizeText(desiredSub)
+  const mains = desiredMain ? [desiredMain, ...(catalog?.main_categories || []).filter((m) => m !== desiredMain)] : (catalog?.main_categories || [])
+
+  let best: { main: string; sub: string; score: number } = { main: '', sub: '', score: 0 }
+
+  for (const main of mains) {
+    const list = catalog?.subcategories[main] || []
+    for (const item of list) {
+      const normalizedTitle = normalizeText(item.title)
+      let score = 0
+      if (normalizedTitle === normalizedSub) score = 1000
+      else if (normalizedTitle.includes(normalizedSub) || normalizedSub.includes(normalizedTitle)) score = 700
+      else score = scoreSubcategory(desiredSub, item.title)
+
+      if (desiredMain && main === desiredMain && score > 0) score += 50
+
+      if (score > best.score) best = { main, sub: item.title, score }
+    }
+  }
+
+  return best.score > 0 ? best : { main: desiredMain || '', sub: desiredSub || '', score: 0 }
+}
+
 function detectPieseautoFromName(name: string, catalog: PieseautoCatalog | null) {
   const hay = normalizeText(name)
   if (!hay || !catalog) return { main: '', sub: '', path: '' }
 
-  const aliases: Array<[string[], string, string]> = [
-    [['calculator abs', 'modul abs'], 'Electrica & Electronica Auto', 'Calculator ABS'],
-    [['calculator airbag', 'modul airbag', 'airbag'], 'Electrica & Electronica Auto', 'Calculator airbag'],
-    [['calculator ecu', 'ecu', 'ecm', 'calculator motor'], 'Electrica & Electronica Auto', 'Calculator ECU'],
-    [['calculator frana mana', 'frana mana', 'epb'], 'Electrica & Electronica Auto', 'Calculator frana mana'],
-    [['alternator'], 'Electrica & Electronica Auto', 'Alternator'],
-    [['electromotor'], 'Electrica & Electronica Auto', 'Electromotor'],
-    [['bobina'], 'Aprindere', 'Bobine inductie'],
-    [['bujie incandescenta', 'bujii incandescente'], 'Aprindere', 'Bujii incandescente'],
-    [['etrier'], 'Frane', 'Etrieri frana'],
-    [['disc frana'], 'Frane', 'Discuri frana'],
-    [['far'], 'Faruri stopuri lumini', 'Faruri'],
-    [['stop'], 'Faruri stopuri lumini', 'Stopuri'],
-    [['balast xenon', 'xenon'], 'Xenon', 'Balast xenon'],
-    [['injector'], 'Pompe si injectoare', 'Injectoare'],
-    [['pompa inalta'], 'Pompe si injectoare', 'Pompa inalta presiune'],
-    [['compresor clima'], 'Climatizare', 'Compresoare clima'],
-    [['usa', 'portiera'], 'Caroserie', 'Portiere'],
-    [['bara fata'], 'Caroserie', 'Bare fata'],
-    [['bara spate'], 'Caroserie', 'Bare spate'],
-    [['aripa'], 'Caroserie', 'Aripi'],
-    [['capota'], 'Caroserie', 'Capote'],
-    [['haion'], 'Caroserie', 'Haioane'],
-    [['oglinda'], 'Caroserie', 'Oglinzi'],
-    [['volan'], 'Interioare auto', 'Volane'],
-    [['ceasuri bord'], 'Interioare auto', 'Ceasuri bord'],
-    [['tapiterie'], 'Interioare auto', 'Tapiterie'],
-    [['cutie viteze'], 'Transmisie', 'Cutii viteze'],
-    [['planetara'], 'Transmisie', 'Planetare'],
-    [['ambreiaj'], 'Transmisie', 'Kit ambreiaj'],
-    [['amortizor'], 'Suspensie', 'Amortizoare'],
-    [['arc'], 'Suspensie', 'Arcuri'],
-    [['caseta directie'], 'Directie', 'Casete directie'],
-    [['radiator'], 'Racire', 'Radiatoare'],
-    [['filtru ulei'], 'Filtre auto', 'Filtru ulei'],
-    [['filtru aer'], 'Filtre auto', 'Filtru aer'],
-    [['janta'], 'Jante & Anvelope', 'Jante'],
-    [['anvelopa'], 'Jante & Anvelope', 'Anvelope'],
-    [['turbina', 'turbo'], 'Turbo', 'Turbine'],
+  const aliases: Array<[string[], string, string, number]> = [
+    [['calculator frana mana', 'modul frana mana'], 'Electrica & Electronica Auto', 'Calculator frana mana', 500],
+    [['calculator airbag', 'modul airbag'], 'Electrica & Electronica Auto', 'Calculator airbag', 500],
+    [['calculator abs', 'modul abs'], 'Electrica & Electronica Auto', 'Calculator ABS', 500],
+    [['calculator ecu', 'calculator motor', 'ecm'], 'Electrica & Electronica Auto', 'Calculator ECU', 500],
+    [['volanta', 'volanta masa dubla'], 'Transmisie', 'Volanta', 480],
+    [['alternator'], 'Electrica & Electronica Auto', 'Alternator', 320],
+    [['electromotor'], 'Electrica & Electronica Auto', 'Electromotor', 320],
+    [['bobina'], 'Aprindere', 'Bobine inductie', 320],
+    [['bujie incandescenta', 'bujii incandescente'], 'Aprindere', 'Bujii incandescente', 320],
+    [['etrier'], 'Frane', 'Etrieri frana', 320],
+    [['disc frana'], 'Frane', 'Discuri frana', 320],
+    [['far'], 'Faruri stopuri lumini', 'Faruri', 300],
+    [['stop'], 'Faruri stopuri lumini', 'Stopuri', 300],
+    [['balast xenon'], 'Xenon', 'Balast xenon', 360],
+    [['injector'], 'Pompe si injectoare', 'Injectoare', 320],
+    [['pompa inalta'], 'Pompe si injectoare', 'Pompa inalta presiune', 340],
+    [['compresor clima'], 'Climatizare', 'Compresoare clima', 340],
+    [['usa', 'portiera'], 'Caroserie', 'Portiere', 300],
+    [['bara fata'], 'Caroserie', 'Bare fata', 340],
+    [['bara spate'], 'Caroserie', 'Bare spate', 340],
+    [['aripa'], 'Caroserie', 'Aripi', 300],
+    [['capota'], 'Caroserie', 'Capote', 300],
+    [['haion'], 'Caroserie', 'Haioane', 300],
+    [['oglinda'], 'Caroserie', 'Oglinzi', 300],
+    [['volan'], 'Interioare auto', 'Volane', 260],
+    [['airbag'], 'Interioare auto', 'Airbag', 220],
+    [['ceasuri bord'], 'Interioare auto', 'Ceasuri bord', 320],
+    [['tapiterie'], 'Interioare auto', 'Tapiterie', 300],
+    [['cutie viteze'], 'Transmisie', 'Cutii viteze', 320],
+    [['planetara'], 'Transmisie', 'Planetare', 320],
+    [['ambreiaj'], 'Transmisie', 'Kit ambreiaj', 320],
+    [['amortizor'], 'Suspensie', 'Amortizoare', 320],
+    [['arc'], 'Suspensie', 'Arcuri', 260],
+    [['caseta directie'], 'Directie', 'Casete directie', 320],
+    [['radiator'], 'Racire', 'Radiatoare', 320],
+    [['filtru ulei'], 'Filtre auto', 'Filtru ulei', 320],
+    [['filtru aer'], 'Filtre auto', 'Filtru aer', 320],
+    [['janta'], 'Jante & Anvelope', 'Jante', 300],
+    [['anvelopa'], 'Jante & Anvelope', 'Anvelope', 300],
+    [['turbina', 'turbo'], 'Turbo', 'Turbine', 320],
   ]
 
-  for (const [needles, main, sub] of aliases) {
-    if (needles.some((n) => hay.includes(normalizeText(n)))) {
-      return { main, sub, path: `${main} > ${sub}` }
+  let bestAlias = { main: '', sub: '', path: '', score: 0 }
+  for (const [needles, main, sub, baseScore] of aliases) {
+    for (const needle of needles) {
+      const normalizedNeedle = normalizeText(needle)
+      if (!normalizedNeedle || !hay.includes(normalizedNeedle)) continue
+      const score = baseScore + normalizedNeedle.length * 10
+      if (score > bestAlias.score) {
+        bestAlias = { main, sub, path: `${main} > ${sub}`, score }
+      }
     }
   }
 
@@ -150,6 +212,7 @@ function detectPieseautoFromName(name: string, catalog: PieseautoCatalog | null)
       if (score > best.score) best = { main, sub: sub.title, path: `${main} > ${sub.title}`, score }
     }
   }
+  if (bestAlias.score >= best.score && bestAlias.score > 0) return { main: bestAlias.main, sub: bestAlias.sub, path: bestAlias.path }
   if (best.score > 0) return { main: best.main, sub: best.sub, path: best.path }
 
   const mainOnly = detectInternalCategory(name)
@@ -384,12 +447,17 @@ export default function Page() {
     let nextSelected = selected
     const detected = detectPieseautoFromName(selected.denumire || '', catalog)
     if ((!manualCategoryEdited || !selected.pieseauto_main_category) && detected.main) {
+      const matched = findBestCatalogSubcategory(catalog, detected.main || '', detected.sub || '')
+      const resolvedMain = matched.main || detected.main || ''
+      const resolvedSub = matched.sub || detected.sub || ''
+      const resolvedCategory = mapMainOrSubToInternalCategory(resolvedMain, resolvedSub)
+
       nextSelected = {
         ...selected,
-        categorie: selected.categorie || detectInternalCategory(selected.denumire || ''),
-        pieseauto_main_category: detected.main,
-        pieseauto_subcategory: detected.sub || '',
-        pieseauto_category_path: detected.path || detected.main,
+        categorie: resolvedCategory || selected.categorie,
+        pieseauto_main_category: resolvedMain || null,
+        pieseauto_subcategory: resolvedSub || '',
+        pieseauto_category_path: resolvedMain && resolvedSub ? `${resolvedMain} > ${resolvedSub}` : (detected.path || resolvedMain),
       }
       setSelected(nextSelected)
       setPiese((prev) => prev.map((p) => p.id === nextSelected.id ? nextSelected : p))
@@ -694,20 +762,16 @@ export default function Page() {
                     onChange={(value) => {
                       setManualCategoryEdited(true)
 
-                      let mainFound = ''
-                      for (const main of catalog?.main_categories || []) {
-                        const list = catalog?.subcategories[main] || []
-                        if (list.find((x) => x.title === value)) {
-                          mainFound = main
-                          break
-                        }
-                      }
-
-                      const path = mainFound ? `${mainFound} > ${value}` : value
+                      const matched = findBestCatalogSubcategory(catalog, '', value)
+                      const mainFound = matched.main || ''
+                      const resolvedSub = matched.sub || value
+                      const path = mainFound && resolvedSub ? `${mainFound} > ${resolvedSub}` : resolvedSub
+                      const internalCategory = mapMainOrSubToInternalCategory(mainFound, resolvedSub)
                       const updated = {
                         ...selected,
+                        categorie: internalCategory || selected.categorie,
                         pieseauto_main_category: mainFound || null,
-                        pieseauto_subcategory: value,
+                        pieseauto_subcategory: resolvedSub,
                         pieseauto_category_path: path,
                       }
 

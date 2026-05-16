@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 type Piesa = {
@@ -238,6 +239,10 @@ async function rotateImageFileFromUrl(imageUrl: string, degrees: 90 | -90) {
 }
 
 export default function Page() {
+  const router = useRouter()
+  const [authLoading, setAuthLoading] = useState(true)
+  const [userEmail, setUserEmail] = useState<string | null>(null)
+
   const [piese, setPiese] = useState<Piesa[]>([])
   const [selected, setSelected] = useState<Piesa | null>(null)
   const [loading, setLoading] = useState(true)
@@ -288,12 +293,34 @@ export default function Page() {
   }
 
   useEffect(() => {
-    loadPiese(false)
+    verificaLogin()
+  }, [])
+
+  async function verificaLogin() {
+    const { data } = await supabase.auth.getSession()
+
+    if (!data.session) {
+      router.push('/login')
+      return
+    }
+
+    setUserEmail(data.session.user.email || null)
+    setAuthLoading(false)
+  }
+
+  async function logout() {
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
+  useEffect(() => {
+    if (!authLoading && userEmail) {
+      loadPiese(false)
+    }
     fetch('/pieseauto_categories_public.json')
       .then((r) => r.json())
       .then((data) => setCatalog(data))
       .catch(() => setCatalog({ main_categories: [], subcategories: {} }))
-  }, [])
+  }, [authLoading, userEmail])
 
   useEffect(() => {
     const updateViewport = () => setViewport({ width: window.innerWidth, height: window.innerHeight })
@@ -627,6 +654,166 @@ export default function Page() {
 
   const valoareStoc = useMemo(() => piese.reduce((sum, p) => sum + (p.pret || 0) * (p.cantitate || 0), 0), [piese])
 
+
+  function escapeCsv(value: unknown) {
+    const text = String(value ?? '').replace(/\r?\n/g, ' ').trim()
+    return `"${text.replace(/"/g, '""')}"`
+  }
+
+  function cleanCsvText(value: unknown) {
+    return String(value ?? '')
+      .replace(/\r?\n/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+  }
+
+  function buildPieseautoCsvTitle(p: Piesa) {
+    const titlu = [p.denumire, p.masina, p.cod_piesa]
+      .map(cleanCsvText)
+      .filter(Boolean)
+      .join(' ')
+      .trim()
+
+    return titlu || cleanCsvText(p.cdp) || 'Piesa auto'
+  }
+
+  function buildPieseautoCsvDescription(p: Piesa, titlu: string) {
+    const linii = [
+      cleanCsvText(titlu),
+      p.cod_piesa ? `Cod piesa: ${cleanCsvText(p.cod_piesa)}` : '',
+      p.cdp ? `Cod intern / Referinta: ${cleanCsvText(p.cdp)}` : '',
+      p.masina ? `Masina: ${cleanCsvText(p.masina)}` : '',
+      p.compatibilitate ? `Compatibilitate: ${cleanCsvText(p.compatibilitate)}` : '',
+      p.descriere ? `Observatii: ${cleanCsvText(p.descriere)}` : '',
+      'Piesa provenita din dezmembrari auto.',
+      'Este verificata si testata inainte de demontare.',
+      'Se vinde exact piesa din imagini. Pozele sunt reale.',
+      'Se ofera factura si garantie pentru orice piesa.',
+      'Posibilitate retur in termen de 14 zile, in conditii simple.',
+      'Livrare prin curier rapid oriunde in tara.',
+      'Pentru detalii suplimentare nu ezitati sa ne contactati.',
+    ].filter(Boolean)
+
+    return linii.join('<br/><br/>')
+  }
+
+  function exportaCsvStoc() {
+    // Format pentru import pieseauto.ro: 0;1;2;3;4;5;6;7;8
+    // Categoria este intenționat hardcodată la toate produsele: Dezmembrari Auto
+    const header = '0;1;2;3;4;5;6;7;8'
+
+    const randuri = pieseFiltrateSiSortate.map((p) => {
+      const titlu = buildPieseautoCsvTitle(p)
+      const descriere = buildPieseautoCsvDescription(p, titlu)
+      const urls = (p.poze || []).filter(Boolean).join('[,]')
+
+      return [
+        p.cdp || '',
+        titlu,
+        'Dezmembrari Auto',
+        descriere,
+        'Lei',
+        Number(p.pret || 0).toFixed(2),
+        p.cantitate || 1,
+        urls,
+        'second hand',
+      ]
+    })
+
+    const csv = [
+      header,
+      ...randuri.map((row) => row.map(escapeCsv).join(';')),
+    ].join('\n')
+
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `pieseauto-pieseapp-${new Date().toISOString().slice(0, 10)}.csv`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }
+
+  function escapeHtml(value: unknown) {
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;')
+  }
+
+  function exportaPdfStoc() {
+    const valoareExport = pieseFiltrateSiSortate.reduce((sum, p) => sum + (p.pret || 0) * (p.cantitate || 0), 0)
+    const rows = pieseFiltrateSiSortate.map((p) => `
+      <tr>
+        <td><b>${escapeHtml(p.cdp)}</b></td>
+        <td>${escapeHtml(p.cod_piesa || '-')}</td>
+        <td>${escapeHtml(p.denumire || '-')}</td>
+        <td>${escapeHtml(p.categorie || '-')}</td>
+        <td>${escapeHtml(p.masina || '-')}</td>
+        <td>${escapeHtml(p.raft || '-')}</td>
+        <td>${escapeHtml([p.vin || '', p.cod_culoare || ''].filter(Boolean).join(' / ') || '-')}</td>
+        <td class="right">${(p.pret || 0).toFixed(0)}</td>
+        <td class="right">${p.cantitate || 0}</td>
+        <td class="right"><b>${((p.pret || 0) * (p.cantitate || 0)).toFixed(0)}</b></td>
+      </tr>
+    `).join('')
+
+    const html = `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>PieseApp - Stoc</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; color: #111827; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111827; padding-bottom: 12px; margin-bottom: 16px; }
+    h1 { margin: 0; font-size: 22px; }
+    .meta { font-size: 12px; color: #475467; line-height: 1.5; text-align: right; }
+    table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    th { background: #eef2f6; text-align: left; padding: 7px 6px; border: 1px solid #cfd8e3; }
+    td { padding: 6px; border: 1px solid #d8dee5; vertical-align: top; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .right { text-align: right; white-space: nowrap; }
+    .total { margin-top: 14px; text-align: right; font-size: 14px; font-weight: 700; }
+    @media print { body { margin: 12mm; } button { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>PieseApp - Stoc piese</h1>
+      <div style="font-size:12px;color:#475467;margin-top:6px;">Export generat din lista curentă / filtrată</div>
+    </div>
+    <div class="meta">
+      Data: ${new Date().toLocaleString('ro-RO')}<br />
+      Piese: <b>${pieseFiltrateSiSortate.length}</b><br />
+      Valoare stoc: <b>${valoareExport.toFixed(2)} RON</b>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>CDP</th><th>Cod piesă</th><th>Denumire</th><th>Categorie</th><th>Mașină</th><th>Raft</th><th>VIN / culoare</th><th>Preț</th><th>Cant.</th><th>Valoare</th></tr>
+    </thead>
+    <tbody>${rows || '<tr><td colspan="10">Nu există piese de exportat.</td></tr>'}</tbody>
+  </table>
+  <div class="total">Total: ${valoareExport.toFixed(2)} RON</div>
+  <script>window.onload = () => { window.print(); }</script>
+</body>
+</html>`
+
+    const printWindow = window.open('', '_blank')
+    if (!printWindow) {
+      alert('Browserul a blocat fereastra de print/PDF. Permite pop-up pentru localhost.')
+      return
+    }
+    printWindow.document.open()
+    printWindow.document.write(html)
+    printWindow.document.close()
+  }
+
   const allPieseautoSubcategories = useMemo(() => {
     return Object.values(catalog?.subcategories || {})
       .flat()
@@ -674,7 +861,19 @@ export default function Page() {
           <option value="toate">Toate piesele</option><option value="in_stoc">Doar în stoc</option><option value="stoc_zero">Doar stoc 0</option>
         </select>
         <button onClick={handlePiesaNoua} disabled={creating} style={primaryBtn}>{creating ? 'Se creează...' : '+ Piesă nouă'}</button>
+        <button onClick={exportaCsvStoc} style={exportBtn}>Exportă CSV</button>
+        <button onClick={exportaPdfStoc} style={exportBtn}>Exportă PDF</button>
         <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#475467' }}>Piese: <b>{piese.length}</b> | Valoare stoc: <b>{valoareStoc.toFixed(2)} RON</b></div>
+
+        <div className="flex items-center gap-2">
+          <div className="text-xs text-gray-500">{userEmail}</div>
+          <button
+            onClick={logout}
+            className="px-3 py-2 rounded border bg-red-500 text-white text-sm hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       <div style={{ minHeight: 0, display: 'grid', gridTemplateColumns: '54% 46%', gap: '12px', padding: '12px' }}>
@@ -687,7 +886,8 @@ export default function Page() {
           </div>
           <div style={{ overflowY: 'auto', minHeight: 0 }}>
             {loading ? <div style={{ padding: '12px', fontSize: '12px' }}>Se încarcă...</div> : paginatedPiese.length === 0 ? <div style={{ padding: '12px', fontSize: '12px' }}>Nu există piese</div> : paginatedPiese.map((p) => (
-              <div key={p.id} onClick={() => { setSelected(p); setSelectedPoza(p.poze?.[0] || null) }} onMouseEnter={(e) => handleRowMouseEnter(p, e)} onMouseMove={handleRowMouseMove} onMouseLeave={handleRowMouseLeave} style={{ display: 'grid', gridTemplateColumns: '86px 120px 1fr 130px 120px 72px 110px 70px', gap: '6px', padding: '7px 8px', borderBottom: '1px solid #edf1f5', cursor: 'pointer', background: getRowBackground(p), alignItems: 'center', fontSize: '11px' }}>
+              <div key={p.id} onClick={() => { setSelected(p)
+    setSelectedPoza((p.poze && p.poze.length > 0) ? p.poze[0] : null); setSelectedPoza(p.poze?.[0] || null) }} onMouseEnter={(e) => handleRowMouseEnter(p, e)} onMouseMove={handleRowMouseMove} onMouseLeave={handleRowMouseLeave} style={{ display: 'grid', gridTemplateColumns: '86px 120px 1fr 130px 120px 72px 110px 70px', gap: '6px', padding: '7px 8px', borderBottom: '1px solid #edf1f5', cursor: 'pointer', background: getRowBackground(p), alignItems: 'center', fontSize: '11px' }}>
                 <Cell strong>{p.cdp}</Cell>
                 <Cell title={p.cod_piesa || ''}>{p.cod_piesa || '-'}</Cell>
                 <Cell strong title={p.denumire}>{p.denumire}</Cell>
@@ -869,9 +1069,12 @@ type CampProps = {
 }
 
 function Camp({ label, value, onChange, onBlur, type = 'text', disabled = false, asSelect = false, options = [] }: CampProps) {
+
+
+
   return (
     <div>
-      <div style={{ marginBottom: '6px', fontWeight: 700, fontSize: '12px', color: '#344054' }}>{label}</div>
+<div style={{ marginBottom: '6px', fontWeight: 700, fontSize: '12px', color: '#344054' }}>{label}</div>
       {asSelect ? (
         <select value={value} onChange={(e) => onChange(e.target.value)} onBlur={onBlur} disabled={disabled} style={{ width: '100%', padding: '9px 10px', border: '1px solid #c9d3dd', borderRadius: '8px', background: disabled ? '#f5f7fa' : '#fff', fontSize: '12px' }}>
           <option value="">Selectează</option>
@@ -887,6 +1090,7 @@ function Camp({ label, value, onChange, onBlur, type = 'text', disabled = false,
 const topInputStyle: React.CSSProperties = { minWidth: '320px', flex: 1, maxWidth: '650px', padding: '10px 12px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#fff', fontSize: '13px' }
 const topSelectStyle: React.CSSProperties = { padding: '10px 12px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#fff', fontSize: '13px' }
 const primaryBtn: React.CSSProperties = { padding: '10px 14px', cursor: 'pointer', border: '1px solid #2e6ee6', background: '#2f80ed', color: '#fff', borderRadius: '10px', fontWeight: 700, fontSize: '13px' }
+const exportBtn: React.CSSProperties = { padding: '10px 13px', cursor: 'pointer', border: '1px solid #b8c4d2', background: '#f8fafc', color: '#344054', borderRadius: '10px', fontWeight: 700, fontSize: '13px' }
 const smallPrimaryBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #2e6ee6', background: '#2f80ed', color: '#fff', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
 const smallSellBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #f59e0b', background: '#fff7ed', color: '#b45309', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
 const smallSecondaryBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #c9d3dd', background: '#fff', color: '#344054', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }

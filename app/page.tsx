@@ -849,7 +849,7 @@ export default function Page() {
 
   return (
     <main style={{ height: '100vh', overflow: 'hidden', display: 'grid', gridTemplateRows: 'auto 1fr', fontFamily: 'Arial, sans-serif', background: '#eef2f6' }}>
-      <div style={{ padding: '12px 16px', borderBottom: '1px solid #d8dee5', background: '#fff', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div style={{ padding: '12px 16px', borderBottom: '1px solid #d8dee5', background: '#ffffff', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
         <div style={{ fontSize: '18px', fontWeight: 700 }}>PieseApp</div>
         <input type="text" placeholder="Caută: CDP / cod / denumire / categorie / mașină / VIN / cod culoare" value={search} onChange={(e) => { setSearch(e.target.value); setCurrentPage(1) }} style={topInputStyle} />
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortOption)} style={topSelectStyle}>
@@ -863,7 +863,7 @@ export default function Page() {
         <button onClick={handlePiesaNoua} disabled={creating} style={primaryBtn}>{creating ? 'Se creează...' : '+ Piesă nouă'}</button>
         <button onClick={exportaCsvStoc} style={exportBtn}>Exportă CSV</button>
         <button onClick={exportaPdfStoc} style={exportBtn}>Exportă PDF</button>
-        <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#475467' }}>Piese: <b>{piese.length}</b> | Valoare stoc: <b>{valoareStoc.toFixed(2)} RON</b></div>
+        <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#1f2937' }}>Piese: <b>{piese.length}</b> | Valoare stoc: <b>{valoareStoc.toFixed(2)} RON</b></div>
 
         <div className="flex items-center gap-2">
           <div className="text-xs text-gray-500">{userEmail}</div>
@@ -877,7 +877,7 @@ export default function Page() {
       </div>
 
       <div style={{ minHeight: 0, display: 'grid', gridTemplateColumns: '54% 46%', gap: '12px', padding: '12px' }}>
-        <div style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto auto 1fr auto', background: '#fff', border: '1px solid #d8dee5', borderRadius: '12px', overflow: 'hidden' }}>
+        <div style={{ minHeight: 0, display: 'grid', gridTemplateRows: 'auto auto 1fr auto', background: '#ffffff', border: '1px solid #d8dee5', borderRadius: '12px', overflow: 'hidden' }}>
           <div style={{ padding: '10px 12px', borderBottom: '1px solid #d8dee5', background: '#f8fafc', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px', fontWeight: 700 }}>
             <span>Lista piese</span><span>{pieseFiltrateSiSortate.length} rezultate</span>
           </div>
@@ -899,25 +899,25 @@ export default function Page() {
               </div>
             ))}
           </div>
-          <div style={{ borderTop: '1px solid #d8dee5', background: '#fff', padding: '8px 10px', display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ borderTop: '1px solid #d8dee5', background: '#ffffff', padding: '8px 10px', display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
             <button onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1} style={pagerBtn}>‹</button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).slice(Math.max(0, currentPage - 4), Math.max(0, currentPage - 4) + 8).map((page) => (
               <button key={page} onClick={() => setCurrentPage(page)} style={{ ...pagerBtn, background: currentPage === page ? '#2f80ed' : '#fff', color: currentPage === page ? '#fff' : '#344054', borderColor: currentPage === page ? '#2f80ed' : '#d0d7de' }}>{page}</button>
             ))}
             <button onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} style={pagerBtn}>›</button>
-            <div style={{ marginLeft: '8px', fontSize: '11px', color: '#667085' }}>Pagina {currentPage} / {totalPages}</div>
+            <div style={{ marginLeft: '8px', fontSize: '11px', color: '#344054' }}>Pagina {currentPage} / {totalPages}</div>
           </div>
         </div>
 
         <div style={{ minHeight: 0, overflow: 'hidden' }}>
           {!selected ? (
-            <div style={{ background: '#fff', border: '1px solid #d8dee5', borderRadius: '12px', padding: '18px', fontSize: '13px' }}>Selectează o piesă</div>
+            <div style={{ background: '#ffffff', border: '1px solid #d8dee5', borderRadius: '12px', padding: '18px', fontSize: '13px' }}>Selectează o piesă</div>
           ) : (
             <div style={{ position: 'sticky', top: 0, height: 'calc(100vh - 92px)', minHeight: 0, overflowY: 'auto', paddingRight: '4px', display: 'grid', gridTemplateRows: 'auto auto auto auto auto', gap: '8px' }}>
               <div style={cardStyle}>
                 <div style={{ display: 'grid', gridTemplateColumns: '300px minmax(0, 1fr)', gap: '12px', alignItems: 'start' }}>
                   <div onMouseEnter={() => setHoverPreview(true)} onMouseLeave={() => setHoverPreview(false)} style={{ width: '300px', height: '224px', borderRadius: '10px', overflow: 'hidden', border: '1px solid #d8dee5', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: selectedPoza ? 'zoom-in' : 'default', position: 'relative' }}>
-                    {selectedPoza ? <img src={selectedPoza} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#f8fafc' }} /> : <div style={{ fontSize: '11px', color: '#667085' }}>Fără poză</div>}
+                    {selectedPoza ? <img src={selectedPoza} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#f8fafc' }} /> : <div style={{ fontSize: '11px', color: '#344054' }}>Fără poză</div>}
                   </div>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
@@ -928,15 +928,15 @@ export default function Page() {
                     </div>
                     <div style={{ fontSize: '15px', fontWeight: 700, marginTop: '6px' }}>{selected.cod_piesa || '-'}</div>
                     <div style={{ fontSize: '14px', marginTop: '6px', fontWeight: 700 }}>{selected.denumire || '-'}</div>
-                    <div style={{ fontSize: '12px', color: '#667085', marginTop: '4px' }}>{selected.masina || '-'}</div>
-                    <div style={{ fontSize: '11px', color: '#667085', marginTop: '6px' }}>{autosaveStatus}</div>
+                    <div style={{ fontSize: '12px', color: '#344054', marginTop: '4px' }}>{selected.masina || '-'}</div>
+                    <div style={{ fontSize: '11px', color: '#344054', marginTop: '6px' }}>{autosaveStatus}</div>
                     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '12px' }}>
                       <button onClick={() => handleRotateSelected(-90)} disabled={!selectedPoza || rotating} style={smallSecondaryBtn}>{rotating ? 'Se rotește...' : '↺ Rotire stânga'}</button>
                       <button onClick={() => handleRotateSelected(90)} disabled={!selectedPoza || rotating} style={smallSecondaryBtn}>{rotating ? 'Se rotește...' : 'Rotire dreapta ↻'}</button>
                     </div>
                   </div>
                 </div>
-                {hoverPreview && selectedPoza && <div style={{ position: 'fixed', top: '80px', right: '20px', width: '600px', height: '600px', background: '#fff', border: '1px solid #d8dee5', borderRadius: '12px', boxShadow: '0 18px 40px rgba(0,0,0,0.18)', padding: '10px', zIndex: 9999 }}><img src={selectedPoza} alt="preview mare" style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px', background: '#f8fafc' }} /></div>}
+                {hoverPreview && selectedPoza && <div style={{ position: 'fixed', top: '80px', right: '20px', width: '600px', height: '600px', background: '#ffffff', border: '1px solid #d8dee5', borderRadius: '12px', boxShadow: '0 18px 40px rgba(0,0,0,0.18)', padding: '10px', zIndex: 9999 }}><img src={selectedPoza} alt="preview mare" style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px', background: '#f8fafc' }} /></div>}
               </div>
 
               <div style={cardStyle}>
@@ -988,7 +988,7 @@ export default function Page() {
                   <Camp label="Cantitate" type="number" value={String(selected.cantitate ?? 1)} onChange={(value) => updateSelectedField('cantitate', value === '' ? 1 : Number(value))} onBlur={saveSelectedOnBlur} />
                   <Camp label="Preț" type="number" value={String(selected.pret ?? 0)} onChange={(value) => updateSelectedField('pret', value === '' ? 0 : Number(value))} onBlur={saveSelectedOnBlur} />
                 </div>
-                <div style={{ marginTop: '10px', fontSize: '12px', color: '#667085', fontWeight: 700 }}>Path categorie: {selected.pieseauto_category_path || '-'}</div>
+                <div style={{ marginTop: '10px', fontSize: '12px', color: '#344054', fontWeight: 700 }}>Path categorie: {selected.pieseauto_category_path || '-'}</div>
               </div>
 
               <div style={cardStyle}>
@@ -998,11 +998,11 @@ export default function Page() {
                     <input type="file" accept="image/*" multiple onChange={handlePozaUpload} style={{ display: 'none' }} />
                     + Adaugă poze
                   </label>
-                  {uploading && <div style={{ marginTop: '8px', fontSize: '12px', color: '#475467' }}>Se încarcă pozele...</div>}
+                  {uploading && <div style={{ marginTop: '8px', fontSize: '12px', color: '#1f2937' }}>Se încarcă pozele...</div>}
                 </div>
                 <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '4px' }}>
                   {(selected.poze || []).map((poza, index) => (
-                    <div key={index} onClick={() => setSelectedPoza(poza)} style={{ minWidth: '98px', width: '98px', border: selectedPoza === poza ? '2px solid #3b82f6' : '1px solid #d0d7de', borderRadius: '8px', padding: '4px', background: '#fff', cursor: 'pointer', position: 'relative' }}>
+                    <div key={index} onClick={() => setSelectedPoza(poza)} style={{ minWidth: '98px', width: '98px', border: selectedPoza === poza ? '2px solid #3b82f6' : '1px solid #d0d7de', borderRadius: '8px', padding: '4px', background: '#ffffff', cursor: 'pointer', position: 'relative' }}>
                       <img src={poza} alt={`poza-${index}`} style={{ width: '88px', height: '72px', objectFit: 'cover', borderRadius: '6px', display: 'block' }} />
                       <button onClick={(e) => { e.stopPropagation(); handleStergePoza(poza) }} disabled={deletingPhoto === poza} style={{ position: 'absolute', top: '6px', right: '6px', width: '22px', height: '22px', borderRadius: '50%', border: 'none', background: '#d11a2a', color: '#fff', cursor: 'pointer', fontWeight: 700, fontSize: '11px' }} title="Șterge poza">{deletingPhoto === poza ? '...' : 'X'}</button>
                     </div>
@@ -1020,16 +1020,16 @@ export default function Page() {
       </div>
 
       {hoverCardVisible && hoveredPiesa && (
-        <div style={{ position: 'fixed', left: Math.min(hoverCardPos.x, viewport.width - 310), top: Math.min(hoverCardPos.y, viewport.height - 170), width: '290px', background: '#fff', border: '1px solid #d8dee5', borderRadius: '12px', boxShadow: '0 14px 28px rgba(0,0,0,0.16)', padding: '10px', zIndex: 9998, pointerEvents: 'none' }}>
+        <div style={{ position: 'fixed', left: Math.min(hoverCardPos.x, viewport.width - 310), top: Math.min(hoverCardPos.y, viewport.height - 170), width: '290px', background: '#ffffff', border: '1px solid #d8dee5', borderRadius: '12px', boxShadow: '0 14px 28px rgba(0,0,0,0.16)', padding: '10px', zIndex: 9998, pointerEvents: 'none' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '92px 1fr', gap: '10px' }}>
             <div style={{ width: '92px', height: '76px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #d8dee5', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {hoveredPiesa.poze?.[0] ? <img src={hoveredPiesa.poze[0]} alt="preview mic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ fontSize: '11px', color: '#667085' }}>Fără poză</div>}
+              {hoveredPiesa.poze?.[0] ? <img src={hoveredPiesa.poze[0]} alt="preview mic" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ fontSize: '11px', color: '#344054' }}>Fără poză</div>}
             </div>
             <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: '14px', fontWeight: 700 }}>{hoveredPiesa.cdp}</div>
               <div style={{ fontSize: '12px', fontWeight: 700, marginTop: '2px' }}>{hoveredPiesa.cod_piesa || '-'}</div>
               <div style={{ fontSize: '12px', marginTop: '4px', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{hoveredPiesa.denumire || '-'}</div>
-              <div style={{ fontSize: '11px', color: '#667085', marginTop: '6px', lineHeight: 1.4 }}>Mașină: {hoveredPiesa.masina || '-'}<br />Raft: {hoveredPiesa.raft || '-'} | Preț: {(hoveredPiesa.pret || 0).toFixed(0)} RON</div>
+              <div style={{ fontSize: '11px', color: '#344054', marginTop: '6px', lineHeight: 1.4 }}>Mașină: {hoveredPiesa.masina || '-'}<br />Raft: {hoveredPiesa.raft || '-'} | Preț: {(hoveredPiesa.pret || 0).toFixed(0)} RON</div>
             </div>
           </div>
         </div>
@@ -1087,16 +1087,16 @@ function Camp({ label, value, onChange, onBlur, type = 'text', disabled = false,
   )
 }
 
-const topInputStyle: React.CSSProperties = { minWidth: '320px', flex: 1, maxWidth: '650px', padding: '10px 12px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#fff', fontSize: '13px' }
-const topSelectStyle: React.CSSProperties = { padding: '10px 12px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#fff', fontSize: '13px' }
+const topInputStyle: React.CSSProperties = { minWidth: '320px', flex: 1, maxWidth: '650px', padding: '10px 12px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#ffffff', fontSize: '13px' }
+const topSelectStyle: React.CSSProperties = { padding: '10px 12px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#ffffff', fontSize: '13px' }
 const primaryBtn: React.CSSProperties = { padding: '10px 14px', cursor: 'pointer', border: '1px solid #2e6ee6', background: '#2f80ed', color: '#fff', borderRadius: '10px', fontWeight: 700, fontSize: '13px' }
 const exportBtn: React.CSSProperties = { padding: '10px 13px', cursor: 'pointer', border: '1px solid #b8c4d2', background: '#f8fafc', color: '#344054', borderRadius: '10px', fontWeight: 700, fontSize: '13px' }
 const smallPrimaryBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #2e6ee6', background: '#2f80ed', color: '#fff', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
 const smallSellBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #f59e0b', background: '#fff7ed', color: '#b45309', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
-const smallSecondaryBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #c9d3dd', background: '#fff', color: '#344054', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
+const smallSecondaryBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #c9d3dd', background: '#ffffff', color: '#344054', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
 const smallDangerBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #f1b5bb', background: '#fff5f5', color: '#b42318', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
-const pagerBtn: React.CSSProperties = { minWidth: '30px', height: '30px', padding: '0 8px', cursor: 'pointer', border: '1px solid #d0d7de', background: '#fff', color: '#344054', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
-const cardStyle: React.CSSProperties = { background: '#fff', border: '1px solid #d8dee5', borderRadius: '12px', padding: '12px' }
+const pagerBtn: React.CSSProperties = { minWidth: '30px', height: '30px', padding: '0 8px', cursor: 'pointer', border: '1px solid #d0d7de', background: '#ffffff', color: '#344054', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
+const cardStyle: React.CSSProperties = { background: '#ffffff', border: '1px solid #d8dee5', borderRadius: '12px', padding: '12px' }
 const formGrid: React.CSSProperties = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }
 const textareaStyle: React.CSSProperties = { width: '100%', minHeight: '180px', padding: '10px', border: '1px solid #c9d3dd', borderRadius: '8px', resize: 'vertical', fontSize: '12px' }
-const uploadLabelStyle: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minHeight: '40px', padding: '0 14px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#fff', color: '#344054', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }
+const uploadLabelStyle: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minHeight: '40px', padding: '0 14px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#ffffff', color: '#344054', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }

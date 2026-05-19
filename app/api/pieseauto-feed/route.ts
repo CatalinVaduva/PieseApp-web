@@ -13,6 +13,39 @@ function csvEscape(value: any) {
   return `"${text.replace(/"/g, '""')}"`;
 }
 
+function cleanText(value: any) {
+  return String(value ?? "")
+    .replace(/\r/g, " ")
+    .replace(/\n/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildAnuntTitle(p: any) {
+  return [
+    cleanText(p.denumire),
+    cleanText(p.masina),
+    cleanText(p.cod_piesa),
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function buildAnuntDescription(p: any) {
+  const chunks = [
+    cleanText(p.denumire) ? `Denumire: ${cleanText(p.denumire)}` : "",
+    cleanText(p.masina) ? `Masina: ${cleanText(p.masina)}` : "",
+    cleanText(p.cod_piesa) ? `Cod piesa: ${cleanText(p.cod_piesa)}` : "",
+    cleanText(p.compatibilitate) ? `Compatibilitate: ${cleanText(p.compatibilitate)}` : "",
+    cleanText(p.observatii) ? `Observatii: ${cleanText(p.observatii)}` : "",
+  ].filter(Boolean);
+
+  chunks.push("Se oferă factură și garanție.");
+  chunks.push("Retur în 14 zile.");
+
+  return chunks.join(" | ");
+}
+
 function getPhotoUrls(p: any) {
   if (Array.isArray(p.poze)) return p.poze.filter(Boolean).join(" [,] ");
   if (Array.isArray(p.imagini)) return p.imagini.filter(Boolean).join(" [,] ");
@@ -53,9 +86,9 @@ export async function GET(req: Request) {
 
   const rows = (data ?? []).map((p: any) => [
     csvEscape(p.cdp),
-    csvEscape(p.denumire),
+    csvEscape(buildAnuntTitle(p)),
     csvEscape(p.pieseauto_subcategory || p.pieseauto_main_category || p.categorie || ""),
-    csvEscape(p.descriere || p.observatii || ""),
+    csvEscape(buildAnuntDescription(p)),
     csvEscape("RON"),
     csvEscape(p.pret),
     csvEscape(p.cantitate),

@@ -13,6 +13,14 @@ function csvEscape(value: any) {
   return `"${text.replace(/"/g, '""')}"`;
 }
 
+function getPhotoUrls(p: any) {
+  if (Array.isArray(p.poze)) return p.poze.filter(Boolean).join(" [,] ");
+  if (Array.isArray(p.imagini)) return p.imagini.filter(Boolean).join(" [,] ");
+  if (typeof p.poze === "string") return p.poze;
+  if (typeof p.url === "string") return p.url;
+  return "";
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const key = searchParams.get("key");
@@ -25,7 +33,7 @@ export async function GET(req: Request) {
     .from("piese")
     .select("*")
     .gt("pret", 0)
-    .gt("stoc", 0)
+    .gt("cantitate", 0)
     .order("cdp", { ascending: true });
 
   if (error) {
@@ -46,12 +54,12 @@ export async function GET(req: Request) {
   const rows = (data ?? []).map((p: any) => [
     csvEscape(p.cdp),
     csvEscape(p.denumire),
-    csvEscape(p.categorie || p.categorie_pieseauto || ""),
+    csvEscape(p.pieseauto_subcategory || p.pieseauto_main_category || p.categorie || ""),
     csvEscape(p.descriere || p.observatii || ""),
     csvEscape("RON"),
     csvEscape(p.pret),
-    csvEscape(p.stoc),
-    csvEscape(Array.isArray(p.imagini) ? p.imagini.join(" [,] ") : p.url || ""),
+    csvEscape(p.cantitate),
+    csvEscape(getPhotoUrls(p)),
   ]);
 
   const csv = [

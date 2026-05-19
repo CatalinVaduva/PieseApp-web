@@ -87,7 +87,7 @@ export async function GET(req: Request) {
   const rows = (data ?? []).map((p: any) => [
     csvEscape(p.cdp),
     csvEscape(buildAnuntTitle(p)),
-    csvEscape(p.pieseauto_subcategory || p.pieseauto_main_category || p.categorie || ""),
+    csvEscape("Dezmembrari auto"),
     csvEscape(buildAnuntDescription(p)),
     csvEscape("RON"),
     csvEscape(p.pret),

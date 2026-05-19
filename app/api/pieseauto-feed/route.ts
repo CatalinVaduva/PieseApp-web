@@ -43,7 +43,17 @@ function buildAnuntDescription(p: any) {
   chunks.push("Se oferă factură și garanție.");
   chunks.push("Retur în 14 zile.");
 
-  return chunks.join(" | ");
+  return chunks.join("<br><br>");
+}
+
+function buildCategoryKey(p: any) {
+  const category =
+    cleanText(p.categorie) ||
+    cleanText(p.pieseauto_subcategory) ||
+    cleanText(p.pieseauto_main_category) ||
+    cleanText(p.denumire);
+
+  return category || "Dezmembrari auto";
 }
 
 function getPhotoUrls(p: any) {
@@ -87,7 +97,7 @@ export async function GET(req: Request) {
   const rows = (data ?? []).map((p: any) => [
     csvEscape(p.cdp),
     csvEscape(buildAnuntTitle(p)),
-    csvEscape("Dezmembrari auto"),
+    csvEscape(buildCategoryKey(p)),
     csvEscape(buildAnuntDescription(p)),
     csvEscape("RON"),
     csvEscape(p.pret),

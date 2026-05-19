@@ -47,13 +47,9 @@ function buildAnuntDescription(p: any) {
 }
 
 function buildCategoryKey(p: any) {
-  const category =
-    cleanText(p.categorie) ||
-    cleanText(p.pieseauto_subcategory) ||
-    cleanText(p.pieseauto_main_category) ||
-    cleanText(p.denumire);
-
-  return category || "Dezmembrari auto";
+  // Pentru importul CSV pe pieseauto.ro, categoria trimisa este numele piesei.
+  // Asa maparea categoriilor se face dupa tipul piesei, nu dupa categoriile vechi/random din PieseApp.
+  return cleanText(p.denumire) || "Dezmembrari auto";
 }
 
 function getPhotoUrls(p: any) {

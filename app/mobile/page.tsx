@@ -52,6 +52,7 @@ export default function MobilePage() {
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState('Poți face poze una câte una sau alege mai multe din galerie.')
   const [createdCdp, setCreatedCdp] = useState<string | null>(null)
+  const [raft, setRaft] = useState('')
   const [galleryInputKey, setGalleryInputKey] = useState(1)
 
   const galleryInputRef = useRef<HTMLInputElement | null>(null)
@@ -173,7 +174,7 @@ export default function MobilePage() {
     return String(data)
   }
 
-  async function createDraftWithRetry(maxRetries = 3) {
+  async function createDraftWithRetry(raftValue: string, maxRetries = 3) {
     let lastError: any = null
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
@@ -195,7 +196,7 @@ export default function MobilePage() {
               descriere: null,
               draft: true,
               poze: [],
-              raft: null,
+              raft: raftValue.trim() || null,
               vin: null,
               cod_culoare: null,
             },
@@ -258,7 +259,8 @@ export default function MobilePage() {
 
     try {
       setStatus('Se creează draftul...')
-      const inserted = await createDraftWithRetry()
+      const raftCurat = raft.trim()
+      const inserted = await createDraftWithRetry(raftCurat)
 
       const urls = await uploadPhotosDirect(
         inserted.cdp,
@@ -279,7 +281,7 @@ export default function MobilePage() {
       setPhotos(Array.from({ length: MAX_FILES }, () => null))
       resetGalleryInput()
       setCreatedCdp(inserted.cdp)
-      setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze`)
+      setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze${raftCurat ? ` · raft ${raftCurat}` : ''}`)
     } catch (err: any) {
       const message = String(err?.message || 'necunoscută')
       setStatus('Eroare: ' + message)
@@ -323,19 +325,51 @@ export default function MobilePage() {
           <div
             style={{
               marginTop: '12px',
-              display: 'inline-flex',
+              display: 'grid',
+              gridTemplateColumns: 'auto minmax(110px, 170px)',
+              gap: '10px',
               alignItems: 'center',
-              gap: '8px',
-              padding: '8px 12px',
-              borderRadius: '999px',
-              background: '#f8fafc',
-              border: '1px solid #d8dee5',
-              fontSize: '13px',
-              fontWeight: 700,
-              color: '#344054',
             }}
           >
-            Poze pregătite: {photosCount} / {MAX_FILES}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 12px',
+                borderRadius: '999px',
+                background: '#f8fafc',
+                border: '1px solid #d8dee5',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#344054',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Poze pregătite: {photosCount} / {MAX_FILES}
+            </div>
+
+            <input
+              type="text"
+              value={raft}
+              onChange={(e) => setRaft(e.target.value.toUpperCase())}
+              disabled={saving}
+              placeholder="Raft: C32"
+              autoCapitalize="characters"
+              style={{
+                width: '100%',
+                minHeight: '38px',
+                padding: '0 12px',
+                border: '1px solid #c9d3dd',
+                borderRadius: '12px',
+                background: saving ? '#f5f7fa' : '#ffffff',
+                color: '#101828',
+                fontSize: '15px',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                outline: 'none',
+              }}
+            />
           </div>
         </div>
 

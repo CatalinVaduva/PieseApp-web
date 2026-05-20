@@ -795,9 +795,15 @@ export default function Page() {
     const terms = normalizeText(search).split(/\s+/).filter(Boolean)
     let rezultat = !terms.length ? [...piese] : piese.filter((p) => {
       const fields = [
-        p.cdp || '', p.cod_piesa || '', p.denumire || '', p.masina || '', p.categorie || '', p.raft || '',
-        p.vin || '', p.cod_culoare || '', p.compatibilitate || '', p.descriere || '',
-        p.pieseauto_main_category || '', p.pieseauto_subcategory || '', p.pieseauto_category_path || '',
+        p.cdp || '',
+        p.cod_piesa || '',
+        p.denumire || '',
+        p.masina || '',
+        p.raft || '',
+        p.vin || '',
+        p.cod_culoare || '',
+        p.compatibilitate || '',
+        p.descriere || '',
         p.anunt_online ? 'reclama online anunt publicat pus pe net' : '',
       ].map((v) => normalizeText(String(v)))
       return terms.every((term) => fields.some((field) => field.includes(term)))

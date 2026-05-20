@@ -56,6 +56,21 @@ function normalizeText(value: string) {
     .trim()
 }
 
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function phraseMatches(text: string, phrase: string) {
+  const normalizedText = ` ${normalizeText(text)} `
+  const normalizedPhrase = normalizeText(phrase)
+  if (!normalizedPhrase) return false
+
+  // Potrivire pe expresie întreagă, nu bucăți.
+  // Exemplu: "capota" NU mai poate potrivi "cap de bara".
+  const pattern = new RegExp(`(^|\\s)${escapeRegExp(normalizedPhrase)}(\\s|$)`, 'i')
+  return pattern.test(normalizedText)
+}
+
 function normalizeCode(value: string) {
   return (value || '').toLowerCase().replace(/[\s\-_.\/]+/g, '').trim()
 }
@@ -149,73 +164,119 @@ function findBestCatalogSubcategory(catalog: PieseautoCatalog | null, desiredMai
 
 function detectPieseautoFromName(name: string, catalog: PieseautoCatalog | null) {
   const hay = normalizeText(name)
-  if (!hay || !catalog) return { main: '', sub: '', path: '' }
+  if (!hay) return { main: '', sub: '', path: '' }
 
+  // Reguli stricte: alegem expresia cea mai specifică și nu lăsăm catalogul să suprascrie.
+  // Așa evităm cazuri de genul "capota" -> "Cap de bara".
   const aliases: Array<[string[], string, string, number]> = [
-    [['calculator frana mana', 'modul frana mana'], 'Electrica & Electronica Auto', 'Calculator frana mana', 500],
-    [['calculator airbag', 'modul airbag'], 'Electrica & Electronica Auto', 'Calculator airbag', 500],
-    [['calculator abs', 'modul abs'], 'Electrica & Electronica Auto', 'Calculator ABS', 500],
-    [['calculator ecu', 'calculator motor', 'ecm'], 'Electrica & Electronica Auto', 'Calculator ECU', 500],
-    [['volanta', 'volanta masa dubla'], 'Transmisie', 'Volanta', 480],
-    [['alternator'], 'Electrica & Electronica Auto', 'Alternator', 320],
-    [['electromotor'], 'Electrica & Electronica Auto', 'Electromotor', 320],
-    [['bobina'], 'Aprindere', 'Bobine inductie', 320],
-    [['bujie incandescenta', 'bujii incandescente'], 'Aprindere', 'Bujii incandescente', 320],
-    [['etrier'], 'Frane', 'Etrieri frana', 320],
-    [['disc frana'], 'Frane', 'Discuri frana', 320],
-    [['far'], 'Faruri stopuri lumini', 'Faruri', 300],
-    [['stop'], 'Faruri stopuri lumini', 'Stopuri', 300],
-    [['balast xenon'], 'Xenon', 'Balast xenon', 360],
-    [['injector'], 'Pompe si injectoare', 'Injectoare', 320],
-    [['pompa inalta'], 'Pompe si injectoare', 'Pompa inalta presiune', 340],
-    [['compresor clima'], 'Climatizare', 'Compresoare clima', 340],
-    [['usa', 'portiera'], 'Caroserie', 'Portiere', 300],
-    [['bara fata'], 'Caroserie', 'Bare fata', 340],
-    [['bara spate'], 'Caroserie', 'Bare spate', 340],
-    [['aripa'], 'Caroserie', 'Aripi', 300],
-    [['capota'], 'Caroserie', 'Capote', 300],
-    [['haion'], 'Caroserie', 'Haioane', 300],
-    [['oglinda'], 'Caroserie', 'Oglinzi', 300],
-    [['volan'], 'Interioare auto', 'Volane', 260],
-    [['airbag'], 'Interioare auto', 'Airbag', 220],
-    [['ceasuri bord'], 'Interioare auto', 'Ceasuri bord', 320],
-    [['tapiterie'], 'Interioare auto', 'Tapiterie', 300],
-    [['cutie viteze'], 'Transmisie', 'Cutii viteze', 320],
-    [['planetara'], 'Transmisie', 'Planetare', 320],
-    [['ambreiaj'], 'Transmisie', 'Kit ambreiaj', 320],
-    [['amortizor'], 'Suspensie', 'Amortizoare', 320],
-    [['arc'], 'Suspensie', 'Arcuri', 260],
-    [['caseta directie'], 'Directie', 'Casete directie', 320],
-    [['radiator'], 'Racire', 'Radiatoare', 320],
-    [['filtru ulei'], 'Filtre auto', 'Filtru ulei', 320],
-    [['filtru aer'], 'Filtre auto', 'Filtru aer', 320],
-    [['janta'], 'Jante & Anvelope', 'Jante', 300],
-    [['anvelopa'], 'Jante & Anvelope', 'Anvelope', 300],
-    [['turbina', 'turbo'], 'Turbo', 'Turbine', 320],
+    // Caroserie
+    [['capota spate', 'capota portbagaj', 'haion', 'hayon', 'usa portbagaj', 'hayon portbagaj'], 'Caroserie', 'Haioane', 1400],
+    [['bara spate', 'spoiler spate'], 'Caroserie', 'Bare spate', 1380],
+    [['bara fata', 'bara față', 'spoiler fata', 'spoiler față'], 'Caroserie', 'Bare fata', 1380],
+    [['capota motor', 'capota'], 'Caroserie', 'Capote', 1360],
+    [['aripa fata', 'aripa față', 'aripa spate', 'aripa'], 'Caroserie', 'Aripi', 1300],
+    [['usa fata', 'usa spate', 'portiera fata', 'portiera spate', 'portiera', 'usa'], 'Caroserie', 'Portiere', 1280],
+    [['oglinda stanga', 'oglinda dreapta', 'oglinda electrica', 'oglinda'], 'Caroserie', 'Oglinzi', 1260],
+    [['grila radiator', 'grila fata', 'grila bara', 'grila'], 'Caroserie', 'Grile', 1240],
+    [['trager', 'panou frontal', 'frontala'], 'Caroserie', 'Trager', 1220],
+    [['armatura bara', 'intaritura bara', 'absorber bara'], 'Caroserie', 'Armatura bara', 1200],
+    [['broasca usa', 'broasca portiera', 'incuietoare usa'], 'Caroserie', 'Broaste usi', 1190],
+    [['macara geam', 'macara electrica geam'], 'Caroserie', 'Macara geam', 1180],
+    [['geam usa', 'geam portiera', 'luneta', 'parbriz'], 'Caroserie', 'Geamuri', 1170],
+    [['chedere', 'cheder'], 'Caroserie', 'Chedere', 1050],
+
+    // Electrica / electronica
+    [['calculator frana mana', 'modul frana mana', 'calculator frână mână'], 'Electrica & Electronica Auto', 'Calculator frana mana', 1450],
+    [['calculator airbag', 'modul airbag', 'centrala airbag'], 'Electrica & Electronica Auto', 'Calculator airbag', 1440],
+    [['calculator abs', 'modul abs', 'pompa abs electronica'], 'Electrica & Electronica Auto', 'Calculator ABS', 1440],
+    [['calculator motor', 'calculator ecu', 'ecu motor', 'ecu', 'calculator injectie'], 'Electrica & Electronica Auto', 'Calculator ECU', 1430],
+    [['modul confort', 'calculator confort'], 'Electrica & Electronica Auto', 'Modul confort', 1380],
+    [['modul bcm', 'bcm', 'calculator lumini'], 'Electrica & Electronica Auto', 'Modul BCM', 1370],
+    [['alternator'], 'Electrica & Electronica Auto', 'Alternator', 1300],
+    [['electromotor', 'starter'], 'Electrica & Electronica Auto', 'Electromotor', 1300],
+    [['senzor parcare', 'senzori parcare', 'pdc'], 'Electrica & Electronica Auto', 'Senzori parcare', 1280],
+    [['senzor presiune', 'senzor temperatura', 'senzor turatie', 'senzor vibrochen', 'senzor ax came', 'senzor'], 'Electrica & Electronica Auto', 'Senzori', 1100],
+    [['claxon'], 'Electrica & Electronica Auto', 'Claxon', 1060],
+    [['releu', 'sigurante', 'panou sigurante'], 'Electrica & Electronica Auto', 'Relee si sigurante', 1050],
+
+    // Lumini
+    [['tripla stanga', 'tripla dreapta', 'tripla', 'lampa spate', 'stop spate', 'stopuri', 'stop'], 'Faruri stopuri lumini', 'Stopuri', 1400],
+    [['far xenon', 'far led', 'far stanga', 'far dreapta', 'faruri', 'far'], 'Faruri stopuri lumini', 'Faruri', 1380],
+    [['proiector ceata', 'proiector ceață', 'proiector'], 'Faruri stopuri lumini', 'Proiectoare', 1320],
+    [['semnalizare oglinda', 'semnalizare aripa', 'semnalizare'], 'Faruri stopuri lumini', 'Semnalizari', 1200],
+    [['balast xenon', 'modul xenon', 'droser xenon'], 'Xenon', 'Balast xenon', 1280],
+
+    // Navigatie / audio
+    [['display mmi', 'ecran mmi', 'display navigatie', 'ecran navigatie', 'monitor navigatie', 'display', 'ecran'], 'Navigatie GPS', 'Display navigatie', 1400],
+    [['navigatie', 'unitate navigatie', 'mmi', 'modul mmi'], 'Navigatie GPS', 'Navigatii GPS', 1260],
+    [['radio cd', 'casetofon', 'unitate radio', 'cd player'], 'Car audio', 'Radio CD', 1200],
+    [['boxa', 'difuzor', 'subwoofer', 'amplificator'], 'Car audio', 'Difuzoare', 1180],
+
+    // Interior
+    [['airbag volan'], 'Interioare auto', 'Airbag volan', 1400],
+    [['volan piele', 'volan'], 'Interioare auto', 'Volane', 1280],
+    [['airbag cortina', 'airbag scaun', 'airbag bord', 'airbag'], 'Interioare auto', 'Airbag', 1200],
+    [['ceasuri bord', 'ceas bord', 'instrumente bord', 'cluster'], 'Interioare auto', 'Ceasuri bord', 1320],
+    [['scaun fata', 'scaun față', 'scaun spate', 'scaune', 'bancheta'], 'Interioare auto', 'Scaune', 1240],
+    [['tapiterie', 'fata usa', 'fata portiera'], 'Interioare auto', 'Tapiterie', 1160],
+    [['cotiera', 'consola centrala', 'torpedou', 'maner usa interior'], 'Interioare auto', 'Console si cotiere', 1120],
+    [['buton geam', 'comanda geam', 'butoane geamuri'], 'Interioare auto', 'Butoane geamuri', 1100],
+    [['bloc lumini', 'comutator lumini'], 'Interioare auto', 'Bloc lumini', 1100],
+
+    // Motor / transmisie
+    [['cutie viteze automata', 'cutie automata', 'cutie viteze manuala', 'cutie manuala', 'cutie viteze'], 'Transmisie', 'Cutii viteze', 1400],
+    [['planetara stanga', 'planetara dreapta', 'planetare', 'planetara'], 'Transmisie', 'Planetare', 1320],
+    [['ambreiaj', 'kit ambreiaj'], 'Transmisie', 'Kit ambreiaj', 1260],
+    [['volanta masa dubla', 'volanta'], 'Transmisie', 'Volanta', 1260],
+    [['turbina', 'turbo'], 'Turbo', 'Turbine', 1280],
+    [['injector', 'injectoare'], 'Pompe si injectoare', 'Injectoare', 1260],
+    [['pompa inalta', 'pompa injectie', 'pompa inalta presiune'], 'Pompe si injectoare', 'Pompa inalta presiune', 1280],
+    [['pompa combustibil', 'pompa benzina', 'pompa motorina'], 'Pompe si injectoare', 'Pompa combustibil', 1240],
+    [['galerie admisie', 'clapeta acceleratie', 'egr', 'racitor gaze'], 'Piese Motoare', 'Admisie', 1200],
+    [['chiulasa', 'baie ulei', 'capac motor', 'capac culbutori', 'motor'], 'Piese Motoare', 'Piese motor', 1080],
+
+    // Frane / directie / suspensie
+    [['etrier frana', 'etrier'], 'Frane', 'Etrieri frana', 1280],
+    [['disc frana', 'discuri frana'], 'Frane', 'Discuri frana', 1260],
+    [['pompa abs'], 'Frane', 'Pompa ABS', 1240],
+    [['servofrana', 'tulumba frana', 'pompa frana'], 'Frane', 'Pompa frana', 1200],
+    [['caseta directie', 'caseta servo'], 'Directie', 'Casete directie', 1280],
+    [['pompa servo', 'coloana volan', 'coloana directie'], 'Directie', 'Coloana directie', 1120],
+    [['amortizor', 'amortizoare'], 'Suspensie', 'Amortizoare', 1240],
+    [['arc suspensie', 'arcuri', 'arc'], 'Suspensie', 'Arcuri', 1180],
+    [['bascula', 'brat suspensie', 'fuzeta', 'rulment roata'], 'Punte si rulmenti', 'Fuzete', 1180],
+
+    // Racire / clima / evacuare
+    [['compresor clima', 'compresor ac'], 'Climatizare', 'Compresoare clima', 1280],
+    [['radiator apa', 'radiator racire', 'radiator clima', 'radiator ac', 'radiator'], 'Racire', 'Radiatoare', 1240],
+    [['electroventilator', 'ventilator radiator', 'termocupla'], 'Racire', 'Ventilatoare radiator', 1200],
+    [['intercooler'], 'Racire', 'Intercooler', 1200],
+    [['evaporator', 'aeroterma', 'ventilator habitaclu'], 'Climatizare', 'Aeroterma', 1160],
+    [['catalizator', 'filtru particule', 'dpf', 'toba', 'evacuare'], 'Evacuare', 'Evacuare', 1100],
+
+    // Roti / accesorii
+    [['janta aliaj', 'janta tabla', 'jante aliaj', 'jante tabla', 'janta', 'jante'], 'Jante & Anvelope', 'Jante', 1240],
+    [['anvelopa', 'anvelope', 'cauciuc', 'cauciucuri'], 'Jante & Anvelope', 'Anvelope', 1220],
+    [['capac roata', 'capace roti', 'capac janta'], 'Accesorii roti', 'Capace roti', 1180],
+    [['carlig remorcare', 'cârlig remorcare'], 'Accesorii auto', 'Carlig remorcare', 1100],
   ]
 
-  let bestAlias = { main: '', sub: '', path: '', score: 0 }
+  let best = { main: '', sub: '', path: '', score: 0 }
+
   for (const [needles, main, sub, baseScore] of aliases) {
     for (const needle of needles) {
+      if (!phraseMatches(hay, needle)) continue
       const normalizedNeedle = normalizeText(needle)
-      if (!normalizedNeedle || !hay.includes(normalizedNeedle)) continue
-      const score = baseScore + normalizedNeedle.length * 10
-      if (score > bestAlias.score) {
-        bestAlias = { main, sub, path: `${main} > ${sub}`, score }
+      const score = baseScore + normalizedNeedle.length * 20
+      if (score > best.score) {
+        best = { main, sub, path: `${main} > ${sub}`, score }
       }
     }
   }
 
-  let best = { main: '', sub: '', path: '', score: 0 }
-  for (const main of catalog.main_categories) {
-    const list = catalog.subcategories[main] || []
-    for (const sub of list) {
-      const score = scoreSubcategory(name, sub.title)
-      if (score > best.score) best = { main, sub: sub.title, path: `${main} > ${sub.title}`, score }
-    }
+  if (best.score > 0) {
+    return { main: best.main, sub: best.sub, path: best.path }
   }
-  if (bestAlias.score >= best.score && bestAlias.score > 0) return { main: bestAlias.main, sub: bestAlias.sub, path: bestAlias.path }
-  if (best.score > 0) return { main: best.main, sub: best.sub, path: best.path }
 
   const mainOnly = detectInternalCategory(name)
   return mainOnly ? { main: mainOnly, sub: '', path: mainOnly } : { main: '', sub: '', path: '' }
@@ -582,21 +643,24 @@ export default function Page() {
     if (!selected) return
     let nextSelected = selected
     const detected = detectPieseautoFromName(selected.denumire || '', catalog)
-    if ((!manualCategoryEdited || !selected.pieseauto_main_category) && detected.main) {
-      const matched = findBestCatalogSubcategory(catalog, detected.main || '', detected.sub || '')
-      const resolvedMain = matched.main || detected.main || ''
-      const resolvedSub = matched.sub || detected.sub || ''
-      const resolvedCategory = mapMainOrSubToInternalCategory(resolvedMain, resolvedSub)
+
+    // Când denumirea se schimbă, recalculăm automat doar dacă nu ai ales categoria manual.
+    // Dacă ai schimbat categoria din dropdown, nu îți mai schimbă singur subcategoria.
+    if (!manualCategoryEdited && detected.main) {
+      const resolvedMain = detected.main
+      const resolvedSub = detected.sub || ''
+      const resolvedCategory = mapMainOrSubToInternalCategory(resolvedMain, resolvedSub) || resolvedMain
 
       nextSelected = {
         ...selected,
-        categorie: resolvedCategory || selected.categorie,
-        pieseauto_main_category: resolvedMain || null,
-        pieseauto_subcategory: resolvedSub || '',
+        categorie: resolvedCategory,
+        pieseauto_main_category: resolvedMain,
+        pieseauto_subcategory: resolvedSub,
         pieseauto_category_path: resolvedMain && resolvedSub ? `${resolvedMain} > ${resolvedSub}` : (detected.path || resolvedMain),
       }
       setSelected(nextSelected)
       setPiese((prev) => prev.map((p) => p.id === nextSelected.id ? nextSelected : p))
+      setManualCategoryEdited(false)
     }
     const currentJson = JSON.stringify(buildPayload(nextSelected))
     if (currentJson === lastSavedJson.current) return
@@ -925,12 +989,24 @@ export default function Page() {
   }
 
   const allPieseautoSubcategories = useMemo(() => {
-    return Object.values(catalog?.subcategories || {})
-      .flat()
+    const selectedMain = selected?.pieseauto_main_category || selected?.categorie || ''
+
+    const list = selectedMain && catalog?.subcategories?.[selectedMain]
+      ? catalog.subcategories[selectedMain]
+      : []
+
+    const titles = list
       .map((x) => x.title)
+      .filter(Boolean)
+
+    // Dacă subcategoria detectată nu există exact în catalog, o păstrăm vizibilă.
+    const current = selected?.pieseauto_subcategory || ''
+    const withCurrent = current && !titles.includes(current) ? [current, ...titles] : titles
+
+    return withCurrent
       .filter((value, index, arr) => arr.indexOf(value) === index)
       .sort((a, b) => a.localeCompare(b, 'ro'))
-  }, [catalog])
+  }, [catalog, selected?.categorie, selected?.pieseauto_main_category, selected?.pieseauto_subcategory])
 
   function handleRowMouseEnter(piesa: Piesa, e: React.MouseEvent<HTMLDivElement>) {
     if (hoverTimer.current) clearTimeout(hoverTimer.current)
@@ -1069,7 +1145,25 @@ export default function Page() {
                   <Camp label="CDP" value={selected.cdp} onChange={() => {}} disabled />
                   <Camp label="Cod piesă" value={selected.cod_piesa || ''} onChange={(value) => updateSelectedField('cod_piesa', value)} onBlur={handleCodBlur} />
                   <Camp label="Denumire" value={selected.denumire} onChange={(value) => updateSelectedField('denumire', value)} onBlur={handleDenumireBlur} />
-                  <Camp label="Categorie" value={selected.categorie || ''} onChange={(value) => updateSelectedField('categorie', value)} onBlur={saveSelectedOnBlur} asSelect options={INTERNAL_CATEGORIES} />
+                  <Camp
+                    label="Categorie"
+                    value={selected.categorie || ''}
+                    onChange={(value) => {
+                      setManualCategoryEdited(true)
+                      const updated = {
+                        ...selected,
+                        categorie: value,
+                        pieseauto_main_category: value || null,
+                        pieseauto_subcategory: '',
+                        pieseauto_category_path: value || '',
+                      }
+                      setSelected(updated)
+                      setPiese((prev) => prev.map((p) => p.id === updated.id ? updated : p))
+                    }}
+                    onBlur={saveSelectedOnBlur}
+                    asSelect
+                    options={INTERNAL_CATEGORIES}
+                  />
                   <Camp label="Mașină" value={selected.masina || ''} onChange={(value) => updateSelectedField('masina', value)} onBlur={saveSelectedOnBlur} />
                   <Camp
                     label="Subcategorie pieseauto"
@@ -1077,14 +1171,14 @@ export default function Page() {
                     onChange={(value) => {
                       setManualCategoryEdited(true)
 
-                      const matched = findBestCatalogSubcategory(catalog, '', value)
-                      const mainFound = matched.main || ''
+                      const currentMain = selected.pieseauto_main_category || selected.categorie || ''
+                      const matched = findBestCatalogSubcategory(catalog, currentMain, value)
+                      const mainFound = matched.main || currentMain || ''
                       const resolvedSub = matched.sub || value
-                      const path = mainFound && resolvedSub ? `${mainFound} > ${resolvedSub}` : resolvedSub
-                      const internalCategory = mapMainOrSubToInternalCategory(mainFound, resolvedSub)
+                      const path = mainFound && resolvedSub ? `${mainFound} > ${resolvedSub}` : (mainFound || resolvedSub)
                       const updated = {
                         ...selected,
-                        categorie: internalCategory || selected.categorie,
+                        categorie: mainFound || selected.categorie,
                         pieseauto_main_category: mainFound || null,
                         pieseauto_subcategory: resolvedSub,
                         pieseauto_category_path: path,

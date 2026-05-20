@@ -23,6 +23,7 @@ type Piesa = {
   pieseauto_main_category?: string | null
   pieseauto_subcategory?: string | null
   pieseauto_category_path?: string | null
+  anunt_online?: boolean | null
   updated_at?: string | null
 }
 
@@ -374,6 +375,7 @@ export default function Page() {
       pieseauto_main_category: piesa.pieseauto_main_category ?? null,
       pieseauto_subcategory: piesa.pieseauto_subcategory ?? null,
       pieseauto_category_path: piesa.pieseauto_category_path ?? null,
+      anunt_online: piesa.anunt_online ?? false,
     }
   }
 
@@ -390,7 +392,7 @@ export default function Page() {
       const { data, error } = await supabase.from('piese').insert([{
         cdp: cdpNou, cod_piesa: null, denumire: 'Piesă nouă', masina: null, compatibilitate: null, categorie: null,
         pret: 0, cantitate: 1, descriere: null, draft: true, poze: [], raft: null, vin: null, cod_culoare: null,
-        pieseauto_main_category: null, pieseauto_subcategory: null, pieseauto_category_path: null,
+        pieseauto_main_category: null, pieseauto_subcategory: null, pieseauto_category_path: null, anunt_online: false,
       }]).select().single()
 
       if (error) {
@@ -482,6 +484,7 @@ export default function Page() {
         pieseauto_main_category: selected.pieseauto_main_category ?? null,
         pieseauto_subcategory: selected.pieseauto_subcategory ?? null,
         pieseauto_category_path: selected.pieseauto_category_path ?? null,
+        anunt_online: selected.anunt_online ?? false,
       }
 
       const resp = await fetch('http://127.0.0.1:8765/pune-anunt', {
@@ -495,8 +498,22 @@ export default function Page() {
         throw new Error(result.error || 'Selenium a refuzat comanda.')
       }
 
-      setSeleniumStatus('Trimis către Selenium. Verifică Chrome-ul local.')
-      alert('Am trimis piesa către Selenium. Se pregătește anunțul în Chrome.')
+      const updated = { ...selected, anunt_online: true }
+      const { error: markError } = await supabase
+        .from('piese')
+        .update({ anunt_online: true })
+        .eq('id', selected.id)
+
+      if (markError) {
+        setSeleniumStatus('Trimis către Selenium, dar nu am putut marca reclama în Supabase.')
+      } else {
+        setSelected(updated)
+        setPiese((prev) => prev.map((p) => p.id === updated.id ? updated : p))
+        lastSavedJson.current = JSON.stringify(buildPayload(updated))
+        setSeleniumStatus('Trimis către Selenium și marcat ca reclamă online.')
+      }
+
+      alert('Am trimis piesa către Selenium. Am marcat-o cu verde ca reclamă online.')
     } catch (err: any) {
       const message = err?.message || 'Nu pot contacta serverul Selenium local.'
       setSeleniumStatus(message)
@@ -717,6 +734,7 @@ export default function Page() {
         p.cdp || '', p.cod_piesa || '', p.denumire || '', p.masina || '', p.categorie || '', p.raft || '',
         p.vin || '', p.cod_culoare || '', p.compatibilitate || '', p.descriere || '',
         p.pieseauto_main_category || '', p.pieseauto_subcategory || '', p.pieseauto_category_path || '',
+        p.anunt_online ? 'reclama online anunt publicat pus pe net' : '',
       ].map((v) => normalizeText(String(v)))
       return terms.every((term) => fields.some((field) => field.includes(term)))
     })
@@ -933,8 +951,10 @@ export default function Page() {
 
   function getRowBackground(p: Piesa) {
     if (selected?.id === p.id && (p.cantitate || 0) <= 0) return '#fecaca'
-    if (selected?.id === p.id) return '#dbeafe'
     if ((p.cantitate || 0) <= 0) return '#fee2e2'
+    if (selected?.id === p.id && p.anunt_online) return '#bbf7d0'
+    if (selected?.id === p.id) return '#dbeafe'
+    if (p.anunt_online) return '#dcfce7'
     if (p.draft) return '#fff8cc'
     return '#fff'
   }

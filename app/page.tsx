@@ -246,6 +246,7 @@ export default function Page() {
   const [piese, setPiese] = useState<Piesa[]>([])
   const [selected, setSelected] = useState<Piesa | null>(null)
   const [loading, setLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('')
   const [uploading, setUploading] = useState(false)
   const [creating, setCreating] = useState(false)
   const [deletingPhoto, setDeletingPhoto] = useState<string | null>(null)
@@ -270,13 +271,37 @@ export default function Page() {
 
   async function loadPiese(keepCurrentSelection = true) {
     setLoading(true)
-    const { data, error } = await supabase.from('piese').select('*').order('cdp', { ascending: false })
-    if (error) {
-      alert('Eroare la încărcare: ' + error.message)
-      setLoading(false)
-      return
+    setLoadingMessage('Se încarcă stocul...')
+
+    const pageSize = 1000
+    let from = 0
+    let lista: Piesa[] = []
+    let totalCount: number | null = null
+
+    while (true) {
+      const { data, error, count } = await supabase
+        .from('piese')
+        .select('*', { count: 'exact' })
+        .order('cdp', { ascending: false })
+        .range(from, from + pageSize - 1)
+
+      if (error) {
+        alert('Eroare la încărcare: ' + error.message)
+        setLoading(false)
+        setLoadingMessage('')
+        return
+      }
+
+      if (typeof count === 'number') totalCount = count
+      const batch = (data || []) as Piesa[]
+      lista = [...lista, ...batch]
+      setLoadingMessage(totalCount ? `Se încarcă stocul... ${lista.length} / ${totalCount}` : `Se încarcă stocul... ${lista.length}`)
+
+      if (batch.length < pageSize) break
+      if (totalCount !== null && lista.length >= totalCount) break
+      from += pageSize
     }
-    const lista = (data || []) as Piesa[]
+
     setPiese(lista)
     if (keepCurrentSelection && selected) {
       const actualizata = lista.find((p) => p.id === selected.id)
@@ -289,6 +314,7 @@ export default function Page() {
         setSelectedPoza(null)
       }
     }
+    setLoadingMessage('')
     setLoading(false)
   }
 
@@ -885,7 +911,7 @@ export default function Page() {
             <div>CDP</div><div>Cod piesă</div><div>Denumire</div><div>Categorie</div><div>Mașină</div><div>Raft</div><div>VIN / culoare</div><div>Preț</div>
           </div>
           <div style={{ overflowY: 'auto', minHeight: 0 }}>
-            {loading ? <div style={{ padding: '12px', fontSize: '12px' }}>Se încarcă...</div> : paginatedPiese.length === 0 ? <div style={{ padding: '12px', fontSize: '12px' }}>Nu există piese</div> : paginatedPiese.map((p) => (
+            {loading ? <div style={{ padding: '12px', fontSize: '12px' }}>{loadingMessage || 'Se încarcă...'}</div> : paginatedPiese.length === 0 ? <div style={{ padding: '12px', fontSize: '12px' }}>Nu există piese</div> : paginatedPiese.map((p) => (
               <div key={p.id} onClick={() => { setSelected(p)
     setSelectedPoza((p.poze && p.poze.length > 0) ? p.poze[0] : null); setSelectedPoza(p.poze?.[0] || null) }} onMouseEnter={(e) => handleRowMouseEnter(p, e)} onMouseMove={handleRowMouseMove} onMouseLeave={handleRowMouseLeave} style={{ display: 'grid', gridTemplateColumns: '86px 120px 1fr 130px 120px 72px 110px 70px', gap: '6px', padding: '7px 8px', borderBottom: '1px solid #edf1f5', cursor: 'pointer', background: getRowBackground(p), alignItems: 'center', fontSize: '11px' }}>
                 <Cell strong>{p.cdp}</Cell>

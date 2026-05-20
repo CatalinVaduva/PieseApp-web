@@ -53,6 +53,7 @@ export default function MobilePage() {
   const [status, setStatus] = useState('Poți face poze una câte una sau alege mai multe din galerie.')
   const [createdCdp, setCreatedCdp] = useState<string | null>(null)
   const [raft, setRaft] = useState('')
+  const [codPiesa, setCodPiesa] = useState('')
   const [galleryInputKey, setGalleryInputKey] = useState(1)
 
   const galleryInputRef = useRef<HTMLInputElement | null>(null)
@@ -174,7 +175,7 @@ export default function MobilePage() {
     return String(data)
   }
 
-  async function createDraftWithRetry(raftValue: string, maxRetries = 3) {
+  async function createDraftWithRetry(raftValue: string, codPiesaValue: string, maxRetries = 3) {
     let lastError: any = null
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
@@ -186,7 +187,7 @@ export default function MobilePage() {
           .insert([
             {
               cdp: cdpNou,
-              cod_piesa: null,
+              cod_piesa: codPiesaValue.trim() || null,
               denumire: 'Piesă nouă',
               masina: null,
               compatibilitate: null,
@@ -260,7 +261,8 @@ export default function MobilePage() {
     try {
       setStatus('Se creează draftul...')
       const raftCurat = raft.trim()
-      const inserted = await createDraftWithRetry(raftCurat)
+      const codPiesaCurat = codPiesa.trim()
+      const inserted = await createDraftWithRetry(raftCurat, codPiesaCurat)
 
       const urls = await uploadPhotosDirect(
         inserted.cdp,
@@ -279,9 +281,10 @@ export default function MobilePage() {
       })
 
       setPhotos(Array.from({ length: MAX_FILES }, () => null))
+      setCodPiesa('')
       resetGalleryInput()
       setCreatedCdp(inserted.cdp)
-      setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze${raftCurat ? ` · raft ${raftCurat}` : ''}`)
+      setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze${raftCurat ? ` · raft ${raftCurat}` : ''}${codPiesaCurat ? ` · cod ${codPiesaCurat}` : ''}`)
     } catch (err: any) {
       const message = String(err?.message || 'necunoscută')
       setStatus('Eroare: ' + message)
@@ -319,14 +322,12 @@ export default function MobilePage() {
           <div style={{ fontSize: '24px', fontWeight: 800, color: '#101828' }}>
             PieseApp Mobile
           </div>
-          <div style={{ marginTop: '8px', fontSize: '14px', lineHeight: 1.5, color: '#667085' }}>
-            Camera merge pe sloturi separate: faci poză 1, apoi poză 2, apoi poză 3, fără refresh.
-          </div>
+
           <div
             style={{
               marginTop: '12px',
               display: 'grid',
-              gridTemplateColumns: 'auto minmax(110px, 170px)',
+              gridTemplateColumns: 'auto minmax(120px, 190px) minmax(110px, 170px)',
               gap: '10px',
               alignItems: 'center',
             }}
@@ -348,6 +349,28 @@ export default function MobilePage() {
             >
               Poze pregătite: {photosCount} / {MAX_FILES}
             </div>
+
+            <input
+              type="text"
+              value={codPiesa}
+              onChange={(e) => setCodPiesa(e.target.value.toUpperCase())}
+              disabled={saving}
+              placeholder="Cod piesă"
+              autoCapitalize="characters"
+              style={{
+                width: '100%',
+                minHeight: '38px',
+                padding: '0 12px',
+                border: '1px solid #c9d3dd',
+                borderRadius: '12px',
+                background: saving ? '#f5f7fa' : '#ffffff',
+                color: '#101828',
+                fontSize: '15px',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                outline: 'none',
+              }}
+            />
 
             <input
               type="text"

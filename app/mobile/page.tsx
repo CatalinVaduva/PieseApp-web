@@ -10,6 +10,40 @@ type SelectedPhoto = {
 }
 
 const MAX_FILES = 8
+const ACCEPTED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'bmp', 'gif', 'heic', 'heif']
+
+function getFileExt(file: File) {
+  return (file.name.split('.').pop() || '').toLowerCase().trim()
+}
+
+function isImageFile(file: File) {
+  const ext = getFileExt(file)
+  return file.type.startsWith('image/') || ACCEPTED_IMAGE_EXTENSIONS.includes(ext)
+}
+
+function safeImageExtension(file: File) {
+  const ext = getFileExt(file)
+  if (ACCEPTED_IMAGE_EXTENSIONS.includes(ext)) return ext
+  if (file.type === 'image/png') return 'png'
+  if (file.type === 'image/webp') return 'webp'
+  if (file.type === 'image/gif') return 'gif'
+  if (file.type === 'image/bmp') return 'bmp'
+  if (file.type === 'image/heic') return 'heic'
+  if (file.type === 'image/heif') return 'heif'
+  return 'jpg'
+}
+
+function safeContentType(file: File) {
+  if (file.type && file.type.startsWith('image/')) return file.type
+  const ext = getFileExt(file)
+  if (ext === 'png') return 'image/png'
+  if (ext === 'webp') return 'image/webp'
+  if (ext === 'gif') return 'image/gif'
+  if (ext === 'bmp') return 'image/bmp'
+  if (ext === 'heic') return 'image/heic'
+  if (ext === 'heif') return 'image/heif'
+  return 'image/jpeg'
+}
 
 export default function MobilePage() {
   const [photos, setPhotos] = useState<(SelectedPhoto | null)[]>(
@@ -29,45 +63,24 @@ export default function MobilePage() {
     return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
   }
 
-  function getFileExt(file: File) {
-    const name = (file.name || '').toLowerCase()
-    const ext = name.includes('.') ? name.split('.').pop() || '' : ''
-    return ext
-  }
-
-  function isImageFile(file: File) {
-    const ext = getFileExt(file)
-    return (
-      file.type.startsWith('image/') ||
-      ['jpg', 'jpeg', 'png', 'webp', 'gif', 'heic', 'heif'].includes(ext)
-    )
-  }
-
-  function getUploadExt(file: File) {
-    const ext = getFileExt(file)
-    if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'heic', 'heif'].includes(ext)) return ext
-    if (file.type === 'image/png') return 'png'
-    if (file.type === 'image/webp') return 'webp'
-    return 'jpg'
-  }
-
-  function getUploadContentType(file: File) {
-    const ext = getUploadExt(file)
-    if (file.type) return file.type
-    if (ext === 'heic') return 'image/heic'
-    if (ext === 'heif') return 'image/heif'
-    if (ext === 'png') return 'image/png'
-    if (ext === 'webp') return 'image/webp'
-    if (ext === 'gif') return 'image/gif'
-    return 'image/jpeg'
-  }
-
   function makeItem(file: File): SelectedPhoto {
     return {
       id: makePhotoId(),
       file,
       preview: URL.createObjectURL(file),
     }
+  }
+
+  function resetGalleryInput() {
+    if (galleryInputRef.current) galleryInputRef.current.value = ''
+    // Pe mobil, mai ales Safari/iPhone, inputul file trebuie remontat după fiecare folosire.
+    setGalleryInputKey((v) => v + 1)
+  }
+
+  function openGallery() {
+    if (saving || photosCount >= MAX_FILES) return
+    resetGalleryInput()
+    window.setTimeout(() => galleryInputRef.current?.click(), 30)
   }
 
   function nextEmptyIndex(list: (SelectedPhoto | null)[]) {
@@ -77,12 +90,14 @@ export default function MobilePage() {
   function addCameraFileAt(index: number, fileList: FileList | null) {
     const file = fileList?.[0]
     if (!file || !isImageFile(file)) {
-      setStatus('Nu s-a selectat nicio poză.')
+      setStatus('Nu s-a selectat nicio poză validă.')
       return
     }
 
     setPhotos((prev) => {
       const next = [...prev]
+      const old = next[index]
+      if (old?.preview?.startsWith('blob:')) URL.revokeObjectURL(old.preview)
       next[index] = makeItem(file)
       const count = next.filter(Boolean).length
       setStatus(`Poze pregătite: ${count} / ${MAX_FILES}`)
@@ -92,31 +107,45 @@ export default function MobilePage() {
   }
 
   function addGalleryFiles(fileList: FileList | null) {
-    if (!fileList || fileList.length === 0) {
+    const selectedFiles = Array.from(fileList || [])
+    if (!selectedFiles.length) {
       setStatus('Nu s-a selectat nicio poză.')
+      resetGalleryInput()
       return
     }
+
+    let added = 0
+    let skipped = 0
 
     setPhotos((prev) => {
       const next = [...prev]
 
-      for (const file of Array.from(fileList)) {
-        if (!isImageFile(file)) continue
+      for (const file of selectedFiles) {
+        if (!isImageFile(file)) {
+          skipped += 1
+          continue
+        }
         const emptyIdx = nextEmptyIndex(next)
         if (emptyIdx === -1) break
         next[emptyIdx] = makeItem(file)
+        added += 1
       }
 
       const count = next.filter(Boolean).length
-      setStatus(`Poze pregătite: ${count} / ${MAX_FILES}`)
-      setCreatedCdp(null)
+      if (added > 0) {
+        setStatus(`Poze pregătite: ${count} / ${MAX_FILES}`)
+        setCreatedCdp(null)
+      } else if (skipped > 0) {
+        setStatus('Fișierele alese nu par poze valide. Încearcă JPG/PNG sau fă poză direct din cameră.')
+      } else if (count >= MAX_FILES) {
+        setStatus(`Ai atins limita de ${MAX_FILES} poze.`)
+      } else {
+        setStatus('Nu s-a adăugat nicio poză.')
+      }
       return next
     })
 
-    if (galleryInputRef.current) {
-      galleryInputRef.current.value = ''
-    }
-    setGalleryInputKey((v) => v + 1)
+    window.setTimeout(resetGalleryInput, 100)
   }
 
   function removePhoto(index: number) {
@@ -135,6 +164,7 @@ export default function MobilePage() {
       )
       return next
     })
+    resetGalleryInput()
   }
 
   async function getNextCdp() {
@@ -190,17 +220,20 @@ export default function MobilePage() {
   async function uploadPhotosDirect(cdp: string, files: File[]) {
     const publicUrls: string[] = []
 
-    for (const file of files) {
-      const ext = getUploadExt(file)
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
+      const ext = safeImageExtension(file)
       const random = Math.random().toString(36).slice(2, 8)
-      const fileName = `${cdp}-${Date.now()}-${random}.${ext}`
+      const fileName = `${cdp}-${Date.now()}-${i + 1}-${random}.${ext}`
       const storagePath = `${cdp}/${fileName}`
+
+      setStatus(`Se urcă poza ${i + 1} / ${files.length}...`)
 
       const { error: uploadError } = await supabase.storage
         .from('piese-poze')
         .upload(storagePath, file, {
           cacheControl: '3600',
-          contentType: getUploadContentType(file),
+          contentType: safeContentType(file),
           upsert: false,
         })
 
@@ -227,7 +260,6 @@ export default function MobilePage() {
       setStatus('Se creează draftul...')
       const inserted = await createDraftWithRetry()
 
-      setStatus('Se urcă pozele direct în Storage...')
       const urls = await uploadPhotosDirect(
         inserted.cdp,
         validPhotos.map((p) => p.file)
@@ -245,14 +277,12 @@ export default function MobilePage() {
       })
 
       setPhotos(Array.from({ length: MAX_FILES }, () => null))
-      setGalleryInputKey((v) => v + 1)
-      if (galleryInputRef.current) {
-        galleryInputRef.current.value = ''
-      }
+      resetGalleryInput()
       setCreatedCdp(inserted.cdp)
       setStatus(`Draft creat cu succes: ${inserted.cdp} · ${urls.length} poze`)
     } catch (err: any) {
-      setStatus('Eroare: ' + (err?.message || 'necunoscută'))
+      const message = String(err?.message || 'necunoscută')
+      setStatus('Eroare: ' + message)
     } finally {
       setSaving(false)
     }
@@ -319,7 +349,10 @@ export default function MobilePage() {
             gap: '10px',
           }}
         >
-          <label
+          <button
+            type="button"
+            onClick={openGallery}
+            disabled={saving || photosCount >= MAX_FILES}
             style={{
               display: 'block',
               width: '100%',
@@ -337,20 +370,27 @@ export default function MobilePage() {
             }}
           >
             Alege din galerie
-            <input
-              key={galleryInputKey}
-              ref={galleryInputRef}
-              type="file"
-              accept="image/*,.heic,.heif"
-              multiple
-              disabled={saving || photosCount >= MAX_FILES}
-              style={{ display: 'none' }}
-              onClick={(e) => {
-                ;(e.currentTarget as HTMLInputElement).value = ''
-              }}
-              onChange={(e) => addGalleryFiles(e.target.files)}
-            />
-          </label>
+          </button>
+          <input
+            key={galleryInputKey}
+            ref={galleryInputRef}
+            type="file"
+            accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"
+            multiple
+            disabled={saving || photosCount >= MAX_FILES}
+            style={{
+              position: 'fixed',
+              left: '-9999px',
+              top: '-9999px',
+              width: '1px',
+              height: '1px',
+              opacity: 0,
+            }}
+            onClick={(e) => {
+              ;(e.currentTarget as HTMLInputElement).value = ''
+            }}
+            onChange={(e) => addGalleryFiles(e.target.files)}
+          />
 
           <div
             style={{
@@ -423,7 +463,7 @@ export default function MobilePage() {
                     wordBreak: 'break-word',
                   }}
                 >
-                  {item ? item.file.name : 'Gol'}
+                  {item ? item.file.name || `poza-${index + 1}` : 'Gol'}
                 </div>
 
                 <div style={{ padding: '0 10px 10px 10px', display: 'grid', gap: '8px' }}>
@@ -449,7 +489,7 @@ export default function MobilePage() {
                       <input
                         key={`camera-slot-${index}-${photosCount}`}
                         type="file"
-                        accept="image/*,.heic,.heif"
+                        accept="image/*,.jpg,.jpeg,.png,.webp,.heic,.heif"
                         capture="environment"
                         disabled={saving}
                         style={{ display: 'none' }}

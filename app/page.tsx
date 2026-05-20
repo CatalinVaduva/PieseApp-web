@@ -249,6 +249,8 @@ export default function Page() {
   const [loadingMessage, setLoadingMessage] = useState('')
   const [uploading, setUploading] = useState(false)
   const [creating, setCreating] = useState(false)
+  const [postingAnunt, setPostingAnunt] = useState(false)
+  const [seleniumStatus, setSeleniumStatus] = useState('')
   const [deletingPhoto, setDeletingPhoto] = useState<string | null>(null)
   const [deletingPiesa, setDeletingPiesa] = useState(false)
   const [search, setSearch] = useState('')
@@ -437,6 +439,70 @@ export default function Page() {
       setSelected(updated)
       setPiese((prev) => prev.map((p) => p.id === updated.id ? updated : p))
       setAutosaveStatus('Marcată ca vândută')
+    }
+  }
+
+  async function handlePuneAnuntPieseauto() {
+    if (!selected) return
+
+    if (!selected.denumire?.trim()) {
+      alert('Completează denumirea piesei înainte de anunț.')
+      return
+    }
+    if (!Number(selected.pret || 0)) {
+      alert('Completează prețul înainte de anunț.')
+      return
+    }
+    if (!selected.poze?.length) {
+      alert('Adaugă cel puțin o poză înainte de anunț.')
+      return
+    }
+
+    setPostingAnunt(true)
+    setSeleniumStatus('Trimit piesa către Selenium...')
+
+    try {
+      await saveSelectedOnBlur()
+
+      const payload = {
+        id: selected.id,
+        cdp: selected.cdp,
+        cod_piesa: selected.cod_piesa,
+        denumire: selected.denumire,
+        masina: selected.masina,
+        compatibilitate: selected.compatibilitate,
+        categorie: selected.categorie,
+        pret: selected.pret,
+        cantitate: selected.cantitate || 1,
+        descriere: selected.descriere,
+        poze: selected.poze || [],
+        raft: selected.raft,
+        vin: selected.vin ?? null,
+        cod_culoare: selected.cod_culoare ?? null,
+        pieseauto_main_category: selected.pieseauto_main_category ?? null,
+        pieseauto_subcategory: selected.pieseauto_subcategory ?? null,
+        pieseauto_category_path: selected.pieseauto_category_path ?? null,
+      }
+
+      const resp = await fetch('http://127.0.0.1:8765/pune-anunt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      const result = await resp.json().catch(() => ({}))
+      if (!resp.ok || !result.ok) {
+        throw new Error(result.error || 'Selenium a refuzat comanda.')
+      }
+
+      setSeleniumStatus('Trimis către Selenium. Verifică Chrome-ul local.')
+      alert('Am trimis piesa către Selenium. Se pregătește anunțul în Chrome.')
+    } catch (err: any) {
+      const message = err?.message || 'Nu pot contacta serverul Selenium local.'
+      setSeleniumStatus(message)
+      alert(message + '\n\nPornește programul Python pe calculator și încearcă din nou.')
+    } finally {
+      setPostingAnunt(false)
     }
   }
 
@@ -889,6 +955,7 @@ export default function Page() {
         <button onClick={handlePiesaNoua} disabled={creating} style={primaryBtn}>{creating ? 'Se creează...' : '+ Piesă nouă'}</button>
         <button onClick={exportaCsvStoc} style={exportBtn}>Exportă CSV</button>
         <button onClick={exportaPdfStoc} style={exportBtn}>Exportă PDF</button>
+        <button onClick={handlePuneAnuntPieseauto} disabled={!selected || postingAnunt} style={postBtn}>{postingAnunt ? 'Trimit...' : 'Pune anunț'}</button>
         <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#1f2937' }}>Piese: <b>{piese.length}</b> | Valoare stoc: <b>{valoareStoc.toFixed(2)} RON</b></div>
 
         <div className="flex items-center gap-2">
@@ -971,6 +1038,8 @@ export default function Page() {
                   <button onClick={handleStergePiesa} disabled={deletingPiesa} style={smallDangerBtn}>{deletingPiesa ? 'Se șterge...' : 'Șterge'}</button>
                   <div style={{ width: '10px' }} />
                   <button onClick={handleVinde} style={smallSellBtn}>Vinde</button>
+                  <button onClick={handlePuneAnuntPieseauto} disabled={postingAnunt} style={postBtn}>{postingAnunt ? 'Trimit...' : 'Pune anunț'}</button>
+                  {seleniumStatus && <div style={{ fontSize: '11px', color: '#344054', fontWeight: 700 }}>{seleniumStatus}</div>}
                 </div>
               </div>
 
@@ -1119,6 +1188,7 @@ const primaryBtn: React.CSSProperties = { padding: '10px 14px', cursor: 'pointer
 const exportBtn: React.CSSProperties = { padding: '10px 13px', cursor: 'pointer', border: '1px solid #b8c4d2', background: '#f8fafc', color: '#344054', borderRadius: '10px', fontWeight: 700, fontSize: '13px' }
 const smallPrimaryBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #2e6ee6', background: '#2f80ed', color: '#fff', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
 const smallSellBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #f59e0b', background: '#fff7ed', color: '#b45309', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
+const postBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #16a34a', background: '#ecfdf3', color: '#027a48', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
 const smallSecondaryBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #c9d3dd', background: '#ffffff', color: '#344054', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
 const smallDangerBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #f1b5bb', background: '#fff5f5', color: '#b42318', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }
 const pagerBtn: React.CSSProperties = { minWidth: '30px', height: '30px', padding: '0 8px', cursor: 'pointer', border: '1px solid #d0d7de', background: '#ffffff', color: '#344054', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }

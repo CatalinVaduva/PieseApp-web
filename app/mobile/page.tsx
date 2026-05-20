@@ -29,6 +29,39 @@ export default function MobilePage() {
     return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
   }
 
+  function getFileExt(file: File) {
+    const name = (file.name || '').toLowerCase()
+    const ext = name.includes('.') ? name.split('.').pop() || '' : ''
+    return ext
+  }
+
+  function isImageFile(file: File) {
+    const ext = getFileExt(file)
+    return (
+      file.type.startsWith('image/') ||
+      ['jpg', 'jpeg', 'png', 'webp', 'gif', 'heic', 'heif'].includes(ext)
+    )
+  }
+
+  function getUploadExt(file: File) {
+    const ext = getFileExt(file)
+    if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'heic', 'heif'].includes(ext)) return ext
+    if (file.type === 'image/png') return 'png'
+    if (file.type === 'image/webp') return 'webp'
+    return 'jpg'
+  }
+
+  function getUploadContentType(file: File) {
+    const ext = getUploadExt(file)
+    if (file.type) return file.type
+    if (ext === 'heic') return 'image/heic'
+    if (ext === 'heif') return 'image/heif'
+    if (ext === 'png') return 'image/png'
+    if (ext === 'webp') return 'image/webp'
+    if (ext === 'gif') return 'image/gif'
+    return 'image/jpeg'
+  }
+
   function makeItem(file: File): SelectedPhoto {
     return {
       id: makePhotoId(),
@@ -43,7 +76,7 @@ export default function MobilePage() {
 
   function addCameraFileAt(index: number, fileList: FileList | null) {
     const file = fileList?.[0]
-    if (!file || !file.type.startsWith('image/')) {
+    if (!file || !isImageFile(file)) {
       setStatus('Nu s-a selectat nicio poză.')
       return
     }
@@ -68,7 +101,7 @@ export default function MobilePage() {
       const next = [...prev]
 
       for (const file of Array.from(fileList)) {
-        if (!file.type.startsWith('image/')) continue
+        if (!isImageFile(file)) continue
         const emptyIdx = nextEmptyIndex(next)
         if (emptyIdx === -1) break
         next[emptyIdx] = makeItem(file)
@@ -158,7 +191,7 @@ export default function MobilePage() {
     const publicUrls: string[] = []
 
     for (const file of files) {
-      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase()
+      const ext = getUploadExt(file)
       const random = Math.random().toString(36).slice(2, 8)
       const fileName = `${cdp}-${Date.now()}-${random}.${ext}`
       const storagePath = `${cdp}/${fileName}`
@@ -167,6 +200,7 @@ export default function MobilePage() {
         .from('piese-poze')
         .upload(storagePath, file, {
           cacheControl: '3600',
+          contentType: getUploadContentType(file),
           upsert: false,
         })
 
@@ -307,7 +341,7 @@ export default function MobilePage() {
               key={galleryInputKey}
               ref={galleryInputRef}
               type="file"
-              accept="image/*"
+              accept="image/*,.heic,.heif"
               multiple
               disabled={saving || photosCount >= MAX_FILES}
               style={{ display: 'none' }}
@@ -415,7 +449,7 @@ export default function MobilePage() {
                       <input
                         key={`camera-slot-${index}-${photosCount}`}
                         type="file"
-                        accept="image/*"
+                        accept="image/*,.heic,.heif"
                         capture="environment"
                         disabled={saving}
                         style={{ display: 'none' }}

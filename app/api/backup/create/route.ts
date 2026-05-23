@@ -18,14 +18,36 @@ export async function GET(req: Request) {
     }
 
     // luam toate piesele
-    const { data: piese, error } = await supabase
-      .from("piese")
-      .select("*")
-      .order("cdp", { ascending: true });
+    // luam toate piesele fara limita de 1000
+let piese: any[] = [];
+let from = 0;
+const pageSize = 1000;
 
-    if (error) {
-      return new NextResponse(error.message, { status: 500 });
-    }
+while (true) {
+  const to = from + pageSize - 1;
+
+  const { data, error } = await supabase
+    .from("piese")
+    .select("*")
+    .order("cdp", { ascending: true })
+    .range(from, to);
+
+  if (error) {
+    return new NextResponse(error.message, { status: 500 });
+  }
+
+  if (!data || data.length === 0) {
+    break;
+  }
+
+  piese = [...piese, ...data];
+
+  if (data.length < pageSize) {
+    break;
+  }
+
+  from += pageSize;
+}
 
     const totalPiese = piese?.length || 0;
 

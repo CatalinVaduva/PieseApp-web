@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 type Piesa = {
+  created_at?: string | null
+  updated_at?: string | null
   id: string
   cdp: string
   cod_piesa: string | null

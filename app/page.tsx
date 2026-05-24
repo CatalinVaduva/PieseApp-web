@@ -26,7 +26,6 @@ type Piesa = {
   pieseauto_subcategory?: string | null
   pieseauto_category_path?: string | null
   anunt_online?: boolean | null
-  updated_at?: string | null
 }
 
 type SortOption = 'cdp_desc' | 'cdp_asc' | 'pret_desc' | 'pret_asc' | 'denumire_asc' | 'masina_asc'

@@ -26,6 +26,7 @@ type Piesa = {
   pieseauto_subcategory?: string | null
   pieseauto_category_path?: string | null
   anunt_online?: boolean | null
+  updated_at?: string | null
 }
 
 type SortOption = 'cdp_desc' | 'cdp_asc' | 'pret_desc' | 'pret_asc' | 'denumire_asc' | 'masina_asc'
@@ -618,23 +619,39 @@ export default function Page() {
 
   async function handleCodBlur() {
     if (!selected) return
-    let nextSelected = selected
-    const latest = findLatestByCode(selected.cod_piesa || '', selected.id)
-    if (latest) {
-      nextSelected = {
-        ...selected,
-        denumire: latest.denumire || selected.denumire,
-        categorie: latest.categorie || selected.categorie,
-        masina: latest.masina || selected.masina,
-        pret: latest.pret ?? selected.pret,
-        pieseauto_main_category: latest.pieseauto_main_category || selected.pieseauto_main_category,
-        pieseauto_subcategory: latest.pieseauto_subcategory || selected.pieseauto_subcategory,
-        pieseauto_category_path: latest.pieseauto_category_path || selected.pieseauto_category_path,
+
+    // Luăm varianta cea mai proaspătă a piesei curente din listă,
+    // ca să nu verificăm un selected rămas în urmă după click/salvare.
+    const currentSelected = piese.find((p) => p.id === selected.id) || selected
+    let nextSelected = currentSelected
+
+    const piesaEsteDejaCompletata =
+      !!currentSelected.cod_piesa?.trim() &&
+      !!currentSelected.denumire?.trim() &&
+      !!currentSelected.raft?.trim() &&
+      Number(currentSelected.pret || 0) > 0
+
+    // Dacă piesa are deja cod + denumire + raft + preț,
+    // NU mai precompletăm peste ea din altă piesă cu același cod.
+    if (!piesaEsteDejaCompletata) {
+      const latest = findLatestByCode(currentSelected.cod_piesa || '', currentSelected.id)
+      if (latest) {
+        nextSelected = {
+          ...currentSelected,
+          denumire: latest.denumire || currentSelected.denumire,
+          categorie: latest.categorie || currentSelected.categorie,
+          masina: latest.masina || currentSelected.masina,
+          pret: latest.pret ?? currentSelected.pret,
+          pieseauto_main_category: latest.pieseauto_main_category || currentSelected.pieseauto_main_category,
+          pieseauto_subcategory: latest.pieseauto_subcategory || currentSelected.pieseauto_subcategory,
+          pieseauto_category_path: latest.pieseauto_category_path || currentSelected.pieseauto_category_path,
+        }
+        setSelected(nextSelected)
+        setPiese((prev) => prev.map((p) => p.id === nextSelected.id ? nextSelected : p))
+        setAutosaveStatus(`Precompletat după ${latest.cdp}`)
       }
-      setSelected(nextSelected)
-      setPiese((prev) => prev.map((p) => p.id === nextSelected.id ? nextSelected : p))
-      setAutosaveStatus(`Precompletat după ${latest.cdp}`)
     }
+
     const currentJson = JSON.stringify(buildPayload(nextSelected))
     if (currentJson === lastSavedJson.current) return
     const ok = await savePiesaSilent(nextSelected, false)
@@ -1008,6 +1025,88 @@ export default function Page() {
     setMenuOpen(false)
   }
 
+
+  function sanitizeBackupName(value: unknown) {
+    const cleaned = String(value || 'fara-cdp')
+      .trim()
+      .replace(/[<>:"/\\|?*\x00-\x1F]/g, '_')
+      .replace(/\s+/g, '_')
+      .slice(0, 80)
+
+    return cleaned || 'fara-cdp'
+  }
+
+  async function exportPozeInFolder() {
+    const picker = (window as any).showDirectoryPicker
+    if (!picker) {
+      alert('Browserul nu suportă salvare directă în folder. Folosește Chrome sau Edge actualizat.')
+      return
+    }
+
+    const pieseCuPoze = piese.filter((p) => Array.isArray(p.poze) && p.poze.length > 0)
+    if (!pieseCuPoze.length) {
+      alert('Nu există poze de exportat.')
+      return
+    }
+
+    const confirmExport = window.confirm(
+      `Export poze pentru ${pieseCuPoze.length} piese?\n\nAlege un folder gol sau un folder de backup. Programul va crea subfoldere după CDP.`
+    )
+    if (!confirmExport) return
+
+    try {
+      setMenuOpen(false)
+      setAutosaveStatus('Alege folderul pentru backup poze...')
+      const rootHandle = await picker({ mode: 'readwrite' })
+      const backupName = `Backup_PieseApp_poze_${new Date().toISOString().slice(0, 10)}`
+      const backupHandle = await rootHandle.getDirectoryHandle(backupName, { create: true })
+
+      let salvate = 0
+      let erori = 0
+
+      for (const piesa of pieseCuPoze) {
+        const cdpSafe = sanitizeBackupName(piesa.cdp)
+        const piesaHandle = await backupHandle.getDirectoryHandle(cdpSafe, { create: true })
+        const poze = (piesa.poze || []).filter(Boolean)
+
+        for (let index = 0; index < poze.length; index++) {
+          const urlPoza = poze[index]
+          try {
+            setAutosaveStatus(`Export poze: ${salvate + 1} / ${pieseCuPoze.reduce((s, p) => s + (p.poze?.length || 0), 0)}`)
+            const response = await fetch(urlPoza)
+            if (!response.ok) throw new Error(`HTTP ${response.status}`)
+            const blob = await response.blob()
+
+            const urlWithoutQuery = String(urlPoza).split('?')[0]
+            const extMatch = urlWithoutQuery.match(/\.(jpg|jpeg|png|webp|bmp)$/i)
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.jpg'
+            const filename = `${cdpSafe}_${index + 1}${ext}`
+
+            const fileHandle = await piesaHandle.getFileHandle(filename, { create: true })
+            const writable = await fileHandle.createWritable()
+            await writable.write(blob)
+            await writable.close()
+            salvate++
+          } catch (error) {
+            console.error('Eroare export poză', piesa.cdp, urlPoza, error)
+            erori++
+          }
+        }
+      }
+
+      setAutosaveStatus(`Backup poze terminat: ${salvate} salvate${erori ? `, ${erori} erori` : ''}`)
+      alert(`Backup poze terminat.\n\nPoze salvate: ${salvate}\nErori: ${erori}\nFolder: ${backupName}`)
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
+        setAutosaveStatus('Export poze anulat')
+        return
+      }
+      console.error(error)
+      setAutosaveStatus('Eroare export poze')
+      alert(`Nu am putut exporta pozele.\n\n${error?.message || error}`)
+    }
+  }
+
   function escapeHtml(value: unknown) {
     return String(value ?? '')
       .replace(/&/g, '&amp;')
@@ -1173,6 +1272,7 @@ export default function Page() {
               <div style={{ padding: '7px 8px', fontSize: '12px', fontWeight: 800, color: '#475467' }}>Admin / Backup</div>
               <button type="button" onClick={exportBackupJson} style={menuItemBtn}>Salvează backup JSON</button>
               <button type="button" onClick={exportBackupCsv} style={menuItemBtn}>Salvează backup CSV</button>
+              <button type="button" onClick={exportPozeInFolder} style={menuItemBtn}>Export poze în folder</button>
               <div style={{ height: '1px', background: '#eef2f6', margin: '6px 0' }} />
               <button type="button" onClick={() => { exportaCsvStoc(); setMenuOpen(false) }} style={menuItemBtn}>Export pieseauto CSV</button>
               <button type="button" onClick={() => { exportaPdfStoc(); setMenuOpen(false) }} style={menuItemBtn}>Export PDF stoc</button>

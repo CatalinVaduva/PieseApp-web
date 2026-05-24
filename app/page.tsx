@@ -329,6 +329,7 @@ export default function Page() {
   const [rotating, setRotating] = useState(false)
   const [manualCategoryEdited, setManualCategoryEdited] = useState(false)
   const [catalog, setCatalog] = useState<PieseautoCatalog | null>(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const lastSavedJson = useRef<string>('')
@@ -617,32 +618,22 @@ export default function Page() {
   async function handleCodBlur() {
     if (!selected) return
     let nextSelected = selected
-
-    const piesaEsteDejaCompletata =
-      !!selected.cod_piesa?.trim() &&
-      !!selected.denumire?.trim() &&
-      !!selected.raft?.trim() &&
-      Number(selected.pret || 0) > 0
-
-    if (!piesaEsteDejaCompletata) {
-      const latest = findLatestByCode(selected.cod_piesa || '', selected.id)
-      if (latest) {
-        nextSelected = {
-          ...selected,
-          denumire: latest.denumire || selected.denumire,
-          categorie: latest.categorie || selected.categorie,
-          masina: latest.masina || selected.masina,
-          pret: latest.pret ?? selected.pret,
-          pieseauto_main_category: latest.pieseauto_main_category || selected.pieseauto_main_category,
-          pieseauto_subcategory: latest.pieseauto_subcategory || selected.pieseauto_subcategory,
-          pieseauto_category_path: latest.pieseauto_category_path || selected.pieseauto_category_path,
-        }
-        setSelected(nextSelected)
-        setPiese((prev) => prev.map((p) => p.id === nextSelected.id ? nextSelected : p))
-        setAutosaveStatus(`Precompletat după ${latest.cdp}`)
+    const latest = findLatestByCode(selected.cod_piesa || '', selected.id)
+    if (latest) {
+      nextSelected = {
+        ...selected,
+        denumire: latest.denumire || selected.denumire,
+        categorie: latest.categorie || selected.categorie,
+        masina: latest.masina || selected.masina,
+        pret: latest.pret ?? selected.pret,
+        pieseauto_main_category: latest.pieseauto_main_category || selected.pieseauto_main_category,
+        pieseauto_subcategory: latest.pieseauto_subcategory || selected.pieseauto_subcategory,
+        pieseauto_category_path: latest.pieseauto_category_path || selected.pieseauto_category_path,
       }
+      setSelected(nextSelected)
+      setPiese((prev) => prev.map((p) => p.id === nextSelected.id ? nextSelected : p))
+      setAutosaveStatus(`Precompletat după ${latest.cdp}`)
     }
-
     const currentJson = JSON.stringify(buildPayload(nextSelected))
     if (currentJson === lastSavedJson.current) return
     const ok = await savePiesaSilent(nextSelected, false)
@@ -926,6 +917,178 @@ export default function Page() {
     URL.revokeObjectURL(url)
   }
 
+  function downloadTextFile(filename: string, content: string, mimeType: string) {
+    const blob = new Blob(['\ufeff' + content], { type: mimeType })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }
+
+  function exportBackupJson() {
+    const payload = {
+      exported_at: new Date().toISOString(),
+      total: piese.length,
+      source: 'PieseApp Web',
+      piese,
+    }
+
+    downloadTextFile(
+      `backup-pieseapp-${new Date().toISOString().slice(0, 10)}.json`,
+      JSON.stringify(payload, null, 2),
+      'application/json;charset=utf-8;',
+    )
+    setMenuOpen(false)
+  }
+
+  function exportBackupCsv() {
+    const header = [
+      'id',
+      'cdp',
+      'cod_piesa',
+      'denumire',
+      'masina',
+      'compatibilitate',
+      'categorie',
+      'pret',
+      'cantitate',
+      'raft',
+      'vin',
+      'cod_culoare',
+      'descriere',
+      'draft',
+      'anunt_online',
+      'pieseauto_main_category',
+      'pieseauto_subcategory',
+      'pieseauto_category_path',
+      'poze',
+      'created_at',
+      'updated_at',
+    ]
+
+    const rows = piese.map((p) => [
+      p.id,
+      p.cdp,
+      p.cod_piesa,
+      p.denumire,
+      p.masina,
+      p.compatibilitate,
+      p.categorie,
+      p.pret,
+      p.cantitate,
+      p.raft,
+      p.vin,
+      p.cod_culoare,
+      p.descriere,
+      p.draft,
+      p.anunt_online,
+      p.pieseauto_main_category,
+      p.pieseauto_subcategory,
+      p.pieseauto_category_path,
+      (p.poze || []).join('[,]'),
+      p.created_at,
+      p.updated_at,
+    ])
+
+    const csv = [
+      header.map(escapeCsv).join(';'),
+      ...rows.map((row) => row.map(escapeCsv).join(';')),
+    ].join('\n')
+
+    downloadTextFile(
+      `backup-pieseapp-${new Date().toISOString().slice(0, 10)}.csv`,
+      csv,
+      'text/csv;charset=utf-8;',
+    )
+    setMenuOpen(false)
+  }
+
+
+  function sanitizeBackupName(value: unknown) {
+    const cleaned = String(value || 'fara-cdp')
+      .trim()
+      .replace(/[<>:"/\\|?*\x00-\x1F]/g, '_')
+      .replace(/\s+/g, '_')
+      .slice(0, 80)
+
+    return cleaned || 'fara-cdp'
+  }
+
+  async function exportPozeInFolder() {
+    const picker = (window as any).showDirectoryPicker
+    if (!picker) {
+      alert('Browserul nu suportă salvare directă în folder. Folosește Chrome sau Edge actualizat.')
+      return
+    }
+
+    const pieseCuPoze = piese.filter((p) => Array.isArray(p.poze) && p.poze.length > 0)
+    if (!pieseCuPoze.length) {
+      alert('Nu există poze de exportat.')
+      return
+    }
+
+    const confirmExport = window.confirm(
+      `Export poze pentru ${pieseCuPoze.length} piese?\n\nAlege un folder gol sau un folder de backup. Programul va crea subfoldere după CDP.`
+    )
+    if (!confirmExport) return
+
+    try {
+      setMenuOpen(false)
+      setAutosaveStatus('Alege folderul pentru backup poze...')
+      const rootHandle = await picker({ mode: 'readwrite' })
+      const backupName = `Backup_PieseApp_poze_${new Date().toISOString().slice(0, 10)}`
+      const backupHandle = await rootHandle.getDirectoryHandle(backupName, { create: true })
+
+      let salvate = 0
+      let erori = 0
+
+      for (const piesa of pieseCuPoze) {
+        const cdpSafe = sanitizeBackupName(piesa.cdp)
+        const piesaHandle = await backupHandle.getDirectoryHandle(cdpSafe, { create: true })
+        const poze = (piesa.poze || []).filter(Boolean)
+
+        for (let index = 0; index < poze.length; index++) {
+          const urlPoza = poze[index]
+          try {
+            setAutosaveStatus(`Export poze: ${salvate + 1} / ${pieseCuPoze.reduce((s, p) => s + (p.poze?.length || 0), 0)}`)
+            const response = await fetch(urlPoza)
+            if (!response.ok) throw new Error(`HTTP ${response.status}`)
+            const blob = await response.blob()
+
+            const urlWithoutQuery = String(urlPoza).split('?')[0]
+            const extMatch = urlWithoutQuery.match(/\.(jpg|jpeg|png|webp|bmp)$/i)
+            const ext = extMatch ? extMatch[0].toLowerCase() : '.jpg'
+            const filename = `${cdpSafe}_${index + 1}${ext}`
+
+            const fileHandle = await piesaHandle.getFileHandle(filename, { create: true })
+            const writable = await fileHandle.createWritable()
+            await writable.write(blob)
+            await writable.close()
+            salvate++
+          } catch (error) {
+            console.error('Eroare export poză', piesa.cdp, urlPoza, error)
+            erori++
+          }
+        }
+      }
+
+      setAutosaveStatus(`Backup poze terminat: ${salvate} salvate${erori ? `, ${erori} erori` : ''}`)
+      alert(`Backup poze terminat.\n\nPoze salvate: ${salvate}\nErori: ${erori}\nFolder: ${backupName}`)
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
+        setAutosaveStatus('Export poze anulat')
+        return
+      }
+      console.error(error)
+      setAutosaveStatus('Eroare export poze')
+      alert(`Nu am putut exporta pozele.\n\n${error?.message || error}`)
+    }
+  }
+
   function escapeHtml(value: unknown) {
     return String(value ?? '')
       .replace(/&/g, '&amp;')
@@ -1054,7 +1217,52 @@ export default function Page() {
   return (
     <main style={{ height: '100vh', overflow: 'hidden', display: 'grid', gridTemplateRows: 'auto 1fr', fontFamily: 'Arial, sans-serif', background: '#eef2f6' }}>
       <div style={{ padding: '12px 16px', borderBottom: '1px solid #d8dee5', background: '#ffffff', display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
-        <div style={{ fontSize: '18px', fontWeight: 700 }}>PieseApp</div>
+        <div style={{ position: 'relative' }}>
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            style={{
+              border: '1px solid #cbd5e1',
+              background: '#f8fafc',
+              borderRadius: '10px',
+              padding: '9px 12px',
+              fontSize: '15px',
+              fontWeight: 800,
+              cursor: 'pointer',
+              color: '#0f172a',
+              minWidth: '92px',
+              textAlign: 'left',
+            }}
+          >
+            Meniu ▾
+          </button>
+          {menuOpen && (
+            <div
+              style={{
+                position: 'absolute',
+                top: '42px',
+                left: 0,
+                width: '220px',
+                background: '#ffffff',
+                border: '1px solid #d8dee5',
+                borderRadius: '12px',
+                boxShadow: '0 18px 40px rgba(15,23,42,0.18)',
+                padding: '8px',
+                zIndex: 9999,
+              }}
+            >
+              <div style={{ padding: '7px 8px', fontSize: '12px', fontWeight: 800, color: '#475467' }}>Admin / Backup</div>
+              <button type="button" onClick={exportBackupJson} style={menuItemBtn}>Salvează backup JSON</button>
+              <button type="button" onClick={exportBackupCsv} style={menuItemBtn}>Salvează backup CSV</button>
+              <button type="button" onClick={exportPozeInFolder} style={menuItemBtn}>Export poze în folder</button>
+              <div style={{ height: '1px', background: '#eef2f6', margin: '6px 0' }} />
+              <button type="button" onClick={() => { exportaCsvStoc(); setMenuOpen(false) }} style={menuItemBtn}>Export pieseauto CSV</button>
+              <button type="button" onClick={() => { exportaPdfStoc(); setMenuOpen(false) }} style={menuItemBtn}>Export PDF stoc</button>
+              <div style={{ height: '1px', background: '#eef2f6', margin: '6px 0' }} />
+              <button type="button" onClick={() => { setMenuOpen(false); logout() }} style={{ ...menuItemBtn, color: '#b91c1c' }}>Logout</button>
+            </div>
+          )}
+        </div>
         <input type="text" placeholder="Caută: CDP / cod / denumire / categorie / mașină / VIN / cod culoare" value={search} onChange={(e) => { setSearch(e.target.value); setCurrentPage(1) }} style={topInputStyle} />
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortOption)} style={topSelectStyle}>
           <option value="cdp_desc">CDP descrescător</option><option value="cdp_asc">CDP crescător</option>
@@ -1065,19 +1273,11 @@ export default function Page() {
           <option value="toate">Toate piesele</option><option value="in_stoc">Doar în stoc</option><option value="stoc_zero">Doar stoc 0</option>
         </select>
         <button onClick={handlePiesaNoua} disabled={creating} style={primaryBtn}>{creating ? 'Se creează...' : '+ Piesă nouă'}</button>
-        <button onClick={exportaCsvStoc} style={exportBtn}>Exportă CSV</button>
-        <button onClick={exportaPdfStoc} style={exportBtn}>Exportă PDF</button>
         <button onClick={handlePuneAnuntPieseauto} disabled={!selected || postingAnunt} style={postBtn}>{postingAnunt ? 'Trimit...' : 'Pune anunț'}</button>
         <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#1f2937' }}>Piese: <b>{piese.length}</b> | Valoare stoc: <b>{valoareStoc.toFixed(2)} RON</b></div>
 
         <div className="flex items-center gap-2">
           <div className="text-xs text-gray-500">{userEmail}</div>
-          <button
-            onClick={logout}
-            className="px-3 py-2 rounded border bg-red-500 text-white text-sm hover:bg-red-600"
-          >
-            Logout
-          </button>
         </div>
       </div>
 
@@ -1314,6 +1514,7 @@ function Camp({ label, value, onChange, onBlur, type = 'text', disabled = false,
 
 const topInputStyle: React.CSSProperties = { minWidth: '320px', flex: 1, maxWidth: '650px', padding: '10px 12px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#ffffff', fontSize: '13px' }
 const topSelectStyle: React.CSSProperties = { padding: '10px 12px', border: '1px solid #c9d3dd', borderRadius: '10px', background: '#ffffff', fontSize: '13px' }
+const menuItemBtn: React.CSSProperties = { width: '100%', textAlign: 'left', padding: '9px 10px', cursor: 'pointer', border: '0', background: '#ffffff', color: '#1f2937', borderRadius: '8px', fontWeight: 700, fontSize: '13px' }
 const primaryBtn: React.CSSProperties = { padding: '10px 14px', cursor: 'pointer', border: '1px solid #2e6ee6', background: '#2f80ed', color: '#fff', borderRadius: '10px', fontWeight: 700, fontSize: '13px' }
 const exportBtn: React.CSSProperties = { padding: '10px 13px', cursor: 'pointer', border: '1px solid #b8c4d2', background: '#f8fafc', color: '#344054', borderRadius: '10px', fontWeight: 700, fontSize: '13px' }
 const smallPrimaryBtn: React.CSSProperties = { padding: '8px 12px', cursor: 'pointer', border: '1px solid #2e6ee6', background: '#2f80ed', color: '#fff', borderRadius: '8px', fontWeight: 700, fontSize: '12px' }

@@ -617,22 +617,32 @@ export default function Page() {
   async function handleCodBlur() {
     if (!selected) return
     let nextSelected = selected
-    const latest = findLatestByCode(selected.cod_piesa || '', selected.id)
-    if (latest) {
-      nextSelected = {
-        ...selected,
-        denumire: latest.denumire || selected.denumire,
-        categorie: latest.categorie || selected.categorie,
-        masina: latest.masina || selected.masina,
-        pret: latest.pret ?? selected.pret,
-        pieseauto_main_category: latest.pieseauto_main_category || selected.pieseauto_main_category,
-        pieseauto_subcategory: latest.pieseauto_subcategory || selected.pieseauto_subcategory,
-        pieseauto_category_path: latest.pieseauto_category_path || selected.pieseauto_category_path,
+
+    const piesaEsteDejaCompletata =
+      !!selected.cod_piesa?.trim() &&
+      !!selected.denumire?.trim() &&
+      !!selected.raft?.trim() &&
+      Number(selected.pret || 0) > 0
+
+    if (!piesaEsteDejaCompletata) {
+      const latest = findLatestByCode(selected.cod_piesa || '', selected.id)
+      if (latest) {
+        nextSelected = {
+          ...selected,
+          denumire: latest.denumire || selected.denumire,
+          categorie: latest.categorie || selected.categorie,
+          masina: latest.masina || selected.masina,
+          pret: latest.pret ?? selected.pret,
+          pieseauto_main_category: latest.pieseauto_main_category || selected.pieseauto_main_category,
+          pieseauto_subcategory: latest.pieseauto_subcategory || selected.pieseauto_subcategory,
+          pieseauto_category_path: latest.pieseauto_category_path || selected.pieseauto_category_path,
+        }
+        setSelected(nextSelected)
+        setPiese((prev) => prev.map((p) => p.id === nextSelected.id ? nextSelected : p))
+        setAutosaveStatus(`Precompletat după ${latest.cdp}`)
       }
-      setSelected(nextSelected)
-      setPiese((prev) => prev.map((p) => p.id === nextSelected.id ? nextSelected : p))
-      setAutosaveStatus(`Precompletat după ${latest.cdp}`)
     }
+
     const currentJson = JSON.stringify(buildPayload(nextSelected))
     if (currentJson === lastSavedJson.current) return
     const ok = await savePiesaSilent(nextSelected, false)
